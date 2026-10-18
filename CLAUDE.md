@@ -13,7 +13,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 ## Structure
 - `site/index.html` : accueil (single en cours, Incoming, Videos, Live, booking).
 - `site/press/index.html` : EPK public (bio, lecteur d'extrait, faits, téléchargements, discographie, contacts).
-- `site/assets/style.css` : styles partagés, couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`).
+- `site/assets/style.css` : styles partagés (lien versionné `?v=N` dans les pages : incrémenter N à chaque changement du CSS, sinon les navigateurs gardent l'ancien), couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`).
 - `site/assets/fonts/` : Jost 400/500/600 auto-hébergée (aucun appel à Google Fonts).
 - `site/assets/lost-in-time-preview.mp3` : extrait de 60 s (3:00 à 4:00 du master, fondus). Le titre complet ne va jamais ici.
 - Site en anglais uniquement.
