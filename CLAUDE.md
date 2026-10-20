@@ -17,6 +17,11 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - `site/assets/fonts/` : Jost 400/500/600 auto-hébergée (aucun appel à Google Fonts).
 - `site/assets/lost-in-time-preview.mp3` : extrait de 60 s (3:00 à 4:00 du master, fondus). Le titre complet ne va jamais ici.
 - Site en anglais uniquement.
+- `site/privacy/index.html` : déclaration de confidentialité (lien dans le pied de page de chaque page).
+- Newsletter : formulaire dans le pied de page (`site/assets/newsletter.js`, styles `.nl` dans `style.css`),
+  page `site/unsubscribe/`. Les inscriptions vont à `/api/*`, servi par un Worker Cloudflare (`worker/newsletter.js`,
+  base D1, mise en place décrite dans `worker/README.md`). Aucun secret dans ce dépôt : la clé d'export `ADMIN_KEY`
+  est stockée dans Cloudflare uniquement.
 
 ## Faits validés (octobre 2026)
 - Single A02 // Lost In Time : vendredi 13.11.2026, 4:07, Zwicky Records, distribution Irascible.

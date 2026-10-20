@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0b0d10">
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/style.css?v=4">
+<link rel="stylesheet" href="/assets/style.css?v=5">
 </head>
 <body>
 <div class="wrap">
@@ -91,6 +91,16 @@
   </section>
 </main>
 <footer>
+  <form class="nl" id="nl-form" novalidate>
+    <label class="label" for="nl-email">Newsletter</label>
+    <div class="nl-row">
+      <input id="nl-email" name="email" type="email" required autocomplete="email" placeholder="your@email.com">
+      <input class="hp" id="nl-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Subscribe</button>
+    </div>
+    <p class="nl-note muted">New releases and shows only. Unsubscribe anytime. <a href="/privacy/">Privacy</a></p>
+    <p class="nl-msg" role="status" aria-live="polite"></p>
+  </form>
   <div class="links label">
     <a href="https://open.spotify.com/artist/47yrP8BFVfdiWrKkcgoHmh" target="_blank" rel="noopener">Spotify</a>
     <a href="https://music.apple.com/us/artist/the-clive/514469053" target="_blank" rel="noopener">Apple Music</a>
@@ -98,11 +108,12 @@
     <a href="https://www.youtube.com/@TheCliveMusic" target="_blank" rel="noopener">YouTube</a>
     <a href="https://www.instagram.com/theclivemusic/" target="_blank" rel="noopener">Instagram</a>
   </div>
-  <p class="muted" style="margin:0">© 2026 The Clive · Released on <a href="https://www.zwickyrecords.com" target="_blank" rel="noopener">Zwicky Records</a></p>
+  <p class="muted" style="margin:0">© 2026 The Clive · <a href="/privacy/">Privacy</a> · Released on <a href="https://www.zwickyrecords.com" target="_blank" rel="noopener">Zwicky Records</a></p>
 </footer>
 </div>
 <script>
 document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-copy');function sel(){var c=b.previousElementSibling,r=document.createRange();r.selectNodeContents(c);var g=getSelection();g.removeAllRanges();g.addRange(r)}function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}})});
 </script>
+<script src="/assets/newsletter.js?v=1" defer></script>
 </body>
 </html>

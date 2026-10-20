@@ -98,3 +98,16 @@ ul.dl li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 var(--s
 ul.dl li a{text-decoration:none;color:var(--ink)}
 ul.dl li a:hover{color:var(--accent)}
 ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-transform:none}
+.nl{display:grid;gap:var(--s2);padding-bottom:var(--s4);border-bottom:1px solid var(--line);margin-bottom:var(--s2)}
+.nl-row{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.nl input[type=email]{flex:1 1 220px;min-width:0;font:400 15px/20px var(--font);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:0;padding:var(--s3)}
+.nl input[type=email]::placeholder{color:var(--muted)}
+.nl input[type=email]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.nl .btn{flex:0 0 auto}
+.nl .btn[disabled]{opacity:.5;cursor:default}
+.nl p{margin:0}
+.nl-note{font-size:13px;line-height:20px}
+.nl-note a{text-decoration:underline}
+.nl-msg{font-size:14px;min-height:22px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.legal h2{margin:var(--s5) 0 var(--s3)}
