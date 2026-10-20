@@ -24,7 +24,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - Clip : Pierre Daendliker, col du Sanetsch, prêt une semaine avant la sortie.
 - Discographie (source Apple Music) : Stray Hares Run Out Of Mojo et Two Wrongs Don't Make A Clive 2016,
   Spinning Minds et Washed Out 2019, A Blessing In This Clive 10.01.2020, Turn It Up et Renegades 2023.
-- Contacts : presse theclivemusic@gmail.com ; booking Nora Weber, Zwicky Records, booking@zwickyrecords.com
+- Contacts : presse contact@the-clive.com ; booking Nora Weber, Zwicky Records, booking@zwickyrecords.com
   (lien Booking vers https://www.zwickyrecords.com/booking, nouvel onglet).
 - EPK public (Drive) : https://drive.google.com/drive/folders/19b0hrpm29Hma1S8oz8RO3ntGw73y_liC
 - Titre de l'album : ne pas le publier tant que le groupe ne l'a pas annoncé.
