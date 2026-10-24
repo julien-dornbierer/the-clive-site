@@ -22,6 +22,12 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   page `site/unsubscribe/`. Les inscriptions vont à `/api/*`, servi par un Worker Cloudflare (`worker/newsletter.js`,
   base D1, mise en place décrite dans `worker/README.md`). Aucun secret dans ce dépôt : la clé d'export `ADMIN_KEY`
   est stockée dans Cloudflare uniquement.
+- `site/lightshow/` : page **non répertoriée** (noindex, absente du sitemap et de la navigation) pour relire et commenter
+  les plans lumière du live, en français, réservée au groupe. Moteur repris du visualiseur du « Light Show State Packet ».
+  Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
+  `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
+  Les commentaires sont dans la table D1 `lightshow_comments`. Ajouter un morceau = mettre à jour `songs.json` et
+  déposer le MP3 dans R2 (pas de push). Voir `worker/README.md`.
 
 ## Faits validés (octobre 2026)
 - Single A02 // Lost In Time : vendredi 13.11.2026, 4:07, Zwicky Records, distribution Irascible.

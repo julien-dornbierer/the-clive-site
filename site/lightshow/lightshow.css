@@ -1,0 +1,91 @@
+/* Light show review page (internal, noindex). Same rules as the site: square corners, no shadows, site colours only.
+   The colours drawn in the canvas and the section bands are the light plan itself, not interface. */
+.ls-login{padding-top:var(--s5);display:grid;gap:var(--s4)}
+.ls-login .album{margin:0}
+.ls-login p{margin:0}
+.ls-form{display:grid;gap:var(--s2);max-width:480px}
+.ls-form input,.ls-input{flex:1 1 220px;min-width:0;font:400 15px/22px var(--font);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:0;padding:var(--s2) var(--s3)}
+.ls-form input:focus-visible,.ls-input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+textarea.ls-input{resize:vertical;min-height:96px}
+
+.ls-app{padding-top:var(--s4);display:grid;gap:var(--s4)}
+.ls-head p{margin:0}
+.ls-title{margin:var(--s1) 0 0;font-weight:600;font-size:clamp(26px,5vw,40px);line-height:1.05;letter-spacing:.06em;text-transform:uppercase;text-wrap:balance}
+.ls-head .caption{margin-top:var(--s2)}
+
+.ls-songs{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.ls-songs .btn{padding:var(--s2) var(--s3)}
+.ls-songs .btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+
+.ls-monitor{position:relative;background:#000;border:1px solid var(--line);aspect-ratio:16/9}
+.ls-monitor canvas{display:block;width:100%;height:100%}
+.ls-osd{position:absolute;left:var(--s3);right:var(--s3);top:var(--s2);display:flex;justify-content:space-between;gap:var(--s2);font-size:12px;line-height:16px;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums;pointer-events:none}
+.ls-osd #osdState{color:var(--accent)}
+
+.ls-console{display:grid;gap:var(--s3)}
+.ls-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2)}
+.ls-console .btn{padding:var(--s2) var(--s3)}
+.btn[disabled]{opacity:.45;cursor:default}
+.ls-cta{border-color:var(--accent);color:var(--accent);margin-left:auto}
+.ls-cta:hover{background:var(--accent);color:var(--void)}
+.ls-readout{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s4);font-size:14px;line-height:20px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ls-readout strong{color:var(--ink);font-weight:500}
+.ls-readout .ls-state{color:var(--accent)}
+.ls-chips{display:flex;flex-wrap:wrap;gap:var(--s1);min-height:22px}
+.ls-chip{font-size:11px;line-height:14px;letter-spacing:.08em;padding:var(--s1) var(--s2);border:1px solid var(--line);color:var(--ink)}
+.ls-chip.hot{border-color:var(--accent);color:var(--accent)}
+
+.ls-tl{position:relative;height:48px;background:var(--surface);border:1px solid var(--line);cursor:pointer;overflow:hidden;touch-action:none}
+.ls-seg{position:absolute;top:10px;bottom:0;border-right:1px solid rgba(0,0,0,.5);font-size:10px;line-height:14px;letter-spacing:.04em;color:rgba(255,255,255,.85);padding:var(--s1);white-space:nowrap;overflow:hidden;pointer-events:none}
+.ls-seg.light{color:#000}
+.ls-mark{position:absolute;top:0;width:2px;height:10px;margin-left:-1px;background:var(--accent);pointer-events:none}
+.ls-mark.done{background:var(--muted)}
+.ls-ph{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--ink);pointer-events:none;z-index:1}
+.ls-small{font-size:13px;line-height:20px}
+.ls-toggle{display:inline-flex;align-items:center;gap:var(--s2);cursor:pointer}
+.ls-toggle input{accent-color:var(--accent);margin:0}
+.ls-warn{margin:0;font-size:13px;line-height:20px}
+.ls-warn strong{color:var(--ink);font-weight:500}
+
+.ls-cform{display:grid;gap:var(--s2);padding:var(--s4);background:var(--surface);border:1px solid var(--accent)}
+.ls-cform p{margin:0}
+.ls-cform .label{margin-top:var(--s2)}
+.ls-cform .label:first-child{margin-top:0}
+.ls-at{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3);font-variant-numeric:tabular-nums}
+.ls-at strong{font-weight:500;color:var(--accent)}
+
+.ls-comments{margin-top:var(--s4)}
+.ls-chead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--s2) var(--s4);margin-bottom:var(--s3)}
+.ls-chead .label{margin:0}
+.ls-clist{list-style:none;margin:0;padding:0}
+.ls-c{padding:var(--s3) 0 var(--s3) var(--s3);border-top:1px solid var(--line);border-left:2px solid transparent;display:grid;gap:var(--s1)}
+.ls-c.now{border-left-color:var(--accent)}
+.ls-c.done .ls-cbody{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.ls-c p{margin:0}
+.ls-ctop{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3)}
+.ls-time{font:500 14px/20px var(--font);font-variant-numeric:tabular-nums;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.04em}
+.ls-time:hover{color:var(--accent-hi);text-decoration:underline}
+.ls-ctx{font-size:12px;line-height:16px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ls-cmeta{font-size:13px;line-height:20px;color:var(--muted)}
+.ls-cmeta b{color:var(--ink);font-weight:500}
+.ls-cbody{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:24px}
+.ls-cact{display:flex;flex-wrap:wrap;gap:var(--s1) var(--s3)}
+.ls-tag{font-size:11px;line-height:14px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);padding:0 var(--s1);color:var(--muted)}
+.ls-tag.ok{border-color:var(--accent);color:var(--accent)}
+.ls-replies{list-style:none;margin:var(--s2) 0 0;padding:0 0 0 var(--s3);border-left:1px solid var(--line);display:grid;gap:var(--s2)}
+.ls-replies li{display:grid;gap:2px}
+.ls-rform{display:grid;gap:var(--s2);margin-top:var(--s2)}
+.ls-rform .ls-row .btn{padding:var(--s2) var(--s3)}
+
+.ls-legend-wrap summary{cursor:pointer;color:var(--muted)}
+.ls-legend-wrap summary:hover{color:var(--ink)}
+.ls-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--s3);margin-top:var(--s4)}
+.ls-lg{display:flex;gap:var(--s2);align-items:flex-start;font-size:13px;line-height:18px;color:var(--muted);min-width:0}
+.ls-sw{flex:0 0 auto;width:12px;height:28px;margin-top:2px}
+.ls-lg b{display:block;color:var(--ink);font-size:11px;font-weight:500;letter-spacing:.08em}
+
+@media (max-width:560px){
+  .ls-cta{margin-left:0;flex:1 1 100%}
+  .ls-osd{font-size:10px}
+  .ls-seg{font-size:9px}
+}

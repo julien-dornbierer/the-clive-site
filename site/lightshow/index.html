@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Light show — The Clive</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b0d10">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/style.css?v=5">
+<link rel="stylesheet" href="/lightshow/lightshow.css?v=1">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="wordmark" href="/" aria-label="The Clive, accueil"><img src="/assets/logo.svg" alt="The Clive" width="175" height="15"></a>
+  <p class="label muted" style="margin:0">Light show · interne <button class="copy" id="logout" type="button" hidden>Déconnexion</button></p>
+</header>
+<main>
+
+  <section id="login" class="ls-login" aria-labelledby="h-login" hidden>
+    <h1 class="album" id="h-login">Light show</h1>
+    <p class="muted">Page réservée au groupe et aux proches. Entre le mot de passe pour lire et commenter les plans lumière.</p>
+    <form id="login-form" class="ls-form">
+      <label class="label" for="pw">Mot de passe</label>
+      <div class="nl-row">
+        <input id="pw" type="password" autocomplete="current-password" required>
+        <button class="btn solid" type="submit">Entrer</button>
+      </div>
+      <p class="nl-msg" id="login-msg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section id="app" class="ls-app" aria-labelledby="htitle" hidden>
+    <div class="ls-head">
+      <p class="label muted" id="hcode">—</p>
+      <h1 class="ls-title" id="htitle">Chargement…</h1>
+      <p class="caption muted" id="hinfo"></p>
+    </div>
+
+    <div class="ls-songs" role="group" aria-label="Morceau" id="songs"></div>
+
+    <div class="ls-monitor">
+      <canvas id="stage" aria-label="Simulation de la scène : deux tubes LED et le strobe dans la grosse caisse"></canvas>
+      <div class="ls-osd"><span id="osdState">NOIR</span><span id="osdTime">00:00.00 · 1.1</span></div>
+    </div>
+
+    <div class="ls-console">
+      <div class="ls-row">
+        <button id="play" class="btn solid" type="button" disabled>Lecture</button>
+        <button id="back" class="btn" type="button" title="Retour au début">Début</button>
+        <button id="prevbar" class="btn" type="button" title="Reculer d'une mesure (flèche gauche)">−1 mes.</button>
+        <button id="nextbar" class="btn" type="button" title="Avancer d'une mesure (flèche droite)">+1 mes.</button>
+        <button id="comment" class="btn ls-cta" type="button" title="Raccourci : C">Commenter ici</button>
+      </div>
+      <div class="ls-readout">
+        <span>Temps <strong id="rtime">00:00.00</strong></span>
+        <span>Mesure <strong id="rbar">1.1</strong></span>
+        <span>Section <strong id="rsec">—</strong></span>
+        <span>Ambiance <strong id="rstate" class="ls-state">NOIR</strong></span>
+      </div>
+      <div class="ls-chips" id="chips" aria-live="off"></div>
+      <div class="ls-tl" id="tl" role="slider" aria-label="Position dans le morceau" aria-valuemin="0" tabindex="0"><div class="ls-ph" id="ph"></div></div>
+      <div class="ls-row ls-small">
+        <label class="ls-toggle" for="calm"><input id="calm" type="checkbox" checked> Réduire les flashs</label>
+        <span class="muted" id="audio-msg" role="status" aria-live="polite"></span>
+      </div>
+      <p class="ls-warn muted"><strong>Flashs lumineux.</strong> La case « Réduire les flashs » limite les strobes à 3 par seconde. Décoche-la seulement si personne n'y est sensible.</p>
+    </div>
+
+    <form id="cform" class="ls-cform" hidden>
+      <p class="label">Nouveau commentaire</p>
+      <div class="ls-at">
+        <strong id="cf-at">00:00.00 · 1.1</strong>
+        <span class="muted" id="cf-ctx"></span>
+      </div>
+      <div class="ls-row ls-small">
+        <button class="copy" type="button" id="cf-minus">− 1 temps</button>
+        <button class="copy" type="button" id="cf-plus">+ 1 temps</button>
+        <button class="copy" type="button" id="cf-replay">Réécouter ce passage</button>
+      </div>
+      <label class="label" for="cf-author">Ton nom</label>
+      <input id="cf-author" class="ls-input" maxlength="40" autocomplete="name" required>
+      <label class="label" for="cf-body">Quoi changer</label>
+      <textarea id="cf-body" class="ls-input" rows="4" maxlength="1500" required placeholder="Ex. : le strobe tombe un temps trop tôt, ici je verrais plutôt du rouge."></textarea>
+      <div class="ls-row">
+        <button class="btn solid" type="submit">Envoyer</button>
+        <button class="btn" type="button" id="cf-cancel">Annuler</button>
+        <span class="nl-msg" id="cf-msg" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <div class="subblock ls-comments">
+      <div class="ls-chead">
+        <p class="label" id="ccount">Commentaires</p>
+        <label class="ls-toggle ls-small" for="show-done"><input id="show-done" type="checkbox"> Afficher les points réglés</label>
+      </div>
+      <ol class="ls-clist" id="clist"></ol>
+      <p class="muted ls-small" id="cempty" hidden>Aucun commentaire pour ce morceau. Lance la lecture et clique sur « Commenter ici » au moment voulu.</p>
+    </div>
+
+    <details class="subblock ls-legend-wrap">
+      <summary class="label">Ce que fait chaque note de la piste LIGHTS</summary>
+      <div class="ls-legend" id="legend"></div>
+    </details>
+
+    <p class="caption muted ls-small">Usage interne : le son vient des masters non publiés. Ne partage ni la page ni le mot de passe hors du groupe. Les couleurs traduisent les noms d'ambiances ; le rendu réel dépendra de la programmation dans QLC+.</p>
+  </section>
+
+</main>
+</div>
+<audio id="player" preload="auto"></audio>
+<script src="/lightshow/lightshow.js?v=1" defer></script>
+</body>
+</html>
