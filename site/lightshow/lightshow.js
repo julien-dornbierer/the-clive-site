@@ -187,23 +187,22 @@
     }
     return [0, 0, 0];
   }
-  const calm = $('calm');
   function compute(t) {
-    const beat = beatAt(t); const f = frame(beat); const age = t - timeAt(f.stB); const reduce = calm.checked;
+    const beat = beatAt(t); const f = frame(beat); const age = t - timeAt(f.stB);
     const tubes = [[], []]; let kick = 0; const active = new Set();
     for (let s = 0; s < 2; s++) { const side = s ^ f.swap; for (let i = 0; i < N; i++) tubes[s][i] = base(f.st, i, side, age, beat); }
     for (const [n, b] of f.held) {
       active.add(n); const el = t - timeAt(b);
       if (n === 55) { const pos = ((beat - b) * 2) % 1; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) { const d = Math.abs(i / (N - 1) - pos); if (d < .12) tubes[s][i] = mix(tubes[s][i], C.warm, 1 - d / .12); } }
-      if (n === 56) { const hz = reduce ? 3 : 10; const on = Math.floor(el * hz * 2) % 2 === 0; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = on ? mul(C.white, reduce ? .5 : 1) : [0, 0, 0]; }
+      if (n === 56) { const hz = 10; const on = Math.floor(el * hz * 2) % 2 === 0; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = on ? C.white : [0, 0, 0]; }
       if (n === 57) { for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = [0, 0, 0]; }
-      if (n === 50) { const hz = reduce ? 3 : 12; kick = Math.max(kick, (Math.floor(el * hz * 2) % 2 === 0) ? (reduce ? .5 : 1) : 0); }
+      if (n === 50) { const hz = 12; kick = Math.max(kick, (Math.floor(el * hz * 2) % 2 === 0) ? 1 : 0); }
     }
     for (const [n, b] of f.imp) {
       const el = t - timeAt(b);
-      if (n === 51) { const dec = reduce ? .4 : .16; if (el < dec * 3) { kick = Math.max(kick, (reduce ? .55 : 1) * Math.exp(-el / dec)); active.add(n); } }
+      if (n === 51) { const dec = .16; if (el < dec * 3) { kick = Math.max(kick, Math.exp(-el / dec)); active.add(n); } }
       if (n === 52 || n === 53 || n === 54) {
-        const k = (reduce ? .45 : .85) * Math.exp(-el / .14);
+        const k = .85 * Math.exp(-el / .14);
         if (k > .02) { active.add(n); for (let s = 0; s < 2; s++) { if (n === 53 && s === 1) continue; if (n === 54 && s === 0) continue; for (let i = 0; i < N; i++) tubes[s][i] = mix(tubes[s][i], C.warm, k); } }
       }
     }
