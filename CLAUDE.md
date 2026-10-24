@@ -31,8 +31,11 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   Voir `worker/README.md`.
   Depuis le Mac de Julien, Claude publie seul : push GitHub (token dans le trousseau, git lancé hors sandbox) et envoi
   de `songs.json` sur R2 par l'API Cloudflare (token dans le trousseau, service `cloudflare-r2-lightshow`).
-  Procédure complète, notes MIDI et cues : « The Clive Light Show – State Packet » (doc Claude, copie .docx dans le
-  dossier Drive LIGHT SHOW). Une nouvelle note d'état ne doit jamais trahir un titre non annoncé (69 = DALLE_NOIRE).
+  Nouveau plan lumière : suivre `LIGHT SHOW/OUTILS/README.md` dans le Drive (boîte à outils Python, analyses des 11
+  morceaux déjà faites dans `LIGHT SHOW/ANALYSE`). Notes MIDI et cues : « The Clive Light Show – State Packet »
+  (doc Claude, copie .docx dans le dossier Drive LIGHT SHOW). Les morceaux peuvent changer de tempo : champ `tm` de
+  songs.json. Toujours `git pull` avant de toucher au moteur, et pousser le moteur avant d'envoyer un songs.json
+  qui utilise de nouvelles notes. Une nouvelle note d'état ne doit jamais trahir un titre non annoncé (69 = DALLE_NOIRE).
 
 ## Faits validés (octobre 2026)
 - Single A02 // Lost In Time : vendredi 13.11.2026, 4:07, Zwicky Records, distribution Irascible.
