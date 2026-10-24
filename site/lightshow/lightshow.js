@@ -6,10 +6,10 @@
   'use strict';
 
   // ---------- Vocabulary of the LIGHTS track (shared by every song) ----------
-  const NAMES = {36:'NOIR',37:'NEON_ALLUMAGE',38:'GYROPHARE_ROUGE',39:'STUDIO_AMBRE',40:'MONTEE_TEAL',41:'REFRAIN_TEAL_AMBRE',42:'ALERTE_ROUGE',43:'POURSUITE_MONTEE',44:'REFRAIN_ALERTE',45:'PONT_ROUGE_FAIBLE',46:'CIEL_EN_FEU',47:'SPHERE',48:'SALON_NOEL',49:'FIN_TRANSMISSION',50:'STROBE_RAFALE',51:'STROBE_FLASH',52:'BUMP',53:'TUBE_G',54:'TUBE_D',55:'CHASE_RAPIDE',56:'STROBE_TUBES',57:'NOIR_COURT',58:'SWAP',59:'GLACE',60:'GIVRE',61:'MONTEE_GEL',62:'LUMIERE',63:'BRASIER',64:'FIGE',65:'AURORE',66:'PROFOND',67:'SOLEIL',68:'RECHERCHE_SIGNAL',69:'DALLE_NOIRE',70:'DEFILEMENT',71:'GLITCH',72:'BOUCLE_BLEUE',73:'REMBOBINAGE',74:'SCISSION',75:'SURCHAUFFE'};
-  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe de la grosse caisse en rafale, tant que la note dure',51:'Un gros flash du strobe de la grosse caisse',52:'Flash blanc chaud des deux tubes',53:'Accent sur le tube gauche',54:'Accent sur le tube droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Le fil qui défile : bandes bleu écran, blanc et cyan qui montent d’une bande par temps',71:'Bleu écran, des blocs cyan, magenta et blanc qui sautent à chaque double-croche, micro-coupures',72:'Boucles de feedback : des vagues bleues qui montent en écho et reviennent',73:'On rembobine : remplissage du haut vers le bas, blanc puis bleu, sur 4 mesures, avec des lignes qui sautent',74:'Coupé en deux : cyan en haut, magenta en bas, un vide noir qui s’ouvre et se referme au milieu',75:'L’écran surchauffe : magenta et violet pulsés sur les temps, étincelles blanches'};
-  const C = {amber:[1,.62,.18],teal:[.15,.85,.78],red:[1,.08,.05],orange:[1,.38,.05],violet:[.55,.15,1],cyan:[.1,.85,1],lilac:[.8,.58,1],warm:[1,.8,.55],white:[1,1,1],ice:[.35,.72,1],deep:[.06,.18,.55],screen:[.18,.42,1],magenta:[1,.12,.7]};
-  const SWATCH = {36:'#000',37:C.warm,38:C.red,39:C.amber,40:C.teal,41:'linear-gradient(#e89c2e,#26d9c7)',42:C.red,43:'linear-gradient(#ff600d,#3a0a06)',44:'linear-gradient(#ff600d,#ff140c)',45:'#4a0d0a',46:'linear-gradient(#ff600d,#8c26ff)',47:'linear-gradient(#1ad9ff,#ff9e2e,#cc94ff,#8c26ff)',48:'#a8691f',49:'linear-gradient(#ffcc8c,#000)',50:'repeating-linear-gradient(#fff 0 4px,#000 4px 8px)',51:'#fff',52:'#ffe7c4',53:'linear-gradient(90deg,#ffe7c4 50%,#222 50%)',54:'linear-gradient(90deg,#222 50%,#ffe7c4 50%)',55:'repeating-linear-gradient(#ffcc8c 0 3px,#3a2a10 3px 7px)',56:'repeating-linear-gradient(#fff 0 3px,#222 3px 6px)',57:'#111',58:'linear-gradient(90deg,#26d9c7 50%,#e89c2e 50%)',59:'linear-gradient(#5bb8ff,#cfe9ff)',60:'#0f2e8c',61:'linear-gradient(#fff,#5bb8ff 60%,#0a1530)',62:'linear-gradient(#ffcc8c,#ff9e2e)',63:'linear-gradient(#ff140c,#ff9e2e)',64:'linear-gradient(#000 45%,#fff 45% 55%,#000 55%)',65:'linear-gradient(#26d9c7,#8c26ff)',66:'#2a0d4a',67:'#ffcc8c',68:'repeating-linear-gradient(#9fe8ff 0 2px,#0a1530 2px 5px,#4a6a80 5px 6px,#000 6px 9px)',69:'linear-gradient(#cfe0ff 0 6%,#08090c 6% 94%,#cfe0ff 94%)',70:'repeating-linear-gradient(#2e6bff 0 5px,#e6eeff 5px 8px,#1ad9ff 8px 12px,#0a1530 12px 14px)',71:'repeating-linear-gradient(#2e6bff 0 4px,#ff1fb3 4px 6px,#1ad9ff 6px 8px,#2e6bff 8px 12px)',72:'linear-gradient(#0a1530,#5bb8ff 40%,#0a1530 60%,#2e6bff)',73:'linear-gradient(#fff,#2e6bff 60%,#0a1530)',74:'linear-gradient(#1ad9ff 42%,#000 42% 58%,#ff1fb3 58%)',75:'linear-gradient(#ff1fb3,#8c26ff)'};
+  const NAMES = {36:'NOIR',37:'NEON_ALLUMAGE',38:'GYROPHARE_ROUGE',39:'STUDIO_AMBRE',40:'MONTEE_TEAL',41:'REFRAIN_TEAL_AMBRE',42:'ALERTE_ROUGE',43:'POURSUITE_MONTEE',44:'REFRAIN_ALERTE',45:'PONT_ROUGE_FAIBLE',46:'CIEL_EN_FEU',47:'SPHERE',48:'SALON_NOEL',49:'FIN_TRANSMISSION',50:'STROBE_RAFALE',51:'STROBE_FLASH',52:'BUMP',53:'TUBE_G',54:'TUBE_D',55:'CHASE_RAPIDE',56:'STROBE_TUBES',57:'NOIR_COURT',58:'SWAP',59:'GLACE',60:'GIVRE',61:'MONTEE_GEL',62:'LUMIERE',63:'BRASIER',64:'FIGE',65:'AURORE',66:'PROFOND',67:'SOLEIL',68:'RECHERCHE_SIGNAL',69:'DALLE_NOIRE',70:'COURSIVE',71:'STARGATE',72:'ORBITE',73:'ALIGNEMENT',74:'HAL',75:'SOLARISATION'};
+  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe de la grosse caisse en rafale, tant que la note dure',51:'Un gros flash du strobe de la grosse caisse',52:'Flash blanc chaud des deux tubes',53:'Accent sur le tube gauche',54:'Accent sur le tube droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Coursive de vaisseau : blanc froid clinique en panneaux, qui respire à peine',71:'La porte des étoiles : traînées saturées magenta, orange, cyan et vert acide qui filent à toute vitesse',72:'En orbite : bleu Terre profond, un liseré blanc qui glisse lentement en haut des tubes',73:'Alignement des astres : un soleil blanc se lève du bas des tubes sur 4 mesures, jusqu’au plein feu',74:'L’œil rouge de HAL au milieu des tubes, sur fond noir, qui pulse sur les temps',75:'Solarisation : à pleine intensité, aplats saturés qui changent de couleur à chaque temps, haut et bas opposés'};
+  const C = {amber:[1,.62,.18],teal:[.15,.85,.78],red:[1,.08,.05],orange:[1,.38,.05],violet:[.55,.15,1],cyan:[.1,.85,1],lilac:[.8,.58,1],warm:[1,.8,.55],white:[1,1,1],ice:[.35,.72,1],deep:[.06,.18,.55],screen:[.18,.42,1],magenta:[1,.12,.7],space:[.82,.9,1],lime:[.7,1,.1],earth:[.03,.12,.5]};
+  const SWATCH = {36:'#000',37:C.warm,38:C.red,39:C.amber,40:C.teal,41:'linear-gradient(#e89c2e,#26d9c7)',42:C.red,43:'linear-gradient(#ff600d,#3a0a06)',44:'linear-gradient(#ff600d,#ff140c)',45:'#4a0d0a',46:'linear-gradient(#ff600d,#8c26ff)',47:'linear-gradient(#1ad9ff,#ff9e2e,#cc94ff,#8c26ff)',48:'#a8691f',49:'linear-gradient(#ffcc8c,#000)',50:'repeating-linear-gradient(#fff 0 4px,#000 4px 8px)',51:'#fff',52:'#ffe7c4',53:'linear-gradient(90deg,#ffe7c4 50%,#222 50%)',54:'linear-gradient(90deg,#222 50%,#ffe7c4 50%)',55:'repeating-linear-gradient(#ffcc8c 0 3px,#3a2a10 3px 7px)',56:'repeating-linear-gradient(#fff 0 3px,#222 3px 6px)',57:'#111',58:'linear-gradient(90deg,#26d9c7 50%,#e89c2e 50%)',59:'linear-gradient(#5bb8ff,#cfe9ff)',60:'#0f2e8c',61:'linear-gradient(#fff,#5bb8ff 60%,#0a1530)',62:'linear-gradient(#ffcc8c,#ff9e2e)',63:'linear-gradient(#ff140c,#ff9e2e)',64:'linear-gradient(#000 45%,#fff 45% 55%,#000 55%)',65:'linear-gradient(#26d9c7,#8c26ff)',66:'#2a0d4a',67:'#ffcc8c',68:'repeating-linear-gradient(#9fe8ff 0 2px,#0a1530 2px 5px,#4a6a80 5px 6px,#000 6px 9px)',69:'linear-gradient(#cfe0ff 0 6%,#08090c 6% 94%,#cfe0ff 94%)',70:'repeating-linear-gradient(#d1e6ff 0 6px,#1a1d22 6px 8px)',71:'linear-gradient(#ff1fb3,#ff600d,#1ad9ff,#b3ff1a)',72:'linear-gradient(#e6f0ff 0 12%,#08207f 12%,#03113f)',73:'linear-gradient(#000,#ffe7c4 70%,#fff)',74:'radial-gradient(circle,#ff0a05 0 30%,#000 60%)',75:'linear-gradient(#ff1fb3 50%,#b3ff1a 50%)'};
   const STATES = new Set([36,37,38,39,40,41,42,43,44,45,46,47,48,49,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75]);
   const HOT = new Set([50, 51, 56]);
   const N = 32;
@@ -109,32 +109,30 @@
         return mix([.015, .018, .028], C.ice, .18 * Math.exp(-d * d));
       }
       case 70: {
-        const p = y * 3 - beat / 2, f = p - Math.floor(p), k = ((Math.floor(p) % 4) + 4) % 4;
-        if (f < .14) return [0, 0, 0];
-        return mul([C.screen, C.white, C.cyan, C.deep][k], .55);
+        if (i % 4 === 3) return [0, 0, 0];
+        return mul(C.space, .4 + .06 * Math.sin(age * 1.2 + side));
       }
       case 71: {
-        const r = hash(Math.floor(y * 6) * 3.1 + Math.floor(beat * 4) * .77 + side * 9);
-        if (r > .82) return C.magenta; if (r > .7) return mul(C.cyan, .85); if (r > .64) return mul(C.white, .8); if (r < .05) return [0, 0, 0];
-        return mul(C.screen, .45);
+        const pal = [C.magenta, C.orange, C.cyan, C.lime, C.violet];
+        const p = y * 3 + beat * 1.5 + side * .37, f = p - Math.floor(p), k = ((Math.floor(p) % 5) + 5) % 5;
+        return mul(pal[k], .25 + .75 * f * f);
       }
       case 72: {
-        let v = 0; for (let e = 0; e < 3; e++) { const p = (((beat / 2 - e * .22) % 1) + 1) % 1, d = (y - p) / .07; v += Math.exp(-d * d) * Math.pow(.6, e); }
-        return mix(mul(C.deep, .3), mix(C.screen, C.ice, side ? .3 : 0), Math.min(1, v));
+        const rim = .86 + .08 * Math.sin(age * .5 + side * Math.PI), d = (y - rim) / .035;
+        return mix(mul(C.earth, .35 + .5 * (1 - y)), C.space, Math.exp(-d * d));
       }
       case 73: {
-        const lv = Math.min(1, age / (16 * SPB));
-        if (1 - y > lv) return mul(C.deep, .12);
-        return hash(i * 2.7 + Math.floor(beat * 2) * 1.3 + side * 5) > .9 ? [0, 0, 0] : mix(C.white, C.screen, 1 - y);
+        const sun = Math.min(1, age / (16 * SPB)) * 1.1 - .1, d = y - sun;
+        if (d < 0) return mix(C.warm, C.white, Math.min(1, -d * 4));
+        return mul(C.warm, Math.exp(-d / .06));
       }
       case 74: {
-        const g = .05 + .18 * (.5 + .5 * Math.sin(age * .9));
-        if (Math.abs(y - .5) < g) return [0, 0, 0];
-        return mul((y > .5) !== !!side ? C.cyan : C.magenta, .7);
+        const d = (y - .5) / .13; const k = Math.exp(-d * d);
+        return mul(C.red, k * (.55 + .45 * (1 - fb)));
       }
       case 75: {
-        if (hash(i * 4.3 + Math.floor(beat * 2) * 2.1 + side * 7) > .93) return C.white;
-        return mul(mix(C.magenta, C.violet, y), .55 + .45 * (1 - fb));
+        const pal = [C.magenta, C.lime, C.orange, C.cyan], k = Math.floor(beat) + (y > .5 ? 2 : 0) + side;
+        return pal[((k % 4) + 4) % 4];
       }
     }
     return [0, 0, 0];
