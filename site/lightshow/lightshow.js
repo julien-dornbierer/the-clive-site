@@ -44,10 +44,16 @@
   const fmtDate = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit' }) + ' ' + d.toLocaleTimeString('fr-CH', { hour: '2-digit', minute: '2-digit' }); };
 
   // ---------- Song state ----------
-  let SONGS = [], song = null, EV = [], SEC = [], BPM = 120, SPB = .5, OFF = 0, DUR = 1;
-  const barOf = (t) => { const b = Math.max(0, (t - OFF) / SPB); return (Math.floor(b / 4) + 1) + '.' + (Math.floor(b % 4) + 1); };
-  const secOf = (t) => { let s = SEC[0]; for (const x of SEC) { if (x[0] <= t + 1e-6) s = x; else break; } return s ? s[1] : '—'; };
-  const stateOf = (t) => NAMES[frame((t - OFF) / SPB).st];
+  // A song without a light plan yet (no bpm, no cues) can still be played and commented: comments are then ideas.
+  let SONGS = [], song = null, EV = [], SEC = [], BPM = 0, SPB = 0, OFF = 0, DUR = 1;
+  const hasPlan = () => EV.length > 0;
+  const beatAt = (t) => SPB ? (t - OFF) / SPB : 0;
+  const barOf = (t) => { if (!SPB) return '—'; const b = Math.max(0, beatAt(t)); return (Math.floor(b / 4) + 1) + '.' + (Math.floor(b % 4) + 1); };
+  const secOf = (t) => { let s = null; for (const x of SEC) { if (x[0] <= t + 1e-6) s = x; else break; } return s ? s[1] : ''; };
+  const stateOf = (t) => hasPlan() ? NAMES[frame(beatAt(t)).st] : '';
+  const where = (t) => [secOf(t), stateOf(t)].filter(Boolean).join(' · ');
+  const stepNav = () => SPB ? SPB * 4 : 5;
+  const stepFine = () => SPB || .5;
 
   // ---------- Engine ----------
   function frame(beat) {
@@ -102,7 +108,7 @@
   }
   const calm = $('calm');
   function compute(t) {
-    const beat = (t - OFF) / SPB; const f = frame(beat); const age = (beat - f.stB) * SPB; const reduce = calm.checked;
+    const beat = beatAt(t); const f = frame(beat); const age = (beat - f.stB) * SPB; const reduce = calm.checked;
     const tubes = [[], []]; let kick = 0; const active = new Set();
     for (let s = 0; s < 2; s++) { const side = s ^ f.swap; for (let i = 0; i < N; i++) tubes[s][i] = base(f.st, i, side, age, beat); }
     for (const [n, b] of f.held) {
@@ -172,8 +178,8 @@
   }
   playBtn.onclick = () => setPlay(!playing);
   $('back').onclick = () => seek(0);
-  $('prevbar').onclick = () => seek(now() - SPB * 4);
-  $('nextbar').onclick = () => seek(now() + SPB * 4);
+  $('prevbar').onclick = () => seek(now() - stepNav());
+  $('nextbar').onclick = () => seek(now() + stepNav());
   audio.onended = () => setPlay(false);
 
   const tl = $('tl'), ph = $('ph');
@@ -186,8 +192,8 @@
     const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
     if (typing || $('app').hidden || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.code === 'Space' && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); playBtn.click(); }
-    else if (e.key === 'ArrowRight') { e.preventDefault(); seek(now() + SPB * 4); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(now() - SPB * 4); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); seek(now() + stepNav()); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); seek(now() - stepNav()); }
     else if (e.key === 'c' || e.key === 'C') { e.preventDefault(); openForm(); }
   });
 
@@ -217,7 +223,11 @@
   }
   let pendingSeek = null;
   function useAudio(s) {
-    audio.addEventListener('loadedmetadata', () => { if (song === s) seek(pendingSeek != null ? pendingSeek : s.start || 0); }, { once: true });
+    audio.addEventListener('loadedmetadata', () => {
+      if (song !== s) return;
+      if (isFinite(audio.duration) && audio.duration > 0) { DUR = audio.duration; buildTL(); buildMarks(); }
+      seek(pendingSeek != null ? pendingSeek : s.start || 0);
+    }, { once: true });
     audio.src = audioCache[s.key];
     $('audio-msg').textContent = ''; playBtn.disabled = false;
   }
@@ -246,11 +256,18 @@
   function loadSong(key, at) {
     const s = SONGS.find((x) => x.key === key) || SONGS[0]; if (!s) return;
     if (playing) setPlay(false);
-    song = s; EV = s.ev.slice().sort((a, b) => a[0] - b[0]); SEC = s.sec; BPM = s.bpm; SPB = 60 / BPM; OFF = s.off; DUR = s.dur;
+    song = s; EV = (s.ev || []).slice().sort((a, b) => a[0] - b[0]); SEC = s.sec || []; BPM = s.bpm || 0; SPB = BPM ? 60 / BPM : 0; OFF = s.off || 0; DUR = s.dur || 1;
     pendingSeek = at != null ? at : null;
-    $('hcode').textContent = s.code + ' //';
+    $('hcode').textContent = (s.track ? String(s.track).padStart(2, '0') + ' · ' : '') + s.code + ' //';
     $('htitle').textContent = s.name;
-    $('hinfo').textContent = 'Plan lumière ' + s.ver + ' · ' + BPM + ' BPM · ' + EV.length + ' déclenchements';
+    $('hinfo').textContent = hasPlan()
+      ? 'Plan lumière ' + s.ver + ' · ' + BPM + ' BPM · ' + EV.length + ' déclenchements'
+      : 'Pas encore de plan lumière. Écoute et note tes idées au bon moment : elles serviront à le construire.';
+    $('prevbar').textContent = SPB ? '−1 mes.' : '−5 s'; $('nextbar').textContent = SPB ? '+1 mes.' : '+5 s';
+    $('cf-minus').textContent = SPB ? '− 1 temps' : '− 0,5 s'; $('cf-plus').textContent = SPB ? '+ 1 temps' : '+ 0,5 s';
+    $('comment').textContent = hasPlan() ? 'Commenter ici' : 'Proposer une idée ici';
+    $('cf-title').textContent = hasPlan() ? 'Nouveau commentaire' : 'Nouvelle idée';
+    $('legend-wrap').hidden = !hasPlan();
     document.title = s.code + ' — Light show — The Clive';
     document.querySelectorAll('#songs .btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === key)));
     buildLegend(); buildTL(); closeForm(); lastChips = null;
@@ -282,14 +299,14 @@
     const shown = roots.filter((c) => showDone || !c.resolved);
     $('cempty').hidden = shown.length > 0;
     if (!shown.length && roots.length) { $('cempty').hidden = false; $('cempty').textContent = 'Tous les points sont réglés.'; }
-    else $('cempty').textContent = 'Aucun commentaire pour ce morceau. Lance la lecture et clique sur « Commenter ici » au moment voulu.';
+    else $('cempty').textContent = 'Rien pour ce morceau. Lance la lecture et clique sur « ' + $('comment').textContent + ' » au moment voulu.';
     for (const c of shown) {
       const li = el('li', 'ls-c' + (c.resolved ? ' done' : '')); li.dataset.t = c.t; li.dataset.id = c.id;
       const top = el('div', 'ls-ctop');
-      const tb = el('button', 'ls-time', fmtShort(c.t) + ' · mes. ' + barOf(c.t)); tb.type = 'button';
+      const tb = el('button', 'ls-time', fmtShort(c.t) + (SPB ? ' · mes. ' + barOf(c.t) : '')); tb.type = 'button';
       tb.title = 'Écouter depuis 2 secondes avant'; tb.onclick = () => { seek(c.t - 2); if (!playBtn.disabled) setPlay(true); };
-      top.append(tb, el('span', 'ls-ctx', secOf(c.t) + ' · ' + stateOf(c.t)));
-      if (c.ver && song && c.ver !== song.ver) top.append(el('span', 'ls-tag', 'sur ' + c.ver));
+      top.append(tb); if (where(c.t)) top.append(el('span', 'ls-ctx', where(c.t)));
+      if (song && (c.ver || '') !== (song.ver || '')) top.append(el('span', 'ls-tag', c.ver ? 'sur ' + c.ver : 'avant le plan'));
       if (c.resolved) top.append(el('span', 'ls-tag ok', 'Réglé'));
       const meta = el('p', 'ls-cmeta'); meta.append(el('b', null, c.author), ' · ' + fmtDate(c.created_at));
       li.append(top, meta, el('p', 'ls-cbody', c.body));
@@ -353,7 +370,7 @@
 
   // New comment form
   const cform = $('cform'); let cfT = 0;
-  function updateFormAt() { $('cf-at').textContent = fmt(cfT) + ' · mesure ' + barOf(cfT); $('cf-ctx').textContent = secOf(cfT) + ' · ' + stateOf(cfT); }
+  function updateFormAt() { $('cf-at').textContent = fmt(cfT) + (SPB ? ' · mesure ' + barOf(cfT) : ''); $('cf-ctx').textContent = where(cfT); }
   function openForm() {
     if (!song) return;
     if (playing) setPlay(false);
@@ -366,8 +383,8 @@
   function closeForm() { cform.hidden = true; $('cf-body').value = ''; }
   $('comment').onclick = openForm;
   $('cf-cancel').onclick = closeForm;
-  $('cf-minus').onclick = () => { cfT = Math.max(0, cfT - SPB); updateFormAt(); seek(cfT); };
-  $('cf-plus').onclick = () => { cfT = Math.min(DUR, cfT + SPB); updateFormAt(); seek(cfT); };
+  $('cf-minus').onclick = () => { cfT = Math.max(0, cfT - stepFine()); updateFormAt(); seek(cfT); };
+  $('cf-plus').onclick = () => { cfT = Math.min(DUR, cfT + stepFine()); updateFormAt(); seek(cfT); };
   $('cf-replay').onclick = () => { seek(cfT - 3); setPlay(true); setTimeout(() => { if (playing) setPlay(false); }, 4500); };
   $('cf-body').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) cform.requestSubmit(); });
   cform.onsubmit = async (e) => {
@@ -389,8 +406,9 @@
     if (song) {
       const t = Math.min(now(), DUR); const S = compute(t); draw(S);
       const bar = barOf(t);
-      $('rtime').textContent = fmt(t); $('rbar').textContent = bar; $('rstate').textContent = NAMES[S.f.st]; $('rsec').textContent = secOf(t);
-      $('osdState').textContent = NAMES[S.f.st] + (S.f.swap ? ' · SWAP' : ''); $('osdTime').textContent = fmt(t) + ' · ' + bar;
+      const st = hasPlan() ? NAMES[S.f.st] : '—';
+      $('rtime').textContent = fmt(t); $('rbar').textContent = bar; $('rstate').textContent = st; $('rsec').textContent = secOf(t) || '—';
+      $('osdState').textContent = hasPlan() ? st + (S.f.swap ? ' · SWAP' : '') : 'PAS ENCORE DE PLAN'; $('osdTime').textContent = fmt(t) + (SPB ? ' · ' + bar : '');
       ph.style.left = (t / DUR * 100) + '%'; tl.setAttribute('aria-valuenow', String(Math.round(t))); tl.setAttribute('aria-valuetext', fmt(t) + ', mesure ' + bar);
       const chips = [...S.active].sort().map((n) => `<span class="ls-chip${HOT.has(n) ? ' hot' : ''}">${NAMES[n]}</span>`).join('');
       if (chips !== lastChips) { $('chips').innerHTML = chips; lastChips = chips; }
@@ -428,7 +446,7 @@
     }
     $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false;
     const songs = $('songs'); songs.textContent = '';
-    SONGS.forEach((s) => { const b = el('button', 'btn', s.code + ' // ' + s.name); b.type = 'button'; b.dataset.k = s.key; b.setAttribute('aria-pressed', 'false'); b.onclick = () => loadSong(s.key); songs.append(b); });
+    SONGS.forEach((s) => { const b = el('button', 'btn' + (s.ev && s.ev.length ? '' : ' noplan'), s.code + ' // ' + s.name); b.title = s.ev && s.ev.length ? 'Plan lumière ' + s.ver : 'Pas encore de plan lumière'; b.type = 'button'; b.dataset.k = s.key; b.setAttribute('aria-pressed', 'false'); b.onclick = () => loadSong(s.key); songs.append(b); });
     resize();
     const h = parseHash();
     loadSong(h && SONGS.some((s) => s.key === h.key) ? h.key : SONGS[0].key, h ? h.at : null);

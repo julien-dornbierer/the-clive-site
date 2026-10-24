@@ -15,6 +15,7 @@ textarea.ls-input{resize:vertical;min-height:96px}
 
 .ls-songs{display:flex;flex-wrap:wrap;gap:var(--s2)}
 .ls-songs .btn{padding:var(--s2) var(--s3)}
+.ls-songs .btn.noplan{border-color:var(--line);color:var(--muted)}
 .ls-songs .btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 
 .ls-monitor{position:relative;background:#000;border:1px solid var(--line);aspect-ratio:16/9}

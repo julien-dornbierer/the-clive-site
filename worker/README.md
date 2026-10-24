@@ -31,8 +31,10 @@ ils sont dans un bucket R2 et le Worker ne les sert qu'avec le mot de passe du g
 ### Mise en place (une seule fois)
 
 1. **Bucket** : Storage & Databases > R2 > Create bucket, nom `the-clive-lightshow` (accès public désactivé).
-   Y déposer `songs.json`, les MP3 nommés par code (`z19.mp3`, `a09.mp3`)
-   (copies prêtes dans le Drive : `LIGHT SHOW/lightshow-web (R2)/`).
+   Y déposer tout le contenu du dossier Drive des MP3 de l'album
+   (`CGCG ALBUM-final masters-44+88/LP#3 -The Clive- Mstrd KTv01 MP3 192kbps/`) : `songs.json` et un MP3 par
+   morceau, nommé par son code en minuscules (`z19.mp3`, `a09.mp3`, `z14b.mp3`…). Ce dossier Drive est la copie
+   de référence du bucket.
 2. **Brancher le bucket** : dans le Worker, Settings > Bindings > Add > R2 bucket, nom de variable `LIGHTSHOW`,
    bucket `the-clive-lightshow`.
 3. **Mot de passe** : Settings > Variables and secrets > Add, type Secret, nom `LIGHTSHOW_PASSWORD`,
@@ -42,10 +44,14 @@ ils sont dans un bucket R2 et le Worker ne les sert qu'avec le mot de passe du g
 
 ### Ajouter ou modifier un morceau
 
-- `songs.json` contient une liste `songs` ; chaque morceau :
-  `{key, code, name, ver, bpm, off, dur, start, audio, ev:[[beat, note, len], ...], sec:[[secondes, "Section", "#hex"(, 1 = fond clair)], ...]}`
-  (`off` = début du clip dans le fichier, en secondes ; `ev` = la liste du générateur, identique au .mid).
-- Déposer le MP3 (192k) et le nouveau `songs.json` dans le bucket. Aucun push n'est nécessaire.
+- `songs.json` contient la liste `songs`, dans l'ordre de l'album ; chaque morceau :
+  `{key, code, track, name, audio, dur, ver, bpm, off, start, ev:[[beat, note, len], ...], sec:[[secondes, "Section", "#hex"(, 1 = fond clair)], ...]}`
+  (`key` = code en minuscules, ne jamais le changer car les commentaires y sont rattachés ; `off` = début du clip
+  dans le fichier, en secondes ; `ev` = la liste du générateur, identique au .mid).
+- Tous les morceaux de l'album y sont déjà. Un morceau sans plan a `ver: null, bpm: null, ev: [], sec: []` :
+  on peut l'écouter et y noter des idées au bon moment, sans mesures ni ambiances.
+- Pour lui donner un plan : remplir `ver` ("v1"), `bpm`, `off`, `ev` et `sec`, mettre à jour `songs.json` dans le
+  Drive puis dans le bucket. Aucun push n'est nécessaire. Les idées notées avant affichent « avant le plan ».
 - Changer `ver` (v2 → v3) quand les cues changent : les anciens commentaires affichent alors « sur v2 ».
 - Une note d'état nouvelle (69 et plus) demande d'ajouter son nom, sa description, sa couleur et son rendu
   dans `site/lightshow/lightshow.js` (`NAMES`, `DESC`, `SWATCH`, `STATES`, `base()`), puis un push.

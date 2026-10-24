@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css?v=5">
-<link rel="stylesheet" href="/lightshow/lightshow.css?v=1">
+<link rel="stylesheet" href="/lightshow/lightshow.css?v=2">
 </head>
 <body>
 <div class="wrap">
@@ -73,7 +73,7 @@
     </div>
 
     <form id="cform" class="ls-cform" hidden>
-      <p class="label">Nouveau commentaire</p>
+      <p class="label" id="cf-title">Nouveau commentaire</p>
       <div class="ls-at">
         <strong id="cf-at">00:00.00 · 1.1</strong>
         <span class="muted" id="cf-ctx"></span>
@@ -103,17 +103,17 @@
       <p class="muted ls-small" id="cempty" hidden>Aucun commentaire pour ce morceau. Lance la lecture et clique sur « Commenter ici » au moment voulu.</p>
     </div>
 
-    <details class="subblock ls-legend-wrap">
+    <details class="subblock ls-legend-wrap" id="legend-wrap">
       <summary class="label">Ce que fait chaque note de la piste LIGHTS</summary>
       <div class="ls-legend" id="legend"></div>
     </details>
 
-    <p class="caption muted ls-small">Usage interne : le son vient des masters non publiés. Ne partage ni la page ni le mot de passe hors du groupe. Les couleurs traduisent les noms d'ambiances ; le rendu réel dépendra de la programmation dans QLC+.</p>
+    <p class="caption muted ls-small">Usage interne : le son vient des masters non publiés de l’album. Ne partage ni la page ni le mot de passe hors du groupe. Les couleurs traduisent les noms d'ambiances ; le rendu réel dépendra de la programmation dans QLC+.</p>
   </section>
 
 </main>
 </div>
 <audio id="player" preload="auto"></audio>
-<script src="/lightshow/lightshow.js?v=1" defer></script>
+<script src="/lightshow/lightshow.js?v=2" defer></script>
 </body>
 </html>
