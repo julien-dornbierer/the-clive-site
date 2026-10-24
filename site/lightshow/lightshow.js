@@ -6,11 +6,11 @@
   'use strict';
 
   // ---------- Vocabulary of the LIGHTS track (shared by every song) ----------
-  const NAMES = {36:'NOIR',37:'NEON_ALLUMAGE',38:'GYROPHARE_ROUGE',39:'STUDIO_AMBRE',40:'MONTEE_TEAL',41:'REFRAIN_TEAL_AMBRE',42:'ALERTE_ROUGE',43:'POURSUITE_MONTEE',44:'REFRAIN_ALERTE',45:'PONT_ROUGE_FAIBLE',46:'CIEL_EN_FEU',47:'SPHERE',48:'SALON_NOEL',49:'FIN_TRANSMISSION',50:'STROBE_RAFALE',51:'STROBE_FLASH',52:'BUMP',53:'TUBE_G',54:'TUBE_D',55:'CHASE_RAPIDE',56:'STROBE_TUBES',57:'NOIR_COURT',58:'SWAP',59:'GLACE',60:'GIVRE',61:'MONTEE_GEL',62:'LUMIERE',63:'BRASIER',64:'FIGE',65:'AURORE',66:'PROFOND',67:'SOLEIL',68:'RECHERCHE_SIGNAL',69:'DALLE_NOIRE',70:'COURSIVE',71:'STARGATE',72:'ORBITE',73:'ALIGNEMENT',74:'HAL',75:'SOLARISATION'};
-  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe de la grosse caisse en rafale, tant que la note dure',51:'Un gros flash du strobe de la grosse caisse',52:'Flash blanc chaud des deux tubes',53:'Accent sur le tube gauche',54:'Accent sur le tube droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Coursive de vaisseau : blanc froid clinique en panneaux, qui respire à peine',71:'La porte des étoiles : traînées saturées magenta, orange, cyan et vert acide qui filent à toute vitesse',72:'En orbite : bleu Terre profond, un liseré blanc qui glisse lentement en haut des tubes',73:'Alignement des astres : un soleil blanc se lève du bas des tubes sur 4 mesures, jusqu’au plein feu',74:'L’œil rouge de HAL au milieu des tubes, sur fond noir, qui pulse sur les temps',75:'Solarisation : à pleine intensité, aplats saturés qui changent de couleur à chaque temps, haut et bas opposés'};
-  const C = {amber:[1,.62,.18],teal:[.15,.85,.78],red:[1,.08,.05],orange:[1,.38,.05],violet:[.55,.15,1],cyan:[.1,.85,1],lilac:[.8,.58,1],warm:[1,.8,.55],white:[1,1,1],ice:[.35,.72,1],deep:[.06,.18,.55],screen:[.18,.42,1],magenta:[1,.12,.7],space:[.82,.9,1],lime:[.7,1,.1],earth:[.03,.12,.5]};
-  const SWATCH = {36:'#000',37:C.warm,38:C.red,39:C.amber,40:C.teal,41:'linear-gradient(#e89c2e,#26d9c7)',42:C.red,43:'linear-gradient(#ff600d,#3a0a06)',44:'linear-gradient(#ff600d,#ff140c)',45:'#4a0d0a',46:'linear-gradient(#ff600d,#8c26ff)',47:'linear-gradient(#1ad9ff,#ff9e2e,#cc94ff,#8c26ff)',48:'#a8691f',49:'linear-gradient(#ffcc8c,#000)',50:'repeating-linear-gradient(#fff 0 4px,#000 4px 8px)',51:'#fff',52:'#ffe7c4',53:'linear-gradient(90deg,#ffe7c4 50%,#222 50%)',54:'linear-gradient(90deg,#222 50%,#ffe7c4 50%)',55:'repeating-linear-gradient(#ffcc8c 0 3px,#3a2a10 3px 7px)',56:'repeating-linear-gradient(#fff 0 3px,#222 3px 6px)',57:'#111',58:'linear-gradient(90deg,#26d9c7 50%,#e89c2e 50%)',59:'linear-gradient(#5bb8ff,#cfe9ff)',60:'#0f2e8c',61:'linear-gradient(#fff,#5bb8ff 60%,#0a1530)',62:'linear-gradient(#ffcc8c,#ff9e2e)',63:'linear-gradient(#ff140c,#ff9e2e)',64:'linear-gradient(#000 45%,#fff 45% 55%,#000 55%)',65:'linear-gradient(#26d9c7,#8c26ff)',66:'#2a0d4a',67:'#ffcc8c',68:'repeating-linear-gradient(#9fe8ff 0 2px,#0a1530 2px 5px,#4a6a80 5px 6px,#000 6px 9px)',69:'linear-gradient(#cfe0ff 0 6%,#08090c 6% 94%,#cfe0ff 94%)',70:'repeating-linear-gradient(#d1e6ff 0 6px,#1a1d22 6px 8px)',71:'linear-gradient(#ff1fb3,#ff600d,#1ad9ff,#b3ff1a)',72:'linear-gradient(#e6f0ff 0 12%,#08207f 12%,#03113f)',73:'linear-gradient(#000,#ffe7c4 70%,#fff)',74:'radial-gradient(circle,#ff0a05 0 30%,#000 60%)',75:'linear-gradient(#ff1fb3 50%,#b3ff1a 50%)'};
-  const STATES = new Set([36,37,38,39,40,41,42,43,44,45,46,47,48,49,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75]);
+  const NAMES = {36:'NOIR',37:'NEON_ALLUMAGE',38:'GYROPHARE_ROUGE',39:'STUDIO_AMBRE',40:'MONTEE_TEAL',41:'REFRAIN_TEAL_AMBRE',42:'ALERTE_ROUGE',43:'POURSUITE_MONTEE',44:'REFRAIN_ALERTE',45:'PONT_ROUGE_FAIBLE',46:'CIEL_EN_FEU',47:'SPHERE',48:'SALON_NOEL',49:'FIN_TRANSMISSION',50:'STROBE_RAFALE',51:'STROBE_FLASH',52:'BUMP',53:'TUBE_G',54:'TUBE_D',55:'CHASE_RAPIDE',56:'STROBE_TUBES',57:'NOIR_COURT',58:'SWAP',59:'GLACE',60:'GIVRE',61:'MONTEE_GEL',62:'LUMIERE',63:'BRASIER',64:'FIGE',65:'AURORE',66:'PROFOND',67:'SOLEIL',68:'RECHERCHE_SIGNAL',69:'DALLE_NOIRE',70:'COURSIVE',71:'STARGATE',72:'ORBITE',73:'ALIGNEMENT',74:'HAL',75:'SOLARISATION',76:'DERIVE',77:'POUSSEE_EPSTEIN',78:'CERES',79:'POSTE_COMBAT',80:'PROTOMOLECULE',81:'TIRS_PDC',82:'ANNEAU',83:'PROTO_SURCHARGE'};
+  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe de la grosse caisse en rafale, tant que la note dure',51:'Un gros flash du strobe de la grosse caisse',52:'Flash blanc chaud des deux tubes',53:'Accent sur le tube gauche',54:'Accent sur le tube droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Coursive de vaisseau : blanc froid clinique en panneaux, qui respire à peine',71:'La porte des étoiles : traînées saturées magenta, orange, cyan et vert acide qui filent à toute vitesse',72:'En orbite : bleu Terre profond, un liseré blanc qui glisse lentement en haut des tubes',73:'Alignement des astres : un soleil blanc se lève du bas des tubes sur 4 mesures, jusqu’au plein feu',74:'L’œil rouge de HAL au milieu des tubes, sur fond noir, qui pulse sur les temps',75:'Solarisation : à pleine intensité, aplats saturés qui changent de couleur à chaque temps, haut et bas opposés',76:'Dérive en apesanteur : noir spatial, quelques étoiles froides qui glissent lentement, vers le bas à gauche, vers le haut à droite',77:'Poussée Epstein : un panache de plasma bleu-blanc part du bas des tubes et vibre, halo violet au-dessus',78:'Cérès : lumière sodium ambre, sale et industrielle, en panneaux, avec des néons qui sautent',79:'Poste de combat : rouge tamisé du vaisseau en alerte, une ligne rouge qui balaie du haut vers le bas toutes les 2 temps',80:'La protomolécule : bleu électrique bioluminescent, des filaments qui tournent (ça monte à gauche, ça descend à droite) et des étincelles',81:'Tirs de PDC : noir, des rafales de traçantes blanc-orange qui filent vers le haut',82:'L’Anneau : noir, une bande irisée teal-bleu-violet qui flotte lentement, poussières',83:'Protomolécule en surcharge : bleu, cyan, violet et blanc à pleine intensité, rotation rapide, pluie d’étincelles'};
+  const C = {amber:[1,.62,.18],teal:[.15,.85,.78],red:[1,.08,.05],orange:[1,.38,.05],violet:[.55,.15,1],cyan:[.1,.85,1],lilac:[.8,.58,1],warm:[1,.8,.55],white:[1,1,1],ice:[.35,.72,1],deep:[.06,.18,.55],screen:[.18,.42,1],magenta:[1,.12,.7],space:[.82,.9,1],lime:[.7,1,.1],earth:[.03,.12,.5],plasma:[.5,.6,1],sodium:[1,.47,.1],proto:[.06,.4,1]};
+  const SWATCH = {36:'#000',37:C.warm,38:C.red,39:C.amber,40:C.teal,41:'linear-gradient(#e89c2e,#26d9c7)',42:C.red,43:'linear-gradient(#ff600d,#3a0a06)',44:'linear-gradient(#ff600d,#ff140c)',45:'#4a0d0a',46:'linear-gradient(#ff600d,#8c26ff)',47:'linear-gradient(#1ad9ff,#ff9e2e,#cc94ff,#8c26ff)',48:'#a8691f',49:'linear-gradient(#ffcc8c,#000)',50:'repeating-linear-gradient(#fff 0 4px,#000 4px 8px)',51:'#fff',52:'#ffe7c4',53:'linear-gradient(90deg,#ffe7c4 50%,#222 50%)',54:'linear-gradient(90deg,#222 50%,#ffe7c4 50%)',55:'repeating-linear-gradient(#ffcc8c 0 3px,#3a2a10 3px 7px)',56:'repeating-linear-gradient(#fff 0 3px,#222 3px 6px)',57:'#111',58:'linear-gradient(90deg,#26d9c7 50%,#e89c2e 50%)',59:'linear-gradient(#5bb8ff,#cfe9ff)',60:'#0f2e8c',61:'linear-gradient(#fff,#5bb8ff 60%,#0a1530)',62:'linear-gradient(#ffcc8c,#ff9e2e)',63:'linear-gradient(#ff140c,#ff9e2e)',64:'linear-gradient(#000 45%,#fff 45% 55%,#000 55%)',65:'linear-gradient(#26d9c7,#8c26ff)',66:'#2a0d4a',67:'#ffcc8c',68:'repeating-linear-gradient(#9fe8ff 0 2px,#0a1530 2px 5px,#4a6a80 5px 6px,#000 6px 9px)',69:'linear-gradient(#cfe0ff 0 6%,#08090c 6% 94%,#cfe0ff 94%)',70:'repeating-linear-gradient(#d1e6ff 0 6px,#1a1d22 6px 8px)',71:'linear-gradient(#ff1fb3,#ff600d,#1ad9ff,#b3ff1a)',72:'linear-gradient(#e6f0ff 0 12%,#08207f 12%,#03113f)',73:'linear-gradient(#000,#ffe7c4 70%,#fff)',74:'radial-gradient(circle,#ff0a05 0 30%,#000 60%)',75:'linear-gradient(#ff1fb3 50%,#b3ff1a 50%)',76:'radial-gradient(circle at 30% 30%,#d1e6ff 0 4%,transparent 6%),radial-gradient(circle at 70% 75%,#5bb8ff 0 4%,transparent 6%),#020308',77:'linear-gradient(#2a1f66,#8099ff 50%,#fff)',78:'repeating-linear-gradient(#a8500f 0 6px,#3a1a05 6px 8px)',79:'linear-gradient(#240302,#ff140c 50%,#240302)',80:'linear-gradient(#0f66ff,#1ad9ff,#0f66ff)',81:'repeating-linear-gradient(#ffe0b0 0 2px,#140400 2px 9px)',82:'linear-gradient(#020308 30%,#26d9c7 42%,#8c26ff 58%,#020308 70%)',83:'linear-gradient(#fff,#1ad9ff,#8c26ff,#0f66ff)'};
+  const STATES = new Set([36,37,38,39,40,41,42,43,44,45,46,47,48,49,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83]);
   const HOT = new Set([50, 51, 56]);
   const N = 32;
 
@@ -45,9 +45,17 @@
 
   // ---------- Song state ----------
   // A song without a light plan yet (no bpm, no cues) can still be played and commented: comments are then ideas.
-  let SONGS = [], song = null, EV = [], SEC = [], BPM = 0, SPB = 0, OFF = 0, DUR = 1;
+  // A song can change tempo: tm = [[beat, bpm], ...] with beats counted from the downbeat (off). Without tm, bpm holds.
+  let SONGS = [], song = null, EV = [], SEC = [], BPM = 0, SPB = 0, OFF = 0, DUR = 1, TM = [];
   const hasPlan = () => EV.length > 0;
-  const beatAt = (t) => SPB ? (t - OFF) / SPB : 0;
+  function setTempo(s) {
+    const tm = s.tm && s.tm.length ? s.tm : (s.bpm ? [[0, s.bpm]] : []); let t = OFF;
+    TM = tm.map(([b, bpm], i) => { if (i) t += (b - tm[i - 1][0]) * 60 / tm[i - 1][1]; return [b, bpm, t]; });
+  }
+  const segT = (t) => { let g = TM[0]; for (const x of TM) { if (x[2] <= t) g = x; else break; } return g; };
+  const segB = (b) => { let g = TM[0]; for (const x of TM) { if (x[0] <= b) g = x; else break; } return g; };
+  const beatAt = (t) => { if (!TM.length) return 0; const g = segT(t); return g[0] + (t - g[2]) * g[1] / 60; };
+  const timeAt = (b) => { if (!TM.length) return 0; const g = segB(b); return g[2] + (b - g[0]) * 60 / g[1]; };
   const barOf = (t) => { if (!SPB) return '—'; const b = Math.max(0, beatAt(t)); return (Math.floor(b / 4) + 1) + '.' + (Math.floor(b % 4) + 1); };
   const secOf = (t) => { let s = null; for (const x of SEC) { if (x[0] <= t + 1e-6) s = x; else break; } return s ? s[1] : ''; };
   const stateOf = (t) => hasPlan() ? NAMES[frame(beatAt(t)).st] : '';
@@ -134,23 +142,65 @@
         const pal = [C.magenta, C.lime, C.orange, C.cyan], k = Math.floor(beat) + (y > .5 ? 2 : 0) + side;
         return pal[((k % 4) + 4) % 4];
       }
+      case 76: {
+        const q = y * N + (side ? -1 : 1) * age * 1.1, c = Math.floor(q), h = hash(c * 3.7 + side * 19);
+        const sky = mul(C.earth, .06 * (1 - y));
+        if (h < .87) return sky;
+        return mix(sky, mix(C.space, C.ice, hash(c * 1.3)), (.35 + .3 * Math.sin(age * 3 + c)) * (1 - Math.abs(q - c - .5)));
+      }
+      case 77: {
+        const L = .55 + .08 * Math.sin(age * 9 + side) + .06 * hash(Math.floor(age * 20) + side * 3);
+        if (y < L) { const k = 1 - y / L; return mul(mix(C.plasma, C.white, k * k), .35 + .65 * k); }
+        return mul(C.violet, .35 * Math.exp(-(y - L) / .08));
+      }
+      case 78: {
+        const p = Math.floor(i / 8); if (i % 8 === 7) return [0, 0, 0];
+        const out = hash(Math.floor(age * 7) + p * 3 + side * 5) > .94;
+        return mul(C.sodium, out ? .04 : (.2 + .12 * hash(p + side * 5)) * (1.15 - .3 * y));
+      }
+      case 79: {
+        const pos = 1 - ((beat / 2) % 1 + 1) % 1, d = (y - pos) / .06;
+        return mul(C.red, .13 + .7 * Math.exp(-d * d));
+      }
+      case 80: {
+        const fil = .5 + .5 * Math.sin(2 * Math.PI * (y * 2 - (side ? -1 : 1) * beat / 2));
+        if (hash(i * 5.3 + side * 11 + Math.floor(age * 10)) > .94) return mix(C.cyan, C.white, .6);
+        return mul(mix(C.proto, C.cyan, fil * fil), (.22 + .65 * fil * fil * fil) * (.8 + .2 * (1 - fb)));
+      }
+      case 81: {
+        const burst = Math.floor(beat * 2) % 3 !== 2, p = y * 4 - age * 9 + hash(side * 7) * 4, f = p - Math.floor(p);
+        if (burst && f < .16) return mix(C.warm, C.white, .5);
+        return [.07, .02, 0];
+      }
+      case 82: {
+        const c = .5 + .28 * Math.sin(age * .4 + side * Math.PI), d = (y - c) / .12;
+        const pal = [C.teal, C.ice, C.violet], p = ((y * 2 + age * .2) % 1) * 3, a = Math.floor(p);
+        const col = mix(pal[a % 3], pal[(a + 1) % 3], p - a), dust = hash(i * 9.1 + side * 3 + Math.floor(age * 2)) > .95 ? .25 : 0;
+        return mix(mul(C.space, .01 + dust), col, .85 * Math.exp(-d * d));
+      }
+      case 83: {
+        const fil = .5 + .5 * Math.sin(2 * Math.PI * (y * 2 - (side ? -1 : 1) * beat));
+        if (hash(i * 5.3 + side * 11 + Math.floor(age * 16)) > .86) return C.white;
+        const pal = [C.proto, C.cyan, C.violet], k = ((Math.floor(beat) % 3) + 3) % 3;
+        return mul(mix(pal[k], C.white, fil * fil * .5), .5 + .5 * fil);
+      }
     }
     return [0, 0, 0];
   }
   const calm = $('calm');
   function compute(t) {
-    const beat = beatAt(t); const f = frame(beat); const age = (beat - f.stB) * SPB; const reduce = calm.checked;
+    const beat = beatAt(t); const f = frame(beat); const age = t - timeAt(f.stB); const reduce = calm.checked;
     const tubes = [[], []]; let kick = 0; const active = new Set();
     for (let s = 0; s < 2; s++) { const side = s ^ f.swap; for (let i = 0; i < N; i++) tubes[s][i] = base(f.st, i, side, age, beat); }
     for (const [n, b] of f.held) {
-      active.add(n); const el = (beat - b) * SPB;
+      active.add(n); const el = t - timeAt(b);
       if (n === 55) { const pos = ((beat - b) * 2) % 1; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) { const d = Math.abs(i / (N - 1) - pos); if (d < .12) tubes[s][i] = mix(tubes[s][i], C.warm, 1 - d / .12); } }
       if (n === 56) { const hz = reduce ? 3 : 10; const on = Math.floor(el * hz * 2) % 2 === 0; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = on ? mul(C.white, reduce ? .5 : 1) : [0, 0, 0]; }
       if (n === 57) { for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = [0, 0, 0]; }
       if (n === 50) { const hz = reduce ? 3 : 12; kick = Math.max(kick, (Math.floor(el * hz * 2) % 2 === 0) ? (reduce ? .5 : 1) : 0); }
     }
     for (const [n, b] of f.imp) {
-      const el = (beat - b) * SPB;
+      const el = t - timeAt(b);
       if (n === 51) { const dec = reduce ? .4 : .16; if (el < dec * 3) { kick = Math.max(kick, (reduce ? .55 : 1) * Math.exp(-el / dec)); active.add(n); } }
       if (n === 52 || n === 53 || n === 54) {
         const k = (reduce ? .45 : .85) * Math.exp(-el / .14);
@@ -287,12 +337,12 @@
   function loadSong(key, at) {
     const s = SONGS.find((x) => x.key === key) || SONGS[0]; if (!s) return;
     if (playing) setPlay(false);
-    song = s; EV = (s.ev || []).slice().sort((a, b) => a[0] - b[0]); SEC = s.sec || []; BPM = s.bpm || 0; SPB = BPM ? 60 / BPM : 0; OFF = s.off || 0; DUR = s.dur || 1;
+    song = s; EV = (s.ev || []).slice().sort((a, b) => a[0] - b[0]); SEC = s.sec || []; BPM = s.bpm || 0; SPB = BPM ? 60 / BPM : 0; OFF = s.off || 0; DUR = s.dur || 1; setTempo(s);
     pendingSeek = at != null ? at : null;
     $('hcode').textContent = (s.track ? String(s.track).padStart(2, '0') + ' · ' : '') + s.code + ' //';
     $('htitle').textContent = s.name;
     $('hinfo').textContent = hasPlan()
-      ? 'Plan lumière ' + s.ver + ' · ' + BPM + ' BPM · ' + EV.length + ' déclenchements'
+      ? 'Plan lumière ' + s.ver + ' · ' + [...new Set(TM.map((x) => x[1]))].join('/') + ' BPM · ' + EV.length + ' déclenchements'
       : 'Pas encore de plan lumière. Écoute et note tes idées au bon moment : elles serviront à le construire.';
     $('prevbar').textContent = SPB ? '−1 mes.' : '−5 s'; $('nextbar').textContent = SPB ? '+1 mes.' : '+5 s';
     $('cf-minus').textContent = SPB ? '− 1 temps' : '− 0,5 s'; $('cf-plus').textContent = SPB ? '+ 1 temps' : '+ 0,5 s';
