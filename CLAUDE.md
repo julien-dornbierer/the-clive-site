@@ -29,6 +29,10 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
   lumière servent à noter des idées. Donner un plan à un morceau = mettre à jour `songs.json` dans R2 (pas de push).
   Voir `worker/README.md`.
+  Depuis le Mac de Julien, Claude publie seul : push GitHub (token dans le trousseau, git lancé hors sandbox) et envoi
+  de `songs.json` sur R2 par l'API Cloudflare (token dans le trousseau, service `cloudflare-r2-lightshow`).
+  Procédure complète, notes MIDI et cues : « The Clive Light Show – State Packet » (doc Claude, copie .docx dans le
+  dossier Drive LIGHT SHOW). Une nouvelle note d'état ne doit jamais trahir un titre non annoncé (69 = DALLE_NOIRE).
 
 ## Faits validés (octobre 2026)
 - Single A02 // Lost In Time : vendredi 13.11.2026, 4:07, Zwicky Records, distribution Irascible.
