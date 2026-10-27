@@ -24,6 +24,9 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   est stockée dans Cloudflare uniquement.
 - `site/lightshow/` : page **non répertoriée** (noindex, absente du sitemap et de la navigation) pour relire et commenter
   les plans lumière du live, en français, réservée au groupe. Moteur repris du visualiseur du « Light Show State Packet ».
+  Rendu = rig v0.3 (27.10.2026) : 2 monolithes noirs, 2 Astera Titan Tube de 16 pixels en // à 70° par monolithe
+  (chaque côté du plan, 32 valeurs, s'affiche sur les 2 tubes de son monolithe), sphère LED dans la grosse caisse,
+  Spectra de face (notes 50 et 51). Aucune atténuation : les flashs saturent l'image comme sur scène.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan

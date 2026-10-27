@@ -7,7 +7,7 @@
 
   // ---------- Vocabulary of the LIGHTS track (shared by every song) ----------
   const NAMES = {36:'NOIR',37:'NEON_ALLUMAGE',38:'GYROPHARE_ROUGE',39:'STUDIO_AMBRE',40:'MONTEE_TEAL',41:'REFRAIN_TEAL_AMBRE',42:'ALERTE_ROUGE',43:'POURSUITE_MONTEE',44:'REFRAIN_ALERTE',45:'PONT_ROUGE_FAIBLE',46:'CIEL_EN_FEU',47:'SPHERE',48:'SALON_NOEL',49:'FIN_TRANSMISSION',50:'STROBE_RAFALE',51:'STROBE_FLASH',52:'BUMP',53:'TUBE_G',54:'TUBE_D',55:'CHASE_RAPIDE',56:'STROBE_TUBES',57:'NOIR_COURT',58:'SWAP',59:'GLACE',60:'GIVRE',61:'MONTEE_GEL',62:'LUMIERE',63:'BRASIER',64:'FIGE',65:'AURORE',66:'PROFOND',67:'SOLEIL',68:'RECHERCHE_SIGNAL',69:'DALLE_NOIRE',70:'COURSIVE',71:'STARGATE',72:'ORBITE',73:'ALIGNEMENT',74:'HAL',75:'SOLARISATION',76:'DERIVE',77:'POUSSEE_EPSTEIN',78:'CERES',79:'POSTE_COMBAT',80:'PROTOMOLECULE',81:'TIRS_PDC',82:'ANNEAU',83:'PROTO_SURCHARGE',84:'FLASH_BLANC',85:'ETINCELLE',86:'CHASE_DESCENTE',87:'KICK_DOUX',88:'CIC',89:'OEIL_CYLON',90:'POSTES_ACTION',91:'SAUT_PRL',92:'BARRAGE_FLAK',93:'ECLAT_RAPIDE',94:'FLOTTE',95:'ECHO_G',96:'ECHO_D'};
-  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe de la grosse caisse en rafale, tant que la note dure',51:'Un gros flash du strobe de la grosse caisse',52:'Flash blanc chaud des deux tubes',53:'Accent sur le tube gauche',54:'Accent sur le tube droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Coursive de vaisseau : blanc froid clinique en panneaux, qui respire à peine',71:'La porte des étoiles : traînées saturées magenta, orange, cyan et vert acide qui filent à toute vitesse',72:'En orbite : bleu Terre profond, un liseré blanc qui glisse lentement en haut des tubes',73:'Alignement des astres : un soleil blanc se lève du bas des tubes sur 4 mesures, jusqu’au plein feu',74:'L’œil rouge de HAL au milieu des tubes, sur fond noir, qui pulse sur les temps',75:'Solarisation : à pleine intensité, aplats saturés qui changent de couleur à chaque temps, haut et bas opposés',76:'Dérive en apesanteur : noir spatial, quelques étoiles froides qui glissent lentement, vers le bas à gauche, vers le haut à droite',77:'Poussée Epstein : un panache de plasma bleu-blanc part du bas des tubes et vibre, halo violet au-dessus',78:'Cérès : lumière sodium ambre, sale et industrielle, en panneaux, avec des néons qui sautent',79:'Poste de combat : rouge tamisé du vaisseau en alerte, une ligne rouge qui balaie du haut vers le bas toutes les 2 temps',80:'La protomolécule : bleu électrique bioluminescent, des filaments qui tournent (ça monte à gauche, ça descend à droite) et des étincelles',81:'Tirs de PDC : noir, des rafales de traçantes blanc-orange qui filent vers le haut',82:'L’Anneau : noir, une bande irisée teal-bleu-violet qui flotte lentement, poussières',83:'Protomolécule en surcharge : bleu, cyan, violet et blanc à pleine intensité, rotation rapide, pluie d’étincelles',84:'Flash blanc froid très court sur les deux tubes',85:'Petit éclat discret à une hauteur au hasard, pour suivre des notes rapides',86:'Une bande blanche qui descend du haut vers le bas des tubes, sur la durée de la note',87:'Flash doux du strobe de la grosse caisse',88:'Centre de commandement : tungstène ambre tamisé, plus clair en haut, écrans vert-bleu froids, grain documentaire',89:'Œil cylon : noir, un œil rouge qui balaie de haut en bas et retour, avec une traînée',90:'Postes d’action : rouge d’alerte, les moitiés haute et basse des tubes s’allument en alternance à chaque temps',91:'Saut PRL : les moteurs chargent, un remplissage bleu-blanc monte du bas sur 2 mesures en vibrant de plus en plus vite',92:'Barrage de flak : orange et ambre à pleine intensité, des éclats blanc-orange qui éclosent à chaque demi-temps',93:'Éclat blanc très court sur quelques pixels, à une hauteur au hasard, pour suivre des synthés rapides',94:'La flotte dans le vide : bleu nuit presque noir, des petites lumières de vaisseaux qui scintillent lentement',95:'Écho sur le tube gauche : accent doux et plus froid, pour les répétitions d’une note',96:'Écho sur le tube droit : accent doux et plus froid, pour les répétitions d’une note'};
+  const DESC = {36:'Tout éteint',37:'Les tubes grésillent puis restent allumés en blanc chaud',38:'Rouge, une bande lumineuse qui tourne comme un gyrophare',39:'Ambre chaud fixe, le studio calme',40:'Teal qui monte en intensité sur 4 mesures',41:'Teal et ambre, pleine intensité',42:'Rouge plein',43:'Remplissage du bas vers le haut à chaque temps',44:'Rouge et orange, pulsé sur les temps',45:'Rouge faible fixe',46:'Dégradé violet vers orange, le ciel en feu',47:'Cyan, ambre, lilas, violet qui défilent',48:'Ambre doux qui scintille, le salon de Noël',49:'Les tubes s’éteignent en grésillant',50:'Strobe en rafale, Spectra de face et sphère, tant que la note dure',51:'Un gros flash : Spectra de face et sphère',52:'Flash blanc chaud des deux monolithes',53:'Accent sur le monolithe gauche',54:'Accent sur le monolithe droit',55:'Poursuite rapide de pixels, tant que la note dure',56:'Strobe sur les tubes, tant que la note dure',57:'Tubes éteints, tant que la note dure',58:'Inverse les couleurs gauche et droite',59:'Bleu glacé fixe, plus blanc vers le bas',60:'Bleu nuit avec des scintillements de givre',61:'Remplissage lent du bas vers le haut, bleu puis blanc, sur 8 mesures',62:'Ambre et blanc chaud, pulsé sur les temps',63:'Rouge et ambre, croisés gauche-droite, pulsé',64:'Tout figé : noir, un filet blanc au milieu des tubes',65:'Teal et violet qui ondulent lentement',66:'Violet profond qui respire',67:'Blanc chaud plein',68:'On cherche le signal : grésillement, une bande qui balaie au hasard, coupures et accroches brèves',69:'Dalle noire mate, arêtes blanc froid en haut et en bas, un reflet lent qui remonte',70:'Coursive de vaisseau : blanc froid clinique en panneaux, qui respire à peine',71:'La porte des étoiles : traînées saturées magenta, orange, cyan et vert acide qui filent à toute vitesse',72:'En orbite : bleu Terre profond, un liseré blanc qui glisse lentement en haut des tubes',73:'Alignement des astres : un soleil blanc se lève du bas des tubes sur 4 mesures, jusqu’au plein feu',74:'L’œil rouge de HAL au milieu des tubes, sur fond noir, qui pulse sur les temps',75:'Solarisation : à pleine intensité, aplats saturés qui changent de couleur à chaque temps, haut et bas opposés',76:'Dérive en apesanteur : noir spatial, quelques étoiles froides qui glissent lentement, vers le bas à gauche, vers le haut à droite',77:'Poussée Epstein : un panache de plasma bleu-blanc part du bas des tubes et vibre, halo violet au-dessus',78:'Cérès : lumière sodium ambre, sale et industrielle, en panneaux, avec des néons qui sautent',79:'Poste de combat : rouge tamisé du vaisseau en alerte, une ligne rouge qui balaie du haut vers le bas toutes les 2 temps',80:'La protomolécule : bleu électrique bioluminescent, des filaments qui tournent (ça monte à gauche, ça descend à droite) et des étincelles',81:'Tirs de PDC : noir, des rafales de traçantes blanc-orange qui filent vers le haut',82:'L’Anneau : noir, une bande irisée teal-bleu-violet qui flotte lentement, poussières',83:'Protomolécule en surcharge : bleu, cyan, violet et blanc à pleine intensité, rotation rapide, pluie d’étincelles',84:'Flash blanc froid très court sur les deux tubes',85:'Petit éclat discret à une hauteur au hasard, pour suivre des notes rapides',86:'Une bande blanche qui descend du haut vers le bas des tubes, sur la durée de la note',87:'Flash doux de la sphère (grosse caisse)',88:'Centre de commandement : tungstène ambre tamisé, plus clair en haut, écrans vert-bleu froids, grain documentaire',89:'Œil cylon : noir, un œil rouge qui balaie de haut en bas et retour, avec une traînée',90:'Postes d’action : rouge d’alerte, les moitiés haute et basse des tubes s’allument en alternance à chaque temps',91:'Saut PRL : les moteurs chargent, un remplissage bleu-blanc monte du bas sur 2 mesures en vibrant de plus en plus vite',92:'Barrage de flak : orange et ambre à pleine intensité, des éclats blanc-orange qui éclosent à chaque demi-temps',93:'Éclat blanc très court sur quelques pixels, à une hauteur au hasard, pour suivre des synthés rapides',94:'La flotte dans le vide : bleu nuit presque noir, des petites lumières de vaisseaux qui scintillent lentement',95:'Écho sur le monolithe gauche : accent doux et plus froid, pour les répétitions d’une note',96:'Écho sur le monolithe droit : accent doux et plus froid, pour les répétitions d’une note'};
   const C = {amber:[1,.62,.18],teal:[.15,.85,.78],red:[1,.08,.05],orange:[1,.38,.05],violet:[.55,.15,1],cyan:[.1,.85,1],lilac:[.8,.58,1],warm:[1,.8,.55],white:[1,1,1],ice:[.35,.72,1],deep:[.06,.18,.55],screen:[.18,.42,1],magenta:[1,.12,.7],space:[.82,.9,1],lime:[.7,1,.1],earth:[.03,.12,.5],plasma:[.5,.6,1],sodium:[1,.47,.1],proto:[.06,.4,1]};
   const SWATCH = {36:'#000',37:C.warm,38:C.red,39:C.amber,40:C.teal,41:'linear-gradient(#e89c2e,#26d9c7)',42:C.red,43:'linear-gradient(#ff600d,#3a0a06)',44:'linear-gradient(#ff600d,#ff140c)',45:'#4a0d0a',46:'linear-gradient(#ff600d,#8c26ff)',47:'linear-gradient(#1ad9ff,#ff9e2e,#cc94ff,#8c26ff)',48:'#a8691f',49:'linear-gradient(#ffcc8c,#000)',50:'repeating-linear-gradient(#fff 0 4px,#000 4px 8px)',51:'#fff',52:'#ffe7c4',53:'linear-gradient(90deg,#ffe7c4 50%,#222 50%)',54:'linear-gradient(90deg,#222 50%,#ffe7c4 50%)',55:'repeating-linear-gradient(#ffcc8c 0 3px,#3a2a10 3px 7px)',56:'repeating-linear-gradient(#fff 0 3px,#222 3px 6px)',57:'#111',58:'linear-gradient(90deg,#26d9c7 50%,#e89c2e 50%)',59:'linear-gradient(#5bb8ff,#cfe9ff)',60:'#0f2e8c',61:'linear-gradient(#fff,#5bb8ff 60%,#0a1530)',62:'linear-gradient(#ffcc8c,#ff9e2e)',63:'linear-gradient(#ff140c,#ff9e2e)',64:'linear-gradient(#000 45%,#fff 45% 55%,#000 55%)',65:'linear-gradient(#26d9c7,#8c26ff)',66:'#2a0d4a',67:'#ffcc8c',68:'repeating-linear-gradient(#9fe8ff 0 2px,#0a1530 2px 5px,#4a6a80 5px 6px,#000 6px 9px)',69:'linear-gradient(#cfe0ff 0 6%,#08090c 6% 94%,#cfe0ff 94%)',70:'repeating-linear-gradient(#d1e6ff 0 6px,#1a1d22 6px 8px)',71:'linear-gradient(#ff1fb3,#ff600d,#1ad9ff,#b3ff1a)',72:'linear-gradient(#e6f0ff 0 12%,#08207f 12%,#03113f)',73:'linear-gradient(#000,#ffe7c4 70%,#fff)',74:'radial-gradient(circle,#ff0a05 0 30%,#000 60%)',75:'linear-gradient(#ff1fb3 50%,#b3ff1a 50%)',76:'radial-gradient(circle at 30% 30%,#d1e6ff 0 4%,transparent 6%),radial-gradient(circle at 70% 75%,#5bb8ff 0 4%,transparent 6%),#020308',77:'linear-gradient(#2a1f66,#8099ff 50%,#fff)',78:'repeating-linear-gradient(#a8500f 0 6px,#3a1a05 6px 8px)',79:'linear-gradient(#240302,#ff140c 50%,#240302)',80:'linear-gradient(#0f66ff,#1ad9ff,#0f66ff)',81:'repeating-linear-gradient(#ffe0b0 0 2px,#140400 2px 9px)',82:'linear-gradient(#020308 30%,#26d9c7 42%,#8c26ff 58%,#020308 70%)',83:'linear-gradient(#fff,#1ad9ff,#8c26ff,#0f66ff)',84:'#f2f7ff',85:'radial-gradient(circle,#cfe9ff 0 25%,#111 45%)',86:'repeating-linear-gradient(180deg,#ffcc8c 0 3px,#3a2a10 3px 7px)',87:'#8a8a8a',88:'repeating-linear-gradient(#5a3a12 0 6px,#1d4a4a 6px 8px)',89:'linear-gradient(#050000 40%,#ff140c 50%,#050000 60%)',90:'linear-gradient(#ff2a0c 50%,#2a0302 50%)',91:'linear-gradient(#08101a,#5bb8ff 60%,#fff)',92:'radial-gradient(circle,#fff 0 15%,#ff8a1a 35%,#ff600d)',93:'radial-gradient(circle,#fff 0 30%,#111 50%)',94:'radial-gradient(circle at 35% 30%,#ffcc8c 0 4%,transparent 6%),radial-gradient(circle at 65% 70%,#d1e6ff 0 4%,transparent 6%),#03081a',95:'linear-gradient(90deg,#a89c8a 50%,#222 50%)',96:'linear-gradient(90deg,#222 50%,#a89c8a 50%)'};
   const STATES = new Set([36,37,38,39,40,41,42,43,44,45,46,47,48,49,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,88,89,90,91,92,94]);
@@ -218,7 +218,7 @@
   }
   function compute(t) {
     const beat = beatAt(t); const f = frame(beat); const age = t - timeAt(f.stB);
-    const tubes = [[], []]; let kick = 0; const active = new Set();
+    const tubes = [[], []]; let kick = 0, front = 0; const active = new Set();
     for (let s = 0; s < 2; s++) { const side = s ^ f.swap; for (let i = 0; i < N; i++) tubes[s][i] = base(f.st, i, side, age, beat); }
     for (const [n, b, l] of f.held) {
       active.add(n); const el = t - timeAt(b);
@@ -226,11 +226,11 @@
       if (n === 56) { const hz = 10; const on = Math.floor(el * hz * 2) % 2 === 0; for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = on ? C.white : [0, 0, 0]; }
       if (n === 57) { for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = [0, 0, 0]; }
       if (n === 86) { const pos = 1 - Math.min(1, (beat - b) / l); for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) { const d = Math.abs(i / (N - 1) - pos); if (d < .1) tubes[s][i] = mix(tubes[s][i], C.white, 1 - d / .1); } }
-      if (n === 50) { const hz = 12; kick = Math.max(kick, (Math.floor(el * hz * 2) % 2 === 0) ? 1 : 0); }
+      if (n === 50) { const hz = 12, on = (Math.floor(el * hz * 2) % 2 === 0) ? 1 : 0; kick = Math.max(kick, on); front = Math.max(front, on); }
     }
     for (const [n, b] of f.imp) {
       const el = t - timeAt(b);
-      if (n === 51) { const dec = .16; if (el < dec * 3) { kick = Math.max(kick, Math.exp(-el / dec)); active.add(n); } }
+      if (n === 51) { const dec = .16; if (el < dec * 3) { kick = Math.max(kick, Math.exp(-el / dec)); front = Math.max(front, Math.exp(-el / .06)); active.add(n); } }
       if (n === 87) { if (el < .36) { kick = Math.max(kick, .32 * Math.exp(-el / .12)); active.add(n); } }
       if (n === 84) {
         const k = Math.exp(-el / .05);
@@ -255,43 +255,102 @@
         if (k > .02) { active.add(n); for (let s = 0; s < 2; s++) { if (n === 53 && s === 1) continue; if (n === 54 && s === 0) continue; for (let i = 0; i < N; i++) tubes[s][i] = mix(tubes[s][i], C.warm, k); } }
       }
     }
-    return { beat, f, tubes, kick, active };
+    return { beat, f, tubes, kick, front, active };
   }
 
   // ---------- Render ----------
+  // Rig v0.3: two matte-black monoliths (2.25 × 1 m), each with two Astera Titan Tubes (1 m, 16 pixels) set as //
+  // at 70°, the kick drum LED (the sphere) and the Spectra strobe-wash on the floor in front.
+  // A side's 32-value column is shown on both tubes of its monolith, two values per Titan pixel.
+  // Drawn in a 1600 × 900 scene (1 m = 160) with additive light and no attenuation: flashes blow out like on stage.
   const cv = $('stage'), cx = cv.getContext('2d');
   function resize() { const r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1); cv.width = Math.max(1, Math.round(r.width * d)); cv.height = Math.max(1, Math.round(r.height * d)); }
   new ResizeObserver(resize).observe(cv);
   const avg = (a) => { let r = 0, g = 0, b = 0; a.forEach((c) => { r += c[0]; g += c[1]; b += c[2]; }); return [r / a.length, g / a.length, b / a.length]; };
+  const SW = 1600, SH = 900, FLOOR = 720, MW = 160, MH = 360, MTOP = FLOOR - MH, MONOS = [260, 1340], TP = 16;
+  const KX = 800, KY = 634, KR = 46, ANG = 70 * Math.PI / 180, GAP = 28, BL = 160, BCY = MTOP + MH * .4;
+  const BARS = MONOS.map((mx) => [mx - GAP / 2, mx + GAP / 2].map((x) => {
+    const dx = BL * Math.cos(ANG) / 2, dy = BL * Math.sin(ANG) / 2; return [x - dx, BCY + dy, x + dx, BCY - dy];
+  }));
+  const lumOf = (c) => Math.max(c[0], c[1], c[2]);
+  const norm = (c) => { const l = lumOf(c); return l > 0 ? mul(c, 1 / l) : [0, 0, 0]; };
+  const css = (c, a) => `rgba(${c.map((v) => Math.round(Math.min(1, v) * 255)).join(',')},${Math.max(0, Math.min(1, a))})`;
+  function line(x0, y0, x1, y1) { cx.beginPath(); cx.moveTo(x0, y0); cx.lineTo(x1, y1); cx.stroke(); }
+  function ell(x, y, rx, ry, r) { cx.beginPath(); cx.ellipse(x, y, rx, ry, r || 0, 0, Math.PI * 2); cx.stroke(); }
+  function glow(x, y, r, c, a, sy) {
+    if (a <= .004) return; cx.save(); cx.translate(x, y); cx.scale(1, sy || 1);
+    const g = cx.createRadialGradient(0, 0, 0, 0, 0, r); g.addColorStop(0, css(c, a)); g.addColorStop(1, css(c, 0));
+    cx.fillStyle = g; cx.fillRect(-r, -r, 2 * r, 2 * r); cx.restore();
+  }
+  function drums(lit) {
+    const tri = (x) => { line(x, 664, x - 16, 680); line(x, 664, x + 16, 680); line(x, 664, x, 680); };
+    cx.lineWidth = 2; cx.lineCap = 'round'; cx.strokeStyle = `rgba(200,212,228,${Math.min(1, .28 + .7 * lit)})`;
+    cx.strokeRect(742, 542, 50, 40); ell(767, 542, 25, 5);
+    cx.strokeRect(806, 536, 54, 42); ell(833, 536, 27, 5); line(800, 588, 800, 578);
+    cx.strokeRect(880, 602, 60, 60); ell(910, 602, 30, 6); line(884, 662, 878, 680); line(936, 662, 942, 680);
+    cx.strokeRect(690, 606, 52, 20); ell(716, 606, 26, 5); line(716, 626, 716, 664); tri(716);
+    line(648, 680, 648, 562); ell(648, 562, 34, 4); ell(648, 570, 34, 4); tri(648);
+    line(690, 664, 706, 470); ell(706, 470, 46, 6, -.16); tri(690);
+    line(968, 664, 958, 500); ell(958, 500, 54, 7, .12); tri(968);
+    line(910, 600, 892, 452); ell(892, 452, 42, 6, .1);
+    line(770, 666, 758, 680); line(830, 666, 842, 680);
+  }
   function draw(S) {
-    const W = cv.width, H = cv.height; cx.globalCompositeOperation = 'source-over'; cx.fillStyle = '#050505'; cx.fillRect(0, 0, W, H);
-    const floorY = H * .82, tubeH = H * .58, tubeW = Math.max(6, W * .018), xs = [W * .11, W * .89];
+    const s = cv.width / SW; cx.setTransform(s, 0, 0, s, 0, 0); cx.globalCompositeOperation = 'source-over';
+    cx.fillStyle = '#06080b'; cx.fillRect(0, 0, SW, FLOOR); cx.fillStyle = '#040506'; cx.fillRect(0, FLOOR, SW, SH - FLOOR);
+    const px = S.tubes.map((tb) => Array.from({ length: TP }, (_, j) => mix(tb[2 * j], tb[2 * j + 1], .5)));
+    const am = px.map(avg), al = am.map(lumOf), an = am.map(norm), k = S.kick, f = S.front;
+
+    // light thrown on the back wall and the floor
     cx.globalCompositeOperation = 'lighter';
-    S.tubes.forEach((tb, s) => { const a = avg(tb); const g = cx.createRadialGradient(xs[s], floorY - tubeH / 2, 0, xs[s], floorY - tubeH / 2, W * .42); g.addColorStop(0, `rgba(${a.map((v) => Math.round(v * 255)).join(',')},.45)`); g.addColorStop(1, 'rgba(0,0,0,0)'); cx.fillStyle = g; cx.fillRect(0, 0, W, H); });
-    if (S.kick > 0) { const g = cx.createRadialGradient(W * .5, H * .7, 0, W * .5, H * .7, W * .7); g.addColorStop(0, `rgba(255,255,255,${.55 * S.kick})`); g.addColorStop(1, 'rgba(0,0,0,0)'); cx.fillStyle = g; cx.fillRect(0, 0, W, H); }
+    MONOS.forEach((mx, m) => { glow(mx, BCY, 560, an[m], .5 * al[m]); glow(mx, FLOOR + 6, 300, an[m], .7 * al[m], .14); });
+    glow(KX, KY, 560, [1, 1, 1], .55 * k); glow(KX, FLOOR + 6, 420, [1, 1, 1], .6 * k, .14);
     cx.globalCompositeOperation = 'source-over';
-    cx.fillStyle = '#0b0a09'; cx.fillRect(0, floorY, W, H - floorY); cx.strokeStyle = '#26231d'; cx.lineWidth = Math.max(1, H * .003); cx.beginPath(); cx.moveTo(0, floorY); cx.lineTo(W, floorY); cx.stroke();
-    cx.fillStyle = '#151411'; cx.fillRect(W * .2, floorY - H * .16, W * .09, H * .16); cx.fillRect(W * .71, floorY - H * .16, W * .09, H * .16);
-    cx.fillRect(W * .36, floorY - H * .05, W * .28, H * .05);
-    cx.strokeStyle = '#2c2922'; cx.lineWidth = Math.max(1, H * .004);
-    [[.4, .42], [.6, .4]].forEach(([x, y]) => { cx.beginPath(); cx.moveTo(W * x, floorY - H * .05); cx.lineTo(W * x, H * y); cx.stroke(); cx.beginPath(); cx.ellipse(W * x, H * y, W * .045, H * .008, 0, 0, Math.PI * 2); cx.stroke(); });
-    const kx = W * .5, ky = floorY - H * .05 - H * .1, kr = H * .1;
-    cx.save(); cx.shadowColor = `rgba(255,255,255,${S.kick})`; cx.shadowBlur = S.kick * H * .12;
-    cx.fillStyle = S.kick > 0 ? `rgba(255,255,255,${.15 + .85 * S.kick})` : 'rgba(120,150,170,.06)'; cx.beginPath(); cx.arc(kx, ky, kr, 0, Math.PI * 2); cx.fill(); cx.restore();
-    cx.strokeStyle = '#5c6a72'; cx.lineWidth = Math.max(1, H * .005); cx.beginPath(); cx.arc(kx, ky, kr, 0, Math.PI * 2); cx.stroke();
-    cx.fillStyle = '#14130f'; cx.beginPath(); cx.arc(kx, ky, kr * .18, 0, Math.PI * 2); cx.fill();
-    cx.strokeStyle = '#2c2922'; cx.beginPath(); cx.moveTo(W * .5, floorY); cx.lineTo(W * .5, H * .52); cx.lineTo(W * .47, H * .49); cx.stroke();
-    S.tubes.forEach((tb, s) => {
-      const x = xs[s] - tubeW / 2, ph = tubeH / N;
-      cx.fillStyle = '#111'; cx.fillRect(x - 2, floorY - tubeH - 2, tubeW + 4, tubeH + 4);
-      for (let i = 0; i < N; i++) {
-        const c = tb[i]; const lum = Math.max(c[0], c[1], c[2]); const y = floorY - (i + 1) * ph;
-        cx.save(); if (lum > .05) { cx.shadowColor = rgb(c); cx.shadowBlur = lum * W * .025; }
-        cx.fillStyle = lum > .01 ? rgb(c) : '#0d0d0d'; cx.fillRect(x, y + ph * .08, tubeW, ph * .84); cx.restore();
-      }
-      cx.strokeStyle = '#2c2922'; cx.beginPath(); cx.moveTo(xs[s] - tubeW * 2, floorY); cx.lineTo(xs[s], floorY - ph); cx.lineTo(xs[s] + tubeW * 2, floorY); cx.stroke();
-      const a = avg(tb); const g = cx.createLinearGradient(0, floorY, 0, H); g.addColorStop(0, `rgba(${a.map((v) => Math.round(v * 255)).join(',')},.35)`); g.addColorStop(1, 'rgba(0,0,0,0)'); cx.fillStyle = g; cx.fillRect(xs[s] - tubeW * 3, floorY, tubeW * 6, H - floorY);
+    cx.strokeStyle = '#1d232b'; cx.lineWidth = 2; line(0, FLOOR, SW, FLOOR);
+
+    MONOS.forEach((mx, m) => {
+      const x0 = mx - MW / 2, face = Math.round(11 + 150 * f);
+      cx.fillStyle = `rgb(${face},${face + 2},${face + 5})`; cx.fillRect(x0, MTOP, MW, MH);
+      // the tubes light the face of their own monolith
+      cx.save(); cx.beginPath(); cx.rect(x0, MTOP, MW, MH); cx.clip(); cx.globalCompositeOperation = 'lighter';
+      glow(mx, BCY, 170, an[m], .45 * al[m]); cx.restore();
+      cx.strokeStyle = css(mix([.13, .16, .19], an[m], .5), .5 + .5 * al[m]); cx.lineWidth = 1.5; cx.strokeRect(x0, MTOP, MW, MH);
+      BARS[m].forEach(([xa, ya, xb, yb]) => {
+        cx.lineCap = 'round'; cx.strokeStyle = '#030405'; cx.lineWidth = 15; line(xa, ya, xb, yb);
+        cx.lineCap = 'butt'; cx.strokeStyle = '#161b22'; cx.lineWidth = 7; line(xa, ya, xb, yb);
+        cx.save(); cx.globalCompositeOperation = 'lighter';
+        px[m].forEach((c, i) => {
+          const l = lumOf(c); if (l < .01) return;
+          const n = norm(c), sx = xa + (xb - xa) * i / TP, sy = ya + (yb - ya) * i / TP, ex = xa + (xb - xa) * (i + 1) / TP, ey = ya + (yb - ya) * (i + 1) / TP;
+          cx.shadowColor = css(n, l); cx.shadowBlur = 40 * s * l;
+          cx.strokeStyle = css(n, .45 * l); cx.lineWidth = 26; line(sx, sy, ex, ey);
+          cx.shadowBlur = 0; cx.strokeStyle = css(mix(n, [1, 1, 1], l * l * .75), Math.min(1, l * 1.6)); cx.lineWidth = 7; line(sx, sy, ex, ey);
+        });
+        cx.restore();
+      });
     });
+
+    cx.fillStyle = `rgb(${Math.round(13 + 120 * f)},${Math.round(16 + 120 * f)},${Math.round(21 + 120 * f)})`; cx.fillRect(560, 680, 480, 40);
+    cx.strokeStyle = '#232a33'; cx.lineWidth = 2; cx.strokeRect(560, 680, 480, 40);
+    drums(Math.max(k, f, .3 * Math.max(al[0], al[1])));
+
+    // the sphere: LED inside the kick drum
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    const g = cx.createRadialGradient(KX, KY, 0, KX, KY, KR);
+    g.addColorStop(0, css([1, 1, 1], .05 + .95 * k)); g.addColorStop(.7, css([.85, .9, 1], .04 + .8 * k)); g.addColorStop(1, css([.85, .9, 1], .03 + .6 * k));
+    cx.fillStyle = g; cx.shadowColor = css([1, 1, 1], k); cx.shadowBlur = 70 * s * k;
+    cx.beginPath(); cx.arc(KX, KY, KR, 0, Math.PI * 2); cx.fill(); cx.restore();
+    cx.lineWidth = 3; cx.strokeStyle = css([.9, .93, 1], .3 + .7 * k); cx.beginPath(); cx.arc(KX, KY, KR, 0, Math.PI * 2); cx.stroke();
+
+    // Spectra from the front: a full flash blows the whole stage out
+    if (f > .01) {
+      cx.globalCompositeOperation = 'lighter';
+      glow(KX, SH + 120, 1300, [1, 1, 1], f);
+      cx.fillStyle = css([1, 1, 1], .6 * f); cx.fillRect(0, 0, SW, SH);
+    }
+    cx.globalCompositeOperation = 'source-over';
+    const v = cx.createRadialGradient(SW / 2, SH / 2, 320, SW / 2, SH / 2, 1000);
+    v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, `rgba(0,0,0,${.5 * (1 - f)})`); cx.fillStyle = v; cx.fillRect(0, 0, SW, SH);
   }
 
   // ---------- Clock (the embedded master is the clock) ----------
