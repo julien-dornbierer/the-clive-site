@@ -35,6 +35,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   Voir `worker/README.md`.
   Depuis le Mac de Julien, Claude publie seul : push GitHub (token dans le trousseau, git lancé hors sandbox) et envoi
   de `songs.json` sur R2 par l'API Cloudflare (token dans le trousseau, service `cloudflare-r2-lightshow`).
+  Depuis le PC Windows (clone `C:\Users\julie\Desktop\VSCODE\the-clive-site`), pareil : git pousse directement, le token
+  R2 est dans le Gestionnaire d'identification Windows (`keyring`). Détails : README des outils, section Environnement.
   Nouveau plan lumière : suivre `LIGHT SHOW/OUTILS/README.md` dans le Drive (boîte à outils Python, analyses des 11
   morceaux déjà faites dans `LIGHT SHOW/ANALYSE`). Notes MIDI et cues : « The Clive Light Show – State Packet »
   (doc Claude, copie .docx dans le dossier Drive LIGHT SHOW). Les morceaux peuvent changer de tempo : champ `tm` de
