@@ -28,6 +28,10 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   (chaque côté du plan, 32 valeurs, s'affiche sur les 2 tubes de son monolithe), strobe dans la grosse caisse
   transparente (notes 50, 51, 87, inchangées). Le Spectra de face est dessiné (`front` dans `compute()`) mais aucune
   note ne le pilote encore. Aucune atténuation : les flashs saturent l'image comme sur scène.
+  Test rig B3 (31.10.2026) : un morceau de songs.json avec `"rig": "b3"` est dessiné par `drawB3()` (pas de monolithes :
+  barre de 12 têtes derrière la batterie, 2 barres au sol sur les côtés, miroir sur totem, 2 faces + Spectra). Les looks
+  donnent seulement les couleurs, les mouvements viennent des calques du canal 2 (notes 128-146, `LAYER`). Entrée de test
+  `a02-b3` (plan `OUTILS/plans/a02_b3.py`), A02 v1 reste inchangé.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
