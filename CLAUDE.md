@@ -29,10 +29,11 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   transparente (notes 50, 51, 87, inchangées). Le Spectra de face est dessiné (`front` dans `compute()`) mais aucune
   note ne le pilote encore. Aucune atténuation : les flashs saturent l'image comme sur scène.
   Test rig B3 (31.10.2026) : un morceau de songs.json avec `"rig": "b3"` est dessiné par `drawB3()` (pas de monolithes :
-  barre de 12 têtes derrière la batterie, 2 barres au sol sur les côtés, 2 Nuke4 au sol de chaque côté de la batterie (strobes + faisceaux qui suivent COTES_*)
-  (notes 147-151), miroir sur totem, 2 faces + Spectra). Les looks
-  donnent seulement les couleurs, les mouvements viennent des calques du canal 2 (notes 128-151, `LAYER`). Entrée de test
-  `a02-b3` (plan `OUTILS/plans/a02_b3.py`), A02 v1 reste inchangé.
+  Cameo OTOS LC12 derrière la batterie, avec tilt et zoom par tête, bande FX de 24 pixels et strobe ; 2 BeamZ Pro Nuke4
+  sur flight cases d'environ 1 m, tournés de 45° vers le centre, avec 21 faisceaux en 7 colonnes, frost et plaque strobe
+  à points ; miroir sur totem ; 2 faces + Spectra). Les looks donnent seulement les couleurs, tout le reste vient des
+  notes du canal 2 (128-172, groupes dans `LAYER`). Entrée de test `a02-b3` (plan `OUTILS/plans/a02_b3.py`, qui
+  décrit l'usage de chaque fonction), A02 v1 reste inchangé.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
