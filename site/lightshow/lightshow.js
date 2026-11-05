@@ -919,9 +919,9 @@
     cx.fillStyle = `rgb(${Math.round(13 + 120 * fl)},${Math.round(16 + 118 * fl)},${Math.round(21 + 110 * fl)})`; cx.fillRect(560, 680, 480, 40);
     cx.strokeStyle = '#232a33'; cx.lineWidth = 2; cx.strokeRect(560, 680, 480, 40);
     // the two Ape Labs tubes lying end to end on the floor at the foot of the riser (2 m), with their pool of light
-    apeTube(KX - 322, FLOOR + 5, KX - 2, FLOOR + 5, S.tubes[0], 6); apeTube(KX + 322, FLOOR + 5, KX + 2, FLOOR + 5, S.tubes[1], 6);
+    apeTube(KX - 161, FLOOR + 5, KX - 1, FLOOR + 5, S.tubes[0], 6); apeTube(KX + 161, FLOOR + 5, KX + 1, FLOOR + 5, S.tubes[1], 6);   // 1 m = 160 px
     cx.save(); cx.globalCompositeOperation = 'lighter';
-    [0, 1].forEach((sd) => { const a = avg(S.tubes[sd]); glow(KX + (sd ? 160 : -160), FLOOR + 14, 240, norm(a), .5 * lumOf(a), .16); });
+    [0, 1].forEach((sd) => { const a = avg(S.tubes[sd]); glow(KX + (sd ? 80 : -80), FLOOR + 14, 170, norm(a), .5 * lumOf(a), .16); });
     cx.restore();
     const back =Math.min(1, .25 + .9 * Math.max(bI, lv[0] * .5, lv[1] * .5, mf * .3)), rim = mix(norm(mix(am[0], am[1], .5)), W1, .3);
     const body = (p, d) => { const v = Math.max(flash, face * d); cx.fillStyle = css(mix([.035, .043, .055], FACEC, v * .42), 1); cx.fill(p);
