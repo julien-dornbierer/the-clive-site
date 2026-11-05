@@ -699,13 +699,16 @@
   // ---------- Rig B3 (test, 31.10.2026) ----------
   // No monoliths. A Cameo OTOS LC12 on the drum riser behind the drummer: 12 heads (50 W RGBL), each with its own tilt
   // (±103°, front-back) and zoom (3.3° to 40.5°), a 24-pixel FX strip on its face, strobe. Two BeamZ Pro Nuke4, one per
-  // side, on ~1 m flight cases, facing the audience: their 180° tilt goes from straight up to straight at the audience.
+  // side, each on a Thon Packcase 60 cm (62.5 × 62.5 × 79 cm on casters, top of the Nuke at ~1.18 m), facing the
+  // audience: their 180° tilt goes from straight up to straight at the audience.
   // Each has a plate of 21 beams (7 columns × 3, RGBW 40 W, 17°, frost) and a strobe / dot plate (RGBA, 1-20 Hz),
-  // which only hits the audience fully when the head faces it (COTES_PUBLIC, COTES_STROBE). A motorised mirror on a totem behind the drums lit by a pinspot; two front washes on stands at the
-  // front corners plus the Spectra; the strobe in the kick drum.
+  // which only hits the audience fully when the head faces it (COTES_PUBLIC, COTES_STROBE). An Algam Moving Mirror 6
+  // (6 motorised discs, ~32 cm) on a plain lighting stand (2.5-3 m) behind the drums, lit by an Eurolite IP65 pinspot;
+  // two Stairville Hex TR1 front washes on ~2 m stands at the front corners plus the Spectra; the strobe in the kick drum.
+  // Bought or ordered as of 05.11.2026 (sheet "Light Show – Matériel setup B3"): cases, mirror, pinspot, washes, hazer.
   // The look of the plan (the 32-value columns) only gives the colours: left column = left Nuke, right column = right
   // Nuke, the 12 heads and the FX strip go from one to the other. The channel 2 layers give everything else.
-  const HX = Array.from({ length: 12 }, (_, i) => 655 + i * 26.36), HY = 668, NX = [150, 1450], NY = 516, CASE = FLOOR - 160;
+  const HX = Array.from({ length: 12 }, (_, i) => 655 + i * 26.36), HY = 668, NX = [150, 1450], NY = 560, CASE = FLOOR - 126;
   const MIR = [800, 292], FACEC = [1, .85, .66];
   function beamB(x, y, ang, len, w0, w1, c, a) {
     if (a <= .004 || len < 2) return;
@@ -823,17 +826,24 @@
     cx.globalCompositeOperation = 'source-over';
     cx.strokeStyle = '#1d232b'; cx.lineWidth = 2; line(0, FLOOR, SW, FLOOR);
 
-    // ----- fixtures: totem + mirror + pinspot
-    cx.fillStyle = '#0d1116'; cx.fillRect(MIR[0] - 11, MIR[1] + 20, 22, 680 - MIR[1] - 20);
-    cx.strokeStyle = '#1f262f'; cx.lineWidth = 1.5; cx.strokeRect(MIR[0] - 11, MIR[1] + 20, 22, 680 - MIR[1] - 20);
-    cx.fillStyle = '#10151b'; cx.beginPath(); cx.arc(MIR[0], MIR[1], 24, 0, Math.PI * 2); cx.fill();
-    cx.strokeStyle = css([.8, .86, .95], .3 + .6 * mf); cx.lineWidth = 2; cx.stroke();
+    // ----- fixtures: lighting stand + Moving Mirror 6 (6 discs) + pinspot
+    cx.strokeStyle = '#161c23'; cx.lineWidth = 6; line(MIR[0], MIR[1] + 26, MIR[0], 680);
+    cx.lineWidth = 3; line(MIR[0] - 30, MIR[1] + 20, MIR[0] + 30, MIR[1] + 20);
+    cx.fillStyle = '#10151b'; cx.beginPath(); cx.arc(MIR[0], MIR[1], 10, 0, Math.PI * 2); cx.fill();
+    cx.strokeStyle = css([.8, .86, .95], .3 + .6 * mf); cx.lineWidth = 1.5;
+    for (let j = 0; j < 6; j++) {
+      const a = j * Math.PI / 3 + (mf ? ageOf('miroir') * .6 : 0);
+      cx.beginPath(); cx.arc(MIR[0] + Math.cos(a) * 17, MIR[1] + Math.sin(a) * 17, 8, 0, Math.PI * 2); cx.fillStyle = '#141a22'; cx.fill(); cx.stroke();
+    }
     cx.fillStyle = '#121820'; cx.fillRect(MIR[0] - 8, 376, 16, 14);
-    // the Nuke4: flight case (~1 m), yoke, head turned by the tilt; its face shows when it looks at the audience
+    // the Nuke4 on its Thon Packcase 60 (79 cm, casters, flat lid), yoke, head turned by the tilt; its face shows when it
+    // looks at the audience
     nukes.forEach(({ x, side, on, r, fac }) => {
-      cx.fillStyle = '#0b0e12'; cx.fillRect(x - 55, CASE, 110, FLOOR - CASE); cx.strokeStyle = '#2a323c'; cx.lineWidth = 2; cx.strokeRect(x - 55, CASE, 110, FLOOR - CASE);
-      cx.strokeStyle = '#1c232b'; cx.lineWidth = 1.5; line(x - 55, CASE + 14, x + 55, CASE + 14); line(x - 55, FLOOR - 14, x + 55, FLOOR - 14); line(x - 16, CASE + 70, x + 16, CASE + 70);
-      cx.strokeStyle = '#1a2028'; cx.lineWidth = 6; line(x - 40, CASE, x - 40, NY); line(x + 40, CASE, x + 40, NY);
+      const cb = FLOOR - 12;
+      cx.fillStyle = '#0b0e12'; cx.fillRect(x - 50, CASE, 100, cb - CASE); cx.strokeStyle = '#2a323c'; cx.lineWidth = 2; cx.strokeRect(x - 50, CASE, 100, cb - CASE);
+      cx.strokeStyle = '#1c232b'; cx.lineWidth = 1.5; line(x - 50, CASE + 12, x + 50, CASE + 12); line(x - 50, cb - 12, x + 50, cb - 12); line(x - 14, CASE + 58, x + 14, CASE + 58);
+      cx.fillStyle = '#141a21'; [x - 36, x + 36].forEach((wx) => { cx.beginPath(); cx.arc(wx, FLOOR - 6, 6, 0, Math.PI * 2); cx.fill(); });
+      cx.strokeStyle = '#1a2028'; cx.lineWidth = 6; line(x - 38, CASE, x - 38, NY); line(x + 38, CASE, x + 38, NY);
       cx.save(); cx.translate(x, NY); cx.rotate(r * (1 - fac));
       cx.fillStyle = '#0e1318'; cx.fillRect(-34, -31, 68, 62); cx.strokeStyle = '#2a323c'; cx.lineWidth = 1.5; cx.strokeRect(-34, -31, 68, 62);
       cx.globalCompositeOperation = 'lighter';
