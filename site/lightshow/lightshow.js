@@ -706,7 +706,7 @@
   // (6 motorised discs, ~32 cm) on a plain lighting stand (2.5-3 m) behind the drums, lit by an Eurolite IP65 pinspot;
   // two Stairville Hex TR1 front washes on ~2 m stands at the front corners plus the Spectra; the strobe in the kick drum.
   // Bought or ordered as of 05.11.2026 (sheet "Light Show – Matériel setup B3"): cases, mirror, pinspot, washes, hazer.
-  // The two Ape Labs Neon Tube PIX (1 m, 32 pixels) lie end to end on the floor along the front of the drum riser
+  // The two Ape Labs Neon Tube PIX (1 m, 32 pixels) lie end to end on the drum riser, along its front edge
   // (decided 05.11.2026); they show the plan's two 32-value columns pixel for pixel (left column = left tube, from the
   // outer end to the centre). Backline from the 2026 stage plot: Marshall + Orange stage right, Orange + Fender stage
   // left. The two Nukes stand right beside the riser (±1.75 m). Haze is drawn as slow clouds lit by the beams.
@@ -918,16 +918,16 @@
     const flash = Math.max(f, .8 * Math.max(S.sb[0], S.sb[1]), .5 * os), fl = Math.max(flash, face * .5);
     cx.fillStyle = `rgb(${Math.round(13 + 120 * fl)},${Math.round(16 + 118 * fl)},${Math.round(21 + 110 * fl)})`; cx.fillRect(560, 680, 480, 40);
     cx.strokeStyle = '#232a33'; cx.lineWidth = 2; cx.strokeRect(560, 680, 480, 40);
-    // the two Ape Labs tubes lying end to end on the floor at the foot of the riser (2 m), with their pool of light
-    apeTube(KX - 161, FLOOR + 5, KX - 1, FLOOR + 5, S.tubes[0], 6); apeTube(KX + 161, FLOOR + 5, KX + 1, FLOOR + 5, S.tubes[1], 6);   // 1 m = 160 px
-    cx.save(); cx.globalCompositeOperation = 'lighter';
-    [0, 1].forEach((sd) => { const a = avg(S.tubes[sd]); glow(KX + (sd ? 80 : -80), FLOOR + 14, 170, norm(a), .5 * lumOf(a), .16); });
-    cx.restore();
     const back =Math.min(1, .25 + .9 * Math.max(bI, lv[0] * .5, lv[1] * .5, mf * .3)), rim = mix(norm(mix(am[0], am[1], .5)), W1, .3);
     const body = (p, d) => { const v = Math.max(flash, face * d); cx.fillStyle = css(mix([.035, .043, .055], FACEC, v * .42), 1); cx.fill(p);
       cx.strokeStyle = css(rim, .15 + .5 * back * (1 - v)); cx.lineWidth = 2; cx.stroke(p); };
     body(person(800, 640, 175, 'drums'), .7);
     drums(Math.max(k, flash, face, .3 * Math.max(al[0], al[1])));
+    // the two Ape Labs tubes lying end to end on the riser, along its front edge in front of the kit (2 × 1 m, 1 m = 160 px)
+    apeTube(KX - 161, 683, KX - 1, 683, S.tubes[0], 6); apeTube(KX + 161, 683, KX + 1, 683, S.tubes[1], 6);
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    [0, 1].forEach((sd) => { const a = avg(S.tubes[sd]); glow(KX + (sd ? 80 : -80), 694, 170, norm(a), .45 * lumOf(a), .2); });
+    cx.restore();
     body(person(470, 742, 250, 'bass'), 1); body(person(1130, 742, 250, 'guitar'), 1); body(person(690, 790, 285, 'vocal'), 1);
 
     // the sphere in the kick drum
