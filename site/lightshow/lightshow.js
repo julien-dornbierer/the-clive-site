@@ -706,9 +706,15 @@
   // (6 motorised discs, ~32 cm) on a plain lighting stand (2.5-3 m) behind the drums, lit by an Eurolite IP65 pinspot;
   // two Stairville Hex TR1 front washes on ~2 m stands at the front corners plus the Spectra; the strobe in the kick drum.
   // Bought or ordered as of 05.11.2026 (sheet "Light Show – Matériel setup B3"): cases, mirror, pinspot, washes, hazer.
+  // The two Ape Labs Neon Tube PIX (1 m, 32 pixels) lie end to end on the floor along the front of the drum riser
+  // (decided 05.11.2026); they show the plan's two 32-value columns pixel for pixel (left column = left tube, from the
+  // outer end to the centre). Backline from the 2026 stage plot: Marshall + Orange stage right, Orange + Fender stage
+  // left. The two Nukes stand right beside the riser (±1.75 m). Haze is drawn as slow clouds lit by the beams.
   // The look of the plan (the 32-value columns) only gives the colours: left column = left Nuke, right column = right
   // Nuke, the 12 heads and the FX strip go from one to the other. The channel 2 layers give everything else.
-  const HX = Array.from({ length: 12 }, (_, i) => 655 + i * 26.36), HY = 668, NX = [150, 1450], NY = 560, CASE = FLOOR - 126;
+  const HX = Array.from({ length: 12 }, (_, i) => 655 + i * 26.36), HY = 668, NX = [KX - 280, KX + 280], NY = 560, CASE = FLOOR - 126;
+  const AMPS = [[272, 'marshall'], [408, 'orange'], [1208, 'orange'], [1344, 'fender']];
+  const HAZE = Array.from({ length: 11 }, (_, i) => [hash(i * 3.7 + .1), hash(i * 5.3 + .7), hash(i * 1.9 + .3)]);
   const MIR = [800, 292], FACEC = [1, .85, .66];
   function beamB(x, y, ang, len, w0, w1, c, a) {
     if (a <= .004 || len < 2) return;
@@ -806,19 +812,31 @@
       if (S.csc[side] > .01 && al[side] > .01) { const a = S.csc[side] * sv; glow(x, NY, 820, an[side], .7 * a); glow(x, FLOOR + 6, 560, an[side], .5 * a, .16); }
     });
 
-    // ----- the mirror on the totem, lit by the pinspot: dots drifting over the room
+    // ----- haze: slow clouds, lit by whatever lights the stage (bar, Nukes, mirror, washes)
+    {
+      const hc = norm(mix(mix(am[0], am[1], .5), [.6, .7, .85], .35)), hl = Math.min(1, .15 + .9 * bI + .5 * (lv[0] + lv[1]) + .4 * face);
+      HAZE.forEach(([u, v, w], i) => {
+        const x = ((u * 1.3 - .15 + t * (.004 + .006 * w)) % 1.3 + 1.3) % 1.3 * SW - .15 * SW, y = 120 + v * 520;
+        glow(x, y, 260 + 220 * w, hc, (.035 + .03 * w) * hl, .55);
+      });
+    }
+
+    // ----- the mirror on its stand, lit by the pinspot: points of light sweeping the whole room, walls, floor and band
     const mf = md('miroir') === 145 ? Math.min(1, ageOf('miroir') / .8) : 0;
     if (mf > 0) {
-      const ma = ageOf('miroir');
-      beamB(MIR[0], 382, 0, 84, 3, 7, [.86, .93, 1], .6 * mf);
-      for (let j = 0; j < 150; j++) {
-        const a = hash(j + .1) * 2 * Math.PI + ma * .25, e = .15 + 1.15 * hash(j + .5);
-        if (Math.sin(a + hash(j + .3) * 6) < -.2) continue;
-        const x = MIR[0] + Math.cos(a) * e * 720, y = MIR[1] - Math.abs(Math.sin(a)) * e * 300 + 40;
-        if (j < 16) { cx.strokeStyle = css([.86, .93, 1], .09 * mf); cx.lineWidth = 1; line(MIR[0], MIR[1], x, y); }
-        glow(x, y, 7, [.9, .95, 1], .9 * mf);
+      const ma = ageOf('miroir'), mc = [1, .95, .86];
+      beamB(MIR[0], 382, 0, 84, 3, 7, mc, .6 * mf);
+      for (let j = 0; j < 520; j++) {
+        const th = hash(j + .1) * 2 * Math.PI + ma * .22, cp = 2 * hash(j + .5) - 1, sp = Math.sqrt(1 - cp * cp);
+        const dx = sp * Math.cos(th), dz = sp * Math.sin(th);
+        if (dz < -.15) continue;                                         // thrown backwards, on the back wall behind
+        const x = MIR[0] + dx * 980, y = MIR[1] - cp * 600, r = 1.2 + 1.8 * hash(j + .9), a = (.55 + .45 * hash(j + .7)) * mf;
+        if (x < -20 || x > SW + 20 || y < -20 || y > SH + 20) continue;
+        if (j < 28) { cx.strokeStyle = css(mc, .06 * mf); cx.lineWidth = 1; line(MIR[0], MIR[1], x, y); }
+        glow(x, y, r * 3, mc, .35 * a, y > FLOOR ? .45 : 1);                // small halo, then a sharp point
+        cx.fillStyle = css(mc, a); cx.beginPath(); cx.ellipse(x, y, r, y > FLOOR ? r * .45 : r, 0, 0, Math.PI * 2); cx.fill();
       }
-      glow(MIR[0], MIR[1], 30, [.9, .95, 1], .8 * mf);
+      glow(MIR[0], MIR[1], 34, mc, .9 * mf);
     }
     // the kick strobe floods the stage; the front washes light it from the front corners
     glow(KX, KY, 1150, W1, .9 * k); glow(KX, FLOOR + 6, 700, W1, .8 * k, .16);
@@ -836,6 +854,15 @@
       cx.beginPath(); cx.arc(MIR[0] + Math.cos(a) * 17, MIR[1] + Math.sin(a) * 17, 8, 0, Math.PI * 2); cx.fillStyle = '#141a22'; cx.fill(); cx.stroke();
     }
     cx.fillStyle = '#121820'; cx.fillRect(MIR[0] - 8, 376, 16, 14);
+    // backline: amp heads on cabs, at the back of the stage (orange tolex for the two Orange)
+    AMPS.forEach(([x, k]) => {
+      const lit = Math.min(1, .12 + .5 * Math.max(face, bI * .6, mf * .4)), tol = k === 'orange' ? [.78, .36, .12] : [.07, .075, .08];
+      const g2 = k === 'fender' ? [.55, .56, .57] : k === 'orange' ? [.16, .12, .09] : [.18, .16, .13];
+      cx.fillStyle = css(mul(tol, lit), 1); cx.fillRect(x - 59, FLOOR - 118, 118, 118); cx.fillRect(x - 59, FLOOR - 161, 118, 40);
+      cx.fillStyle = css(mul(g2, lit), 1); cx.fillRect(x - 52, FLOOR - 110, 104, 100);
+      cx.fillStyle = css(k === 'marshall' ? [.85, .7, .4] : [.9, .9, .88], .25 + .5 * lit); cx.fillRect(x - 40, FLOOR - 146, 80, 6);
+      cx.strokeStyle = '#05060a'; cx.lineWidth = 1.5; cx.strokeRect(x - 59, FLOOR - 118, 118, 118); cx.strokeRect(x - 59, FLOOR - 161, 118, 40);
+    });
     // the Nuke4 on its Thon Packcase 60 (79 cm, casters, flat lid), yoke, head turned by the tilt; its face shows when it
     // looks at the audience
     nukes.forEach(({ x, side, on, r, fac }) => {
@@ -873,11 +900,30 @@
     }
     cx.restore();
 
+    function apeTube(xa, ya, xb, yb, px, w) {          // px: 32 colours from (xa, ya) to (xb, yb)
+      cx.lineCap = 'round'; cx.strokeStyle = '#121820'; cx.lineWidth = 1.5 * w; line(xa, ya, xb, yb); cx.lineCap = 'butt';
+      cx.save(); cx.globalCompositeOperation = 'lighter';
+      const a = avg(px); glow((xa + xb) / 2, (ya + yb) / 2, 260, norm(a), .3 * lumOf(a));
+      px.forEach((c, i) => {
+        const l = lumOf(c); if (l < .01) return;
+        const n = norm(c), f0 = i / 32, f1 = (i + 1) / 32;
+        const sx = xa + (xb - xa) * f0, sy = ya + (yb - ya) * f0, ex = xa + (xb - xa) * f1, ey = ya + (yb - ya) * f1;
+        cx.shadowColor = css(n, l); cx.shadowBlur = 24 * s * l;
+        cx.strokeStyle = css(n, .4 * l); cx.lineWidth = 2.6 * w; line(sx, sy, ex, ey);
+        cx.shadowBlur = 0; cx.strokeStyle = css(mix(n, W1, l * l * .7), Math.min(1, l * 1.5)); cx.lineWidth = w; line(sx, sy, ex, ey);
+      });
+      cx.restore();
+    }
     // riser, drummer, drums and the band: lit from the front by the washes, outlined by the back light
     const flash = Math.max(f, .8 * Math.max(S.sb[0], S.sb[1]), .5 * os), fl = Math.max(flash, face * .5);
     cx.fillStyle = `rgb(${Math.round(13 + 120 * fl)},${Math.round(16 + 118 * fl)},${Math.round(21 + 110 * fl)})`; cx.fillRect(560, 680, 480, 40);
     cx.strokeStyle = '#232a33'; cx.lineWidth = 2; cx.strokeRect(560, 680, 480, 40);
-    const back = Math.min(1, .25 + .9 * Math.max(bI, lv[0] * .5, lv[1] * .5, mf * .3)), rim = mix(norm(mix(am[0], am[1], .5)), W1, .3);
+    // the two Ape Labs tubes lying end to end on the floor at the foot of the riser (2 m), with their pool of light
+    apeTube(KX - 322, FLOOR + 5, KX - 2, FLOOR + 5, S.tubes[0], 6); apeTube(KX + 322, FLOOR + 5, KX + 2, FLOOR + 5, S.tubes[1], 6);
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    [0, 1].forEach((sd) => { const a = avg(S.tubes[sd]); glow(KX + (sd ? 160 : -160), FLOOR + 14, 240, norm(a), .5 * lumOf(a), .16); });
+    cx.restore();
+    const back =Math.min(1, .25 + .9 * Math.max(bI, lv[0] * .5, lv[1] * .5, mf * .3)), rim = mix(norm(mix(am[0], am[1], .5)), W1, .3);
     const body = (p, d) => { const v = Math.max(flash, face * d); cx.fillStyle = css(mix([.035, .043, .055], FACEC, v * .42), 1); cx.fill(p);
       cx.strokeStyle = css(rim, .15 + .5 * back * (1 - v)); cx.lineWidth = 2; cx.stroke(p); };
     body(person(800, 640, 175, 'drums'), .7);
