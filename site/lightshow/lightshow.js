@@ -1078,7 +1078,7 @@
     $('hcode').textContent = (s.track ? String(s.track).padStart(2, '0') + ' · ' : '') + s.code + ' //';
     $('htitle').textContent = s.name;
     $('hinfo').textContent = hasPlan()
-      ? (s.rig === 'b3' ? 'Test rig B3 (OTOS LC12, 2 Nuke 2 sur flight cases, miroir, faces) · ' : '') + 'Plan lumière ' + s.ver + ' · ' + [...new Set(TM.map((x) => x[1]))].join('/') + ' BPM · ' + EV.length + ' déclenchements'
+      ? (s.rig === 'b3' ? 'Rig B3 (barre OTOS LC12, 2 Nuke 2, miroir, faces) · ' : '') + 'Plan lumière ' + s.ver + ' · ' + [...new Set(TM.map((x) => x[1]))].join('/') + ' BPM · ' + EV.length + ' déclenchements'
       : 'Pas encore de plan lumière. Écoute et note tes idées au bon moment : elles serviront à le construire.';
     $('prevbar').textContent = SPB ? '−1 mes.' : '−5 s'; $('nextbar').textContent = SPB ? '+1 mes.' : '+5 s';
     $('cf-minus').textContent = SPB ? '− 1 temps' : '− 0,5 s'; $('cf-plus').textContent = SPB ? '+ 1 temps' : '+ 0,5 s';
