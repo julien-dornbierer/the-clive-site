@@ -32,7 +32,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   Rig B3 (31.10.2026, tous les morceaux depuis le 06.11.2026) : un morceau de songs.json avec `"rig": "b3"` est dessiné par `drawB3()` (pas de monolithes :
   Cameo OTOS LC12 derrière la batterie, avec tilt et zoom par tête, bande FX de 24 pixels et strobe ; 2 BeamZ Pro Nuke4
   sur flight cases d'environ 1 m, face au public (tilt du ciel au public), avec 21 faisceaux en 7 colonnes, frost et
-  plaque strobe à points, mode strobe seul (173) ; miroir sur pied ; 2 faces Stairville Hex TR1). Les looks donnent seulement les couleurs, tout le reste vient des
+  plaque strobe à points, mode strobe seul (173) ; miroir sur pied ; pas de projecteurs de face depuis le 06.11.2026 : le lieu fournit la lumière de face, les notes
+  141-143 ne sont plus envoyées par aucun plan, le rendu les dessine encore si une entrée les contient). Les looks donnent seulement les couleurs, tout le reste vient des
   notes du canal 2 (128-177, groupes dans `LAYER`). Depuis le 06.11.2026 les 11 morceaux sont en B3 et monochromes
   (une teinte + blanc par morceau) ; l'entrée de test `a02-b3` est supprimée, Lost in Time = `a02` v3.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
