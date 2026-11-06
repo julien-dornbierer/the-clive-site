@@ -50,7 +50,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   qui utilise de nouvelles notes. Une nouvelle note d'état ne doit jamais trahir un titre non annoncé (69 = DALLE_NOIRE).
 
 ## Faits validés (octobre 2026)
-- Single A02 // Lost In Time : vendredi 13.11.2026, 4:07, Zwicky Records, distribution Irascible.
+- Single A02 // LOST IN TIME : vendredi 13.11.2026, 4:08, Zwicky Records, distribution Irascible.
 - Pre-save : https://lnk.site/the-clive-a02-lost-in-time
 - Clip : Pierre Daendliker, col du Sanetsch, prêt une semaine avant la sortie.
 - Discographie (source Apple Music) : Stray Hares Run Out Of Mojo et Two Wrongs Don't Make A Clive 2016,
