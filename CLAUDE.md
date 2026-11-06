@@ -13,7 +13,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 ## Structure
 - `site/index.html` : accueil (single en cours, Incoming, Videos, Live, booking).
 - `site/press/index.html` : EPK public (bio, lecteur d'extrait, faits, téléchargements, discographie, contacts).
-- `site/assets/style.css` : styles partagés (lien versionné `?v=N` dans les pages : incrémenter N à chaque changement du CSS, sinon les navigateurs gardent l'ancien), couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`).
+- `site/press/a02-0b6f62f4/` : page presse **non répertoriée** (noindex, hors sitemap et navigation) envoyée aux médias pour A02 : clip YouTube intégré (youtube-nocookie, ID à changer quand le lien final arrive), communiqué, bio, fact sheet, pochette. Ne jamais y mettre de lien vers le titre complet ni vers le dossier Drive EPK (le dépôt est public). L'EPK public `/press/` ne pointe plus vers ce dossier non plus.
+- `site/assets/style.css` : styles partagés (lien versionné `?v=N` dans les pages : incrémenter N à chaque changement du CSS, sinon les navigateurs gardent l'ancien), couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`, `--accent` = rouge du clip A02 #990001 depuis le 06.11.2026, `--accent-hi` = rouge clair pour texte et contours sur fond noir).
 - `site/assets/fonts/` : Jost 400/500/600 auto-hébergée (aucun appel à Google Fonts).
 - `site/assets/lost-in-time-preview.mp3` : extrait de 60 s (3:00 à 4:00 du master, fondus). Le titre complet ne va jamais ici.
 - Site en anglais uniquement.

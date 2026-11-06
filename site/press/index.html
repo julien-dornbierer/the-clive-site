@@ -21,12 +21,12 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0b0d10">
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/style.css?v=5">
+<link rel="stylesheet" href="/assets/style.css?v=6">
 <style>
 /* EPK: preview player and downloads */
 .player{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s4);align-items:center;padding:var(--s4);background:var(--surface);border:1px solid var(--line)}
-.play{width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);background:var(--accent);color:var(--void);display:grid;place-items:center;cursor:pointer;padding:0}
-.play:hover{background:var(--accent-hi);border-color:var(--accent-hi)}
+.play{width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);background:var(--accent);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.play:hover{border-color:var(--accent-hi)}
 .play .i-pause{display:none}.play[aria-pressed="true"] .i-play{display:none}.play[aria-pressed="true"] .i-pause{display:block}
 .ptrack{display:grid;gap:var(--s2)}
 .ptrack p{margin:0}
@@ -38,7 +38,7 @@
 ul.dl{list-style:none;margin:0;padding:0}
 ul.dl li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 var(--s4);padding-block:var(--s2);font-size:14px;line-height:20px;border-bottom:1px solid var(--line)}
 ul.dl li a{text-decoration:none;color:var(--ink)}
-ul.dl li a:hover{color:var(--accent)}
+ul.dl li a:hover{color:var(--accent-hi)}
 ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-transform:none}
 </style>
 </head>
@@ -100,14 +100,12 @@ ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-tran
   <section aria-labelledby="h-kit">
     <h2 class="label" id="h-kit">Downloads</h2>
     <ul class="tracks caps dl">
-      <li><a href="https://drive.google.com/drive/folders/19b0hrpm29Hma1S8oz8RO3ntGw73y_liC?usp=drive_link" target="_blank" rel="noopener">Press photos</a> <span class="when">4 × 4320 px · © Pierre Daendliker</span></li>
       <li><a href="https://drive.google.com/file/d/1Oj-v69UQDC-wzLaptPXeGoXiUSraF3BT/view" target="_blank" rel="noopener">Cover artwork · A02 // LOST IN TIME</a> <span class="when">4320 × 4320 px</span></li>
       <li><a href="https://docs.google.com/document/d/1PPw3V62xIqEoEyg2Ij7vzTCgcfDGdOPk_dwS9rKl7K8/view" target="_blank" rel="noopener">Press release</a> <span class="when">FR · DE</span></li>
       <li><a href="https://docs.google.com/document/d/1wSbtNiDdA2-qPQytGC8Y3o69msWjGe8WLMaiaDUjWsY/view" target="_blank" rel="noopener">Short bio</a> <span class="when">EN · FR · DE</span></li>
       <li><a href="https://docs.google.com/document/d/1Wk7MIGeucuzKryc78Kck_rbZaKWM_ojjyZkAplhmdr8/view" target="_blank" rel="noopener">Single fact sheet</a> <span class="when">EN</span></li>
-      <li><a href="https://docs.google.com/document/d/1kYDs6vOAFVui1vUKlu-OY5lgOAHJFFW9G9OIK47pgAw/view" target="_blank" rel="noopener">Bio, live &amp; tech rider</a> <span class="when">EN</span></li>
     </ul>
-    <div class="actions"><a class="btn" href="https://drive.google.com/drive/folders/19b0hrpm29Hma1S8oz8RO3ntGw73y_liC?usp=drive_link" target="_blank" rel="noopener">Open full press kit</a></div>
+    <p class="caption muted">Press photos, full track and video: contact@the-clive.com.</p>
   </section>
 
   <section aria-labelledby="h-disco">
