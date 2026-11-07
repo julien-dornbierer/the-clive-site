@@ -772,8 +772,9 @@
     const am = S.tubes.map(avg), al = am.map(lumOf), an = am.map(norm), k = S.kick;
     const lv = al.map((l) => Math.min(1, 1.5 * l)), ageOf = (g) => ly[g] ? t - timeAt(ly[g][1]) : 0, md = (g) => ly[g] ? ly[g][0] : 0;
     const W1 = [1, 1, 1], fm = md('face'), SC = mix(norm(mix(am[0], am[1], .5)), W1, .45);
-    // side washes: off / soft / full with notes 141-143 when a plan sends them, otherwise soft in the look colour
-    const face = fm ? ({ 141: 0, 142: .35, 143: .7 }[fm] || 0) : .3 * Math.max(lv[0], lv[1]);
+    // side washes: off / soft / full with notes 141-143 (soft when no plan sends them), in the look colour and dimmed
+    // with it: a black look is a blackout, side washes included
+    const face = (fm ? ({ 141: 0, 142: .35, 143: .7 }[fm] || 0) : .3) * Math.min(1, 2 * Math.max(lv[0], lv[1]));
 
     // ----- backdrop: the fabric and its pipe & drape, then the two uplights (left column = left uplight) in the haze
     cx.fillStyle = '#0c0e11'; cx.fillRect(TX[0], TT, TX[2] - TX[0], FLOOR - TT);
