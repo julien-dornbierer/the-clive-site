@@ -36,7 +36,9 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   07.11.2026 : toile de fond gris clair 4,5 × 3,5 m sur pipe & drape (3 montants), éclairée par 2 uplights au sol dans
   la couleur du look (colonne gauche = uplight gauche, couleur en bas, noir en haut) ; 2 washes latéraux au sol aux
   extrémités, vers le groupe : doux dans la couleur du look par défaut, réglés par les notes 141-143 (LATERAUX_OFF /
-  DOUX / PLEINS, groupe `face`) si un plan les envoie ; les 2 tubes Ape Labs sont verticaux sur les montants
+  DOUX / PLEINS, groupe `face`), envoyées par tous les plans depuis le 07.11.2026 (Z19 v6, A09 v5, Z14b v4, Z15 v6, S01 v5,
+  A01 v5, A10 v3, JAS01 v4, Z08b v3, Z02 v3, A02 v4) ; éteints, ils laissent le groupe en silhouette devant la toile ;
+  un look noir éteint aussi la toile et les washes ; les 2 tubes Ape Labs sont verticaux sur les montants
   extérieurs de la toile (pixel 0 en bas)). Les looks donnent seulement les couleurs, tout le reste vient des
   notes du canal 2 (128-177, groupes dans `LAYER`). Depuis le 06.11.2026 les 11 morceaux sont en B3 et monochromes
   (une teinte + blanc par morceau) ; l'entrée de test `a02-b3` est supprimée, Lost in Time = `a02` v3.
