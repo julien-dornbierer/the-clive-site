@@ -69,6 +69,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - Titre de l'album : ne pas le publier tant que le groupe ne l'a pas annoncé.
 
 ## À faire après le 13.11.2026
-- Remplacer le lecteur d'extrait de `press/` par le lecteur Spotify du single, et le bouton Pre-save par Listen.
-- Ajouter le lien du clip (accueil, section Videos) dès sa mise en ligne.
+- Remplacer le lecteur d'extrait de `press/` par le lecteur Spotify du single.
+- Fait le 13.11.2026 : boutons Pre-save devenus Listen (même lien lnk.site), clip officiel lié sur l'accueil et l'EPK
+  (chaîne The Clive, https://www.youtube.com/watch?v=At2RKJcYthU, en ligne à 18 h ; lien simple, pas d'iframe).
 - Ajouter la photo presse de face et le logo quand ils existent.
