@@ -23,8 +23,8 @@
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css?v=6">
 <style>
-/* Home: video embed */
-.video{position:relative;width:100%;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);margin-top:var(--s3)}
+/* Home: the video is the hero */
+.video{position:relative;width:100%;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);scroll-margin-top:96px}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 </style>
 </head>
@@ -42,14 +42,16 @@
 </header>
 <main>
   <section class="hero" id="home" aria-label="New single">
-    <img class="art" src="/assets/lost-in-time.webp" alt="A02 // LOST IN TIME single artwork: the four band members in silhouette against a golden sky" width="1000" height="1000">
+    <div class="video" id="video">
+      <iframe src="https://www.youtube-nocookie.com/embed/tvCrLse6IT0" title="The Clive, A02 // LOST IN TIME, official music video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
     <div class="release">
       <p class="label muted">New single · Out now</p>
       <h1 class="album">A02 // LOST IN TIME</h1>
-      <p class="muted">New album incoming.</p>
+      <p class="muted">Video directed by Pierre Daendliker, filmed at the Sanetsch. New album incoming.</p>
       <div class="actions">
         <a class="btn solid" href="https://lnk.site/the-clive-a02-lost-in-time" target="_blank" rel="noopener">Listen</a>
-        <a class="btn" href="https://www.youtube.com/watch?v=tvCrLse6IT0" target="_blank" rel="noopener">Watch the video</a>
+        <a class="btn" href="https://open.spotify.com/artist/47yrP8BFVfdiWrKkcgoHmh" target="_blank" rel="noopener">Follow on Spotify</a>
       </div>
     </div>
   </section>
@@ -67,20 +69,7 @@
       <li><span>JAS01 //</span></li>
       <li><span>Z08B //</span></li>
       <li><span>Z02 //</span></li>
-      <li class="out"><span>A02 // LOST IN TIME</span><span class="when">Single · 13.11.2026</span></li>
     </ol>
-  </section>
-
-  <section id="video" aria-labelledby="h-video">
-    <h2 class="label" id="h-video">Videos</h2>
-    <ol class="tracks caps">
-      <li class="out"><span>A02 // LOST IN TIME</span><span class="when">Official video · 13.11.2026</span></li>
-    </ol>
-    <div class="video">
-      <iframe src="https://www.youtube-nocookie.com/embed/tvCrLse6IT0" title="The Clive, A02 // LOST IN TIME, official music video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-    <p class="caption muted">Directed by Pierre Daendliker. Filmed at the Sanetsch.</p>
-    <div class="actions"><a class="btn solid" href="https://www.youtube.com/watch?v=tvCrLse6IT0" target="_blank" rel="noopener">Watch on YouTube</a><a class="btn" href="https://www.youtube.com/@TheCliveMusic" target="_blank" rel="noopener">All videos on YouTube</a></div>
   </section>
 
   <section id="live" aria-labelledby="h-live">
