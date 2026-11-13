@@ -11,7 +11,9 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   puis commit + push. Rappeler à Julien de recharger avec Ctrl+F5.
 
 ## Structure
-- `site/index.html` : accueil (single en cours, Incoming, Videos, Live, booking).
+- `site/index.html` : accueil sans doublon depuis le 13.11.2026 (demande de Julien) : le clip intégré est le visuel
+  d'en-tête (`#video`, la pochette n'est plus sur l'accueil), puis titre + Listen, Incoming (les 10 codes pas encore sortis, sans A02), Live, booking. Pas de section
+  Videos séparée ni de second bouton vers le clip ; le lien « Videos » du menu pointe sur le lecteur.
 - `site/press/index.html` : EPK public (bio, lecteur d'extrait, faits, téléchargements, discographie, contacts).
 - `site/press/a02-0b6f62f4/` : choix de langue ; `fr/` et `de/` = page presse **non répertoriée** en français et en allemand (exception à la règle « site en anglais », demandée par Julien le 06.11.2026 ; pages générées par un script, garder les deux versions identiques en contenu) (noindex, hors sitemap et navigation) envoyée aux médias pour A02 : reprend tout le contenu du mail presse : texte, bouton vers le titre complet sur Google Drive (l aperçu Drive intégré restait vide), clip YouTube intégré (youtube-nocookie, ID final tvCrLse6IT0 depuis le 06.11.2026), liens Drive (dossier EPK, WAV, MP3), communiqué, bio, fact sheet, pochette. Choix de Julien (06.11.2026) : les liens Drive sont acceptés ici bien que le dépôt soit public ; le MP3/WAV ne va jamais dans le dépôt lui-même. L'EPK public `/press/` ne pointe plus vers ce dossier non plus.
 - `site/assets/style.css` : styles partagés (lien versionné `?v=N` dans les pages : incrémenter N à chaque changement du CSS, sinon les navigateurs gardent l'ancien), couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`, `--accent` = rouge du clip A02 #990001 depuis le 06.11.2026, `--accent-hi` = rouge clair pour texte et contours sur fond noir).
