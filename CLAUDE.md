@@ -71,5 +71,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 ## À faire après le 13.11.2026
 - Remplacer le lecteur d'extrait de `press/` par le lecteur Spotify du single.
 - Fait le 13.11.2026 : boutons Pre-save devenus Listen (même lien lnk.site), clip officiel lié sur l'accueil et l'EPK
-  (chaîne The Clive, https://www.youtube.com/watch?v=tvCrLse6IT0, en ligne à 18 h ; lien simple, pas d'iframe).
+  (chaîne The Clive, https://www.youtube.com/watch?v=tvCrLse6IT0, en ligne à 18 h). Depuis le 13.11.2026, à la demande de Julien, le clip est aussi
+  intégré sur l'accueil (iframe youtube-nocookie, section Videos, styles `.video` dans le `<style>` de la page) ;
+  la page Privacy le mentionne.
 - Ajouter la photo presse de face et le logo quand ils existent.
