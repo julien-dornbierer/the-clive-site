@@ -21,6 +21,15 @@
 //   POST   /api/lightshow/comments       {song, ver, t, author, body, parent?} -> {ok, comment}
 //   PATCH  /api/lightshow/comments/<id>  {resolved}                    -> {ok}
 //   DELETE /api/lightshow/comments/<id>                                -> {ok}
+//
+//   Smart link (pages like /a02/ ; no cookie, nothing stored in the browser):
+//   POST   /api/go/<code>/view?<query of the page>   page shown        -> 204 (+ Meta "ViewContent")
+//   GET    /api/go/<code>/<platform>?<query>         button clicked    -> 302 to the platform (+ Meta "Lead")
+//   GET    /api/go/stats?key=ADMIN_KEY[&days=30]     counts per day, link, action, campaign (JSON)
+//   Extra settings for Meta (Conversions API, sent from this server only):
+//   META_PIXEL_ID       variable, the dataset ID shown in Events Manager
+//   META_CAPI_TOKEN     secret, the Conversions API access token of that dataset
+//   META_TEST_CODE      optional variable, test event code from Events Manager > Test events (remove after testing)
 
 const CONSENT_TEXT = 'Newsletter: new releases and shows only. Unsubscribe anytime.';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -243,14 +252,146 @@ async function lightshow(request, env, url) {
   return json({ ok: false, error: 'Not found.' }, 404);
 }
 
+// ---------- Smart link (/a02/ and future releases) ----------
+// One entry per release page. Only released titles go here (public repo).
+const GO_LINKS = {
+  a02: {
+    title: 'A02 // LOST IN TIME',
+    spotify: 'https://open.spotify.com/album/2CywlhXdUvai6Ez43eZTPt',
+    all: 'https://lnk.site/the-clive-a02-lost-in-time',
+    youtube: 'https://www.youtube.com/watch?v=tvCrLse6IT0',
+  },
+};
+const GO_FALLBACK = 'https://open.spotify.com/artist/47yrP8BFVfdiWrKkcgoHmh';
+const BOT_RE = /bot|crawl|spider|facebookexternalhit|facebookcatalog|meta-externalagent|preview|slurp|curl|wget|python|headless/i;
+const META_API = 'https://graph.facebook.com/v24.0';
+
+async function ensureClicksTable(db) {
+  await db.prepare(
+    `CREATE TABLE IF NOT EXISTS link_events (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       created_at TEXT NOT NULL,
+       link TEXT NOT NULL,
+       action TEXT NOT NULL,
+       country TEXT,
+       source TEXT,
+       campaign TEXT,
+       content TEXT,
+       from_meta INTEGER NOT NULL DEFAULT 0
+     )`
+  ).run();
+}
+
+function clip(v, n = 80) {
+  return v ? String(v).slice(0, n) : null;
+}
+
+// Sends one event to Meta from this server. Nothing is set or read in the visitor's browser.
+async function metaEvent(env, request, url, name, link, platform) {
+  if (!env.META_PIXEL_ID || !env.META_CAPI_TOKEN) return;
+  const now = Date.now();
+  const fbclid = url.searchParams.get('fbclid');
+  const user = {
+    client_ip_address: request.headers.get('CF-Connecting-IP') || undefined,
+    client_user_agent: request.headers.get('User-Agent') || undefined,
+  };
+  if (fbclid) user.fbc = `fb.1.${now}.${fbclid.slice(0, 500)}`;
+  const page = new URL(`/${link}/`, url.origin);
+  const body = {
+    data: [{
+      event_name: name,
+      event_time: Math.floor(now / 1000),
+      event_id: crypto.randomUUID(),
+      action_source: 'website',
+      event_source_url: page.href,
+      user_data: user,
+      custom_data: { content_name: GO_LINKS[link].title, content_category: 'music', platform: platform || undefined },
+    }],
+  };
+  if (env.META_TEST_CODE) body.test_event_code = env.META_TEST_CODE;
+  await fetch(`${META_API}/${env.META_PIXEL_ID}/events?access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).catch(() => {});
+}
+
+async function logLinkEvent(env, request, url, link, action) {
+  await ensureClicksTable(env.DB);
+  const q = url.searchParams;
+  await env.DB.prepare(
+    `INSERT INTO link_events (created_at, link, action, country, source, campaign, content, from_meta)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)`
+  ).bind(
+    new Date().toISOString(), link, action,
+    (request.cf && request.cf.country) || null,
+    clip(q.get('utm_source')), clip(q.get('utm_campaign')), clip(q.get('utm_content')),
+    q.get('fbclid') ? 1 : 0
+  ).run();
+}
+
+async function goStats(env, url) {
+  if (!env.ADMIN_KEY || !safeEqual(url.searchParams.get('key') || '', env.ADMIN_KEY)) {
+    return new Response('Not found', { status: 404 });
+  }
+  const days = Math.min(Math.max(parseInt(url.searchParams.get('days') || '30', 10) || 30, 1), 365);
+  await ensureClicksTable(env.DB);
+  const since = new Date(Date.now() - days * 86400000).toISOString();
+  const { results } = await env.DB.prepare(
+    `SELECT substr(created_at, 1, 10) AS day, link, action, campaign, content, country,
+            COUNT(*) AS n, SUM(from_meta) AS from_meta
+     FROM link_events WHERE created_at >= ?1
+     GROUP BY day, link, action, campaign, content, country
+     ORDER BY day DESC, link, action`
+  ).bind(since).all();
+  return json({ ok: true, days, rows: results });
+}
+
+async function go(request, env, url, ctx) {
+  const parts = url.pathname.slice('/api/go/'.length).split('/');
+  if (parts[0] === 'stats' && request.method === 'GET') return goStats(env, url);
+
+  const link = parts[0];
+  const action = parts[1] || '';
+  const entry = GO_LINKS[link];
+  const ua = request.headers.get('User-Agent') || '';
+  const human = ua && !BOT_RE.test(ua);
+
+  if (action === 'view' && request.method === 'POST') {
+    if (entry && human) {
+      ctx.waitUntil(Promise.all([
+        logLinkEvent(env, request, url, link, 'view'),
+        metaEvent(env, request, url, 'ViewContent', link),
+      ]).catch(() => {}));
+    }
+    return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+  }
+
+  if (request.method !== 'GET') return json({ ok: false, error: 'Not found.' }, 404);
+  const target = entry && /^[a-z]{1,16}$/.test(action) && entry[action];
+  if (!target) return Response.redirect(GO_FALLBACK, 302);
+
+  if (human) {
+    const tasks = [logLinkEvent(env, request, url, link, action)];
+    // The ads optimise on this event: a real click towards Spotify.
+    if (action === 'spotify') tasks.push(metaEvent(env, request, url, 'Lead', link, action));
+    ctx.waitUntil(Promise.all(tasks).catch(() => {}));
+  }
+  return new Response(null, {
+    status: 302,
+    headers: { Location: target, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' },
+  });
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const p = url.pathname;
 
     if (p.startsWith('/api/')) {
       if (!env.DB) return json({ ok: false, error: 'Signup is not available yet.' }, 503);
       try {
+        if (p.startsWith('/api/go/')) return await go(request, env, url, ctx);
         if (p.startsWith('/api/lightshow/')) return await lightshow(request, env, url);
         if (p === '/api/subscribe' && request.method === 'POST') return await subscribe(request, env, url);
         if (p === '/api/unsubscribe' && request.method === 'POST') return await unsubscribe(request, env, url);

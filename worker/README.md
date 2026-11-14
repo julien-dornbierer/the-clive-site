@@ -60,3 +60,31 @@ ils sont dans un bucket R2 et le Worker ne les sert qu'avec le mot de passe du g
 
 D1 > `the-clive-newsletter` > Console :
 `SELECT song, t, author, body, resolved FROM lightshow_comments ORDER BY song, t;`
+
+## Smart link (`/a02/` et les sorties suivantes)
+
+Page de sortie sans cookie : `site/a02/index.html`. Ses boutons passent par `/api/go/a02/<plateforme>` : le Worker
+compte la visite ou le clic dans la table D1 `link_events`, envoie l'événement à Meta depuis le serveur (Conversions API)
+puis redirige. La page transmet `fbclid` et `utm_*` de son adresse aux boutons, rien n'est stocké dans le navigateur.
+
+- Événements Meta : `ViewContent` à l'affichage de la page, `Lead` au clic sur Spotify (c'est sur `Lead` que les pubs
+  s'optimisent). Les robots (aperçus de liens, crawlers) sont ignorés.
+- Liens par sortie : objet `GO_LINKS` en haut de la partie « Smart link » de `newsletter.js`. Nouvelle sortie = une entrée
+  `GO_LINKS` + une copie de `site/a02/` (seulement pour un titre déjà annoncé).
+- Lien à mettre dans les pubs : `https://www.the-clive.com/a02/?utm_source=meta&utm_campaign=<nom>&utm_content=<créa>`
+  (Meta ajoute `fbclid` tout seul).
+
+### Mise en place (une seule fois)
+
+1. Events Manager > dataset « The Clive - the-clive.com » : noter l'ID du dataset.
+2. Dans le Worker, Settings > Variables and secrets :
+   - `META_PIXEL_ID` (type Text) = l'ID du dataset ;
+   - `META_CAPI_TOKEN` (type Secret) = le jeton créé dans Events Manager > dataset > Settings > Conversions API >
+     Generate access token. Ne jamais le mettre dans le dépôt.
+   - pour tester : `META_TEST_CODE` (Text) = le code affiché dans Events Manager > Test events, à supprimer ensuite.
+3. « Edit code », recoller tout `newsletter.js`, Deploy. La table `link_events` se crée seule.
+
+### Lire les chiffres
+
+- `https://www.the-clive.com/api/go/stats?key=ADMIN_KEY&days=7` (JSON : jour, lien, action, campagne, créa, pays).
+- Ou D1 > Console : `SELECT link, action, COUNT(*) FROM link_events GROUP BY 1, 2;`
