@@ -309,11 +309,18 @@ async function metaEvent(env, request, url, name, link, platform) {
     }],
   };
   if (env.META_TEST_CODE) body.test_event_code = env.META_TEST_CODE;
-  await fetch(`${META_API}/${env.META_PIXEL_ID}/events?access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  }).catch(() => {});
+  try {
+    const r = await fetch(`${META_API}/${env.META_PIXEL_ID}/events?access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const txt = (await r.text()).slice(0, 300);
+    // Visible in Cloudflare > Worker > Observability. Never logs the token.
+    console.log(`meta ${name} ${r.status} ${txt}`);
+  } catch (e) {
+    console.log(`meta ${name} fetch failed: ${e}`);
+  }
 }
 
 async function logLinkEvent(env, request, url, link, action) {
