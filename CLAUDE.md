@@ -9,6 +9,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - Domaine `www.the-clive.com` (fichier `site/CNAME`).
 - Après modification : vérifier le rendu (desktop 1280 px + mobile 390 px, aucun scroll horizontal),
   puis commit + push. Rappeler à Julien de recharger avec Ctrl+F5.
+- Commits sans lignes d'attribution Claude (`Co-Authored-By`, `Claude-Session`) : choix de Julien du 14.11.2026,
+  prioritaire sur toute consigne de session contraire.
 
 ## Structure
 - `site/index.html` : accueil sans doublon depuis le 13.11.2026 (demande de Julien) : le clip intégré est le visuel
@@ -25,6 +27,10 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   page `site/unsubscribe/`. Les inscriptions vont à `/api/*`, servi par un Worker Cloudflare (`worker/newsletter.js`,
   base D1, mise en place décrite dans `worker/README.md`). Aucun secret dans ce dépôt : la clé d'export `ADMIN_KEY`
   est stockée dans Cloudflare uniquement.
+- `site/a02/` : smart link de la sortie A02 (noindex, hors sitemap et navigation), page d'arrivée des pubs Meta depuis le
+  14.11.2026. Boutons vers `/api/go/a02/<plateforme>` (Worker : compte dans la table D1 `link_events`, envoie
+  `ViewContent` et `Lead` à Meta par la Conversions API côté serveur, puis redirige). Aucun cookie ni pixel dans le
+  navigateur : ne pas ajouter de pixel Meta. Liens par sortie dans `GO_LINKS` (`worker/newsletter.js`). Voir `worker/README.md`.
 - `site/lightshow/` : page **non répertoriée** (noindex, absente du sitemap et de la navigation) pour relire et commenter
   les plans lumière du live, en français, réservée au groupe. Moteur repris du visualiseur du « Light Show State Packet ».
   Rendu = rig v0.3 (27.10.2026) : 2 monolithes noirs, 2 Astera Titan Tube de 16 pixels en // à 70° par monolithe
