@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A02 // LOST IN TIME — The Clive</title>
+<meta name="description" content="The Clive. A02 // LOST IN TIME, out now.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0d10">
+<link rel="canonical" href="https://www.the-clive.com/a02/">
+<meta property="og:type" content="music.song">
+<meta property="og:site_name" content="The Clive">
+<meta property="og:title" content="A02 // LOST IN TIME — The Clive">
+<meta property="og:description" content="Out now.">
+<meta property="og:url" content="https://www.the-clive.com/a02/">
+<meta property="og:image" content="https://www.the-clive.com/assets/og.jpg?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/style.css?v=6">
+<style>
+/* Smart link: one goal, the Spotify button. */
+.go{padding-block:var(--s4) var(--s6);display:grid;gap:var(--s4);justify-items:start}
+.go .art{max-width:420px}
+.go .btn.solid{min-width:240px;text-align:center}
+.go .more{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4)}
+.go .more a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+.go .more a:hover{border-bottom-color:var(--accent-hi)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="wordmark" href="/" aria-label="The Clive, home"><img src="/assets/logo.svg" alt="The Clive" width="175" height="15"></a>
+</header>
+<main>
+  <section class="go" aria-labelledby="h-go">
+    <img class="art" src="/assets/lost-in-time.webp" alt="A02 // LOST IN TIME artwork" width="1200" height="1200">
+    <div class="release">
+      <p class="label muted">The Clive · New single · Out now</p>
+      <h1 class="album" id="h-go">A02 // LOST IN TIME</h1>
+    </div>
+    <a class="btn solid" data-go href="/api/go/a02/spotify">Play on Spotify</a>
+    <div class="more label muted">
+      <a data-go href="/api/go/a02/all">Other platforms</a>
+      <a data-go href="/api/go/a02/youtube">Watch the video</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <p class="muted" style="margin:0">© 2026 The Clive · <a href="/privacy/">Privacy</a> · Released on <a href="https://www.zwickyrecords.com" target="_blank" rel="noopener">Zwicky Records</a></p>
+</footer>
+</div>
+<script>
+// Pass the ad parameters (fbclid, utm_*) to the links. Nothing is stored in the browser.
+(function () {
+  var q = location.search;
+  if (q) document.querySelectorAll('[data-go]').forEach(function (a) { a.href = a.getAttribute('href') + q; });
+  try { fetch('/api/go/a02/view' + q, { method: 'POST', keepalive: true }).catch(function () {}); } catch (e) {}
+})();
+</script>
+</body>
+</html>
