@@ -23,13 +23,11 @@
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css?v=6">
 <style>
-/* Smart link: one goal, the Spotify button. */
+/* Smart link: every platform as one equal button, Spotify first. */
 .go{padding-block:var(--s4) var(--s6);display:grid;gap:var(--s4);justify-items:start}
 .go .art{max-width:420px}
-.go .btn.solid{min-width:240px;text-align:center}
-.go .more{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4)}
-.go .more a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
-.go .more a:hover{border-bottom-color:var(--accent-hi)}
+.go .platforms{display:grid;gap:var(--s2);width:100%;max-width:420px}
+.go .platforms .btn{display:block;text-align:center}
 </style>
 </head>
 <body>
@@ -44,10 +42,14 @@
       <p class="label muted">The Clive · New single · Out now</p>
       <h1 class="album" id="h-go">A02 // LOST IN TIME</h1>
     </div>
-    <a class="btn solid" data-go href="/api/go/a02/spotify">Play on Spotify</a>
-    <div class="more label muted">
-      <a data-go href="/api/go/a02/all">Other platforms</a>
-    </div>
+    <nav class="platforms" aria-label="Listen">
+      <a class="btn solid" data-go href="/api/go/a02/spotify">Spotify</a>
+      <a class="btn" data-go href="/api/go/a02/apple">Apple Music</a>
+      <a class="btn" data-go href="/api/go/a02/youtube">YouTube</a>
+      <a class="btn" data-go href="/api/go/a02/deezer">Deezer</a>
+      <a class="btn" data-go href="/api/go/a02/amazon">Amazon Music</a>
+      <a class="btn" data-go href="/api/go/a02/tidal">Tidal</a>
+    </nav>
   </section>
 </main>
 <footer>
