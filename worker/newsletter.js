@@ -258,8 +258,12 @@ const GO_LINKS = {
   a02: {
     title: 'A02 // LOST IN TIME',
     spotify: 'https://open.spotify.com/album/2CywlhXdUvai6Ez43eZTPt',
-    all: 'https://lnk.site/the-clive-a02-lost-in-time',
+    apple: 'https://geo.music.apple.com/album/a02-lost-in-time-single/6822838709?ls=1&app=music',
     youtube: 'https://www.youtube.com/watch?v=tvCrLse6IT0',
+    deezer: 'https://www.deezer.com/album/1121564172',
+    amazon: 'https://music.amazon.de/albums/B0HN2QP96R',
+    tidal: 'https://tidal.com/album/569879763',
+    all: 'https://lnk.site/the-clive-a02-lost-in-time',
   },
 };
 const GO_FALLBACK = 'https://open.spotify.com/artist/47yrP8BFVfdiWrKkcgoHmh';
@@ -380,8 +384,8 @@ async function go(request, env, url, ctx) {
 
   if (human) {
     const tasks = [logLinkEvent(env, request, url, link, action)];
-    // The ads optimise on this event: a real click towards Spotify.
-    if (action === 'spotify') tasks.push(metaEvent(env, request, url, 'Lead', link, action));
+    // The ads optimise on this event: a real click towards a streaming platform (Spotify, Apple Music, ...).
+    if (action !== 'all') tasks.push(metaEvent(env, request, url, 'Lead', link, action));
     ctx.waitUntil(Promise.all(tasks).catch(() => {}));
   }
   return new Response(null, {
