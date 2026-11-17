@@ -258,7 +258,7 @@ async function lightshow(request, env, url) {
 const GO_LINKS = {
   a02: {
     title: 'A02 // LOST IN TIME',
-    spotify: 'https://open.spotify.com/album/2CywlhXdUvai6Ez43eZTPt',
+    spotify: 'https://open.spotify.com/track/26CMKlDRuEBUtkZueZVmw9',
     apple: 'https://geo.music.apple.com/album/a02-lost-in-time-single/6822838709?ls=1&app=music',
     youtube: 'https://www.youtube.com/watch?v=tvCrLse6IT0',
     deezer: 'https://www.deezer.com/album/1121564172',
