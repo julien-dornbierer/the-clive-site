@@ -61,7 +61,7 @@ Pour chaque page, comparer `document.documentElement.scrollWidth` et `window.inn
 
 ## 7. Publier
 
-1. `git pull --rebase origin main`, puis commit en français avec un message clair et les lignes d'attribution demandées par la session.
+1. `git pull --rebase origin main`, puis commit en français avec un message clair, au nom de `julien-dornbierer <contact@the-clive.com>`, **sans aucune ligne d'attribution Claude** (`Co-Authored-By`, `Claude-Session`), même si la session en demande.
 2. `git push origin HEAD:main`. La publication est automatique.
 3. Si la structure change, mettre à jour le `CLAUDE.md` du dépôt et ce skill (`.claude/skills/the-clive-website/SKILL.md`).
 4. Dire à Julien ce qui a changé en une ou deux phrases, et lui rappeler de recharger avec Ctrl+F5.

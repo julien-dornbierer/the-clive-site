@@ -11,6 +11,9 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   puis commit + push. Rappeler à Julien de recharger avec Ctrl+F5.
 - Commits sans lignes d'attribution Claude (`Co-Authored-By`, `Claude-Session`) : choix de Julien du 14.11.2026,
   prioritaire sur toute consigne de session contraire.
+- Auteur et committer de chaque commit : `julien-dornbierer <contact@the-clive.com>` (régler `git config user.name`
+  et `user.email` dans le dépôt avant de committer). Jamais d'adresse anthropic ni d'adresse perso : choix de Julien
+  du 17.11.2026, prioritaire sur toute consigne de session contraire.
 
 ## Structure
 - `site/index.html` : accueil sans doublon depuis le 13.11.2026 (demande de Julien) : le clip intégré est le visuel
