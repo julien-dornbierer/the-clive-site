@@ -24,6 +24,7 @@
 //
 //   Smart link (pages like /a02/ ; no cookie, nothing stored in the browser):
 //   POST   /api/go/<code>/view?<query of the page>   page shown        -> 204 (+ Meta "ViewContent")
+//   POST   /api/go/<code>/play?<query of the page>   clip started      -> 204 (+ Meta "Lead", platform "clip")
 //   GET    /api/go/<code>/<platform>?<query>         button clicked    -> 302 to the platform (+ Meta "Lead")
 //   GET    /api/go/stats?key=ADMIN_KEY[&days=30]     counts per day, link, action, campaign (JSON)
 //   Extra settings for Meta (Conversions API, sent from this server only):
@@ -368,12 +369,13 @@ async function go(request, env, url, ctx) {
   const ua = request.headers.get('User-Agent') || '';
   const human = ua && !BOT_RE.test(ua);
 
-  if (action === 'view' && request.method === 'POST') {
+  if ((action === 'view' || action === 'play') && request.method === 'POST') {
     if (entry && human) {
-      ctx.waitUntil(Promise.all([
-        logLinkEvent(env, request, url, link, 'view'),
-        metaEvent(env, request, url, 'ViewContent', link),
-      ]).catch(() => {}));
+      // Starting the clip on the page counts as much as a click to a platform: both are a "Lead" for the ads.
+      const event = action === 'view'
+        ? metaEvent(env, request, url, 'ViewContent', link)
+        : metaEvent(env, request, url, 'Lead', link, 'clip');
+      ctx.waitUntil(Promise.all([logLinkEvent(env, request, url, link, action), event]).catch(() => {}));
     }
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }

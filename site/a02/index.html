@@ -23,9 +23,11 @@
 <link rel="preload" href="/assets/fonts/jost-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/style.css?v=6">
 <style>
-/* Smart link: every platform as one equal button, Spotify first. */
-.go{padding-block:var(--s4) var(--s6);display:grid;gap:var(--s4);justify-items:start}
-.go .art{max-width:420px}
+/* Smart link: the clip plays on the page, then every platform as one equal button, Spotify first.
+   No artwork: on a phone it pushed the buttons below the fold. */
+.go{padding-block:var(--s4) var(--s6);display:grid;gap:var(--s4)}
+.video{position:relative;width:100%;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .go .platforms{display:grid;gap:var(--s2);width:100%;max-width:420px}
 .go .platforms .btn{display:block;text-align:center}
 </style>
@@ -37,7 +39,9 @@
 </header>
 <main>
   <section class="go" aria-labelledby="h-go">
-    <img class="art" src="/assets/lost-in-time.webp" alt="A02 // LOST IN TIME artwork" width="1200" height="1200">
+    <div class="video">
+      <iframe id="clip" src="https://www.youtube-nocookie.com/embed/tvCrLse6IT0?enablejsapi=1&amp;playsinline=1&amp;rel=0&amp;origin=https%3A%2F%2Fwww.the-clive.com" title="The Clive, A02 // LOST IN TIME, official music video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
     <div class="release">
       <p class="label muted">The Clive · New single · Out now</p>
       <h1 class="album" id="h-go">A02 // LOST IN TIME</h1>
@@ -58,10 +62,33 @@
 </div>
 <script>
 // Pass the ad parameters (fbclid, utm_*) to the links. Nothing is stored in the browser.
+// The server counts: the page shown ("view") and the clip started on the page ("play").
 (function () {
   var q = location.search;
   if (q) document.querySelectorAll('[data-go]').forEach(function (a) { a.href = a.getAttribute('href') + q; });
-  try { fetch('/api/go/a02/view' + q, { method: 'POST', keepalive: true }).catch(function () {}); } catch (e) {}
+  function ping(action) {
+    try { fetch('/api/go/a02/' + action + q, { method: 'POST', keepalive: true }).catch(function () {}); } catch (e) {}
+  }
+  ping('view');
+
+  var yt = document.getElementById('clip'), YT = 'https://www.youtube-nocookie.com', played = false;
+  function play() { if (!played) { played = true; ping('play'); } }
+  // Ask the YouTube player to report its state (1 = playing, 3 = buffering).
+  function listen() {
+    try { yt.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 'clip', channel: 'widget' }), YT); } catch (e) {}
+  }
+  yt.addEventListener('load', listen);
+  setTimeout(listen, 1500);
+  window.addEventListener('message', function (e) {
+    if (e.origin !== YT || typeof e.data !== 'string') return;
+    var d; try { d = JSON.parse(e.data); } catch (err) { return; }
+    var s = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
+    if (s === 1 || s === 3) play();
+  });
+  // Fallback: a tap inside the player moves the focus to it.
+  window.addEventListener('blur', function () {
+    setTimeout(function () { if (document.activeElement === yt) play(); }, 0);
+  });
 })();
 </script>
 </body>

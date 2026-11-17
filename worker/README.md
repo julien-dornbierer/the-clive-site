@@ -69,7 +69,8 @@ puis redirige. La page transmet `fbclid` et `utm_*` de son adresse aux boutons, 
 
 - Événements Meta : `ViewContent` à l'affichage de la page, `Lead` au clic sur n'importe quelle plateforme
   (Spotify, Apple Music, YouTube, Deezer, Amazon Music, Tidal ; depuis le 15.11.2026, avant : Spotify seulement ; c'est
-  sur `Lead` que les pubs s'optimisent). La plateforme est dans `custom_data.platform`. Les robots (aperçus de liens, crawlers) sont ignorés.
+  sur `Lead` que les pubs s'optimisent). Depuis le 17.11.2026, le clip est intégré à la page (plus de pochette) :
+  le lancer compte `play` dans `link_events` et envoie aussi un `Lead` (`platform` = `clip`). La plateforme est dans `custom_data.platform`. Les robots (aperçus de liens, crawlers) sont ignorés.
 - Liens par sortie : objet `GO_LINKS` en haut de la partie « Smart link » de `newsletter.js`. Nouvelle sortie = une entrée
   `GO_LINKS` + une copie de `site/a02/` (seulement pour un titre déjà annoncé).
 - Lien à mettre dans les pubs : `https://www.the-clive.com/a02/?utm_source=meta&utm_campaign=<nom>&utm_content=<créa>`

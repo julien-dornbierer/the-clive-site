@@ -28,7 +28,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   base D1, mise en place décrite dans `worker/README.md`). Aucun secret dans ce dépôt : la clé d'export `ADMIN_KEY`
   est stockée dans Cloudflare uniquement.
 - `site/a02/` : smart link de la sortie A02 (noindex, hors sitemap et navigation), page d'arrivée des pubs Meta depuis le
-  14.11.2026. Boutons vers `/api/go/a02/<plateforme>` (Worker : compte dans la table D1 `link_events`, envoie
+  14.11.2026. Depuis le 17.11.2026 : clip YouTube intégré en haut (youtube-nocookie), plus de pochette (elle
+  repoussait les boutons sous le bas de l'écran sur mobile) ; lancer le clip = action `play` (+ `Lead` Meta). Boutons vers `/api/go/a02/<plateforme>` (Worker : compte dans la table D1 `link_events`, envoie
   `ViewContent` et `Lead` à Meta par la Conversions API côté serveur, puis redirige). Aucun cookie ni pixel dans le
   navigateur : ne pas ajouter de pixel Meta. Liens par sortie dans `GO_LINKS` (`worker/newsletter.js`). Voir `worker/README.md`.
 - `site/lightshow/` : page **non répertoriée** (noindex, absente du sitemap et de la navigation) pour relire et commenter
