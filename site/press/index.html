@@ -58,33 +58,50 @@ ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-tran
     <h1 class="album" id="h-epk" style="margin-bottom:var(--s5)">Press</h1>
     <div class="prose">
       <p>The Clive is a four-piece rock band from Biel/Bienne, Switzerland. A new album is incoming on Zwicky Records, produced by James Mottershead at Kempston Street Studio in Liverpool and mastered by Kevin Tuffy.</p>
-      <p>The first single, A02 // LOST IN TIME, came out on 13 November 2026 with a video directed by Pierre Daendliker and filmed at the Sanetsch.</p>
+      <p>The first single, A02 // LOST IN TIME, came out on 13 November 2026 with a video directed by Pierre Daendliker and filmed at the Sanetsch. The second single, Z19 // DON'T PANIC, is out on 18 December 2026.</p>
     </div>
   </section>
 
-  <section aria-labelledby="h-listen">
-    <h2 class="label" id="h-listen">Listen</h2>
-    <div class="player" id="player">
-      <button class="play" type="button" aria-label="Play preview" aria-pressed="false">
+  <section aria-labelledby="h-a02">
+    <h2 class="label" id="h-a02">Single · Out now</h2>
+    <div class="player">
+      <button class="play" type="button" aria-label="Play preview, Lost in Time" aria-pressed="false">
         <svg class="i-play" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
         <svg class="i-pause" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zm7 0h4v15h-4z" fill="currentColor"/></svg>
       </button>
       <div class="ptrack">
         <p class="caps ptitle">A02 // LOST IN TIME</p>
-        <div class="bar" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="60" aria-valuenow="0"><span></span></div>
+        <div class="bar" role="slider" tabindex="0" aria-label="Seek, Lost in Time" aria-valuemin="0" aria-valuemax="60" aria-valuenow="0"><span></span></div>
         <p class="time muted"><span class="cur">0:00</span> / <span class="dur">1:00</span> · Preview</p>
       </div>
       <audio src="/assets/lost-in-time-preview.mp3" preload="metadata"></audio>
     </div>
-    <p class="caption muted">60-second preview. The full track is out now. Media and radio can request files at contact@the-clive.com.</p>
+    <p class="caption muted">60-second preview. Out since 13 November 2026, with the video. Media and radio can request files at contact@the-clive.com.</p>
     <div class="actions"><a class="btn solid" href="https://lnk.site/the-clive-a02-lost-in-time" target="_blank" rel="noopener">Listen</a><a class="btn" href="https://www.youtube.com/watch?v=tvCrLse6IT0" target="_blank" rel="noopener">Watch the video</a></div>
+  </section>
+
+  <section aria-labelledby="h-z19">
+    <h2 class="label" id="h-z19">Next single · 18.12.2026</h2>
+    <div class="player">
+      <button class="play" type="button" aria-label="Play preview, Don't Panic" aria-pressed="false">
+        <svg class="i-play" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zm7 0h4v15h-4z" fill="currentColor"/></svg>
+      </button>
+      <div class="ptrack">
+        <p class="caps ptitle">Z19 // DON'T PANIC</p>
+        <div class="bar" role="slider" tabindex="0" aria-label="Seek, Don't Panic" aria-valuemin="0" aria-valuemax="60" aria-valuenow="0"><span></span></div>
+        <p class="time muted"><span class="cur">0:00</span> / <span class="dur">1:00</span> · Preview</p>
+      </div>
+      <audio src="/assets/dont-panic-preview.mp3" preload="metadata"></audio>
+    </div>
+    <p class="caption muted">60-second preview. Out on 18 December 2026. More information soon.</p>
   </section>
 
   <section aria-labelledby="h-facts">
     <h2 class="label" id="h-facts">Facts</h2>
     <dl class="facts">
       <dt>Album</dt><dd>Incoming, 2027</dd>
-      <dt>First single</dt><dd>A02 // LOST IN TIME · 13.11.2026 · 4:08</dd>
+      <dt>Singles</dt><dd>A02 // LOST IN TIME · 13.11.2026 · 4:08<br>Z19 // DON'T PANIC · 18.12.2026 · 3:44</dd>
       <dt>Label</dt><dd>Zwicky Records, Biel/Bienne</dd>
       <dt>Distribution</dt><dd>Irascible</dd>
       <dt>Producer</dt><dd>James Mottershead</dd>
@@ -109,6 +126,7 @@ ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-tran
     <h2 class="label" id="h-disco">Discography</h2>
     <ol class="tracks caps">
       <li class="out"><span>New album</span><span class="when">2027 · Zwicky Records</span></li>
+      <li class="out"><span>Z19 // DON'T PANIC</span><span class="when">Single · 18.12.2026</span></li>
       <li class="out"><span>A02 // LOST IN TIME</span><span class="when">Single · 13.11.2026</span></li>
       <li><span>Renegades</span><span class="when">Single · 2023</span></li>
       <li><span>Turn It Up</span><span class="when">Single · 2023</span></li>
@@ -158,8 +176,8 @@ ul.dl li .when{color:var(--muted);font-weight:400;letter-spacing:.04em;text-tran
 </div>
 <script>
 document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-copy');function sel(){var c=b.previousElementSibling,r=document.createRange();r.selectNodeContents(c);var g=getSelection();g.removeAllRanges();g.addRange(r)}function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)}try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}})});
-(function(){
-    var root=document.getElementById('player');if(!root)return;
+var players=[].slice.call(document.querySelectorAll('.player')).map(function(r){return r.querySelector('audio')});
+  document.querySelectorAll('.player').forEach(function(root){
     var au=root.querySelector('audio'),btn=root.querySelector('.play'),bar=root.querySelector('.bar'),fill=bar.querySelector('span'),cur=root.querySelector('.cur'),dur=root.querySelector('.dur');
     function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
     function sync(){var d=au.duration||60;fill.style.width=(au.currentTime/d*100)+'%';cur.textContent=fmt(au.currentTime);bar.setAttribute('aria-valuenow',Math.round(au.currentTime))}
@@ -169,11 +187,12 @@ document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click
     au.addEventListener('pause',function(){btn.setAttribute('aria-pressed','false');btn.setAttribute('aria-label','Play preview')});
     au.addEventListener('ended',function(){au.currentTime=0;sync()});
     btn.addEventListener('click',function(){if(au.paused){var p=au.play();if(p&&p.catch)p.catch(function(){})}else au.pause()});
+    au.addEventListener('play',function(){players.forEach(function(o){if(o!==au)o.pause()})});
     function seek(e){var r=bar.getBoundingClientRect(),x=Math.min(Math.max(e.clientX-r.left,0),r.width);if(au.duration){au.currentTime=x/r.width*au.duration;sync()}}
     bar.addEventListener('pointerdown',function(e){seek(e);bar.setPointerCapture(e.pointerId)});
     bar.addEventListener('pointermove',function(e){if(e.buttons)seek(e)});
     bar.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){au.currentTime=Math.min((au.duration||60),au.currentTime+5);sync()}if(e.key==='ArrowLeft'){au.currentTime=Math.max(0,au.currentTime-5);sync()}});
-  })();
+  });
 </script>
 <script src="/assets/newsletter.js?v=1" defer></script>
 </body>

@@ -24,6 +24,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - `site/assets/style.css` : styles partagés (lien versionné `?v=N` dans les pages : incrémenter N à chaque changement du CSS, sinon les navigateurs gardent l'ancien), couleurs en variables CSS (`--void`, `--surface`, `--line`, `--ink`, `--muted`, `--accent` = rouge du clip A02 #990001 depuis le 06.11.2026, `--accent-hi` = rouge clair pour texte et contours sur fond noir).
 - `site/assets/fonts/` : Jost 400/500/600 auto-hébergée (aucun appel à Google Fonts).
 - `site/assets/lost-in-time-preview.mp3` : extrait de 60 s (3:00 à 4:00 du master, fondus). Le titre complet ne va jamais ici.
+- `site/assets/dont-panic-preview.mp3` : extrait de 60 s de Z19 // DON'T PANIC (2:03.96 à 3:03.96 du master 44,1 kHz, début sur le refrain 2, fondu de sortie de 3,5 s). Titre annoncé par Julien le 20.11.2026, sortie le 18.12.2026.
+- `site/press/index.html` depuis le 20.11.2026 : une section par single (« Single · Out now » pour A02 avec Listen + clip, « Next single · 18.12.2026 » pour Z19 avec extrait seul et « More information soon »). Le script du lecteur gère plusieurs `.player` (un seul joue à la fois).
 - Site en anglais uniquement.
 - `site/privacy/index.html` : déclaration de confidentialité (lien dans le pied de page de chaque page).
 - Newsletter : formulaire dans le pied de page (`site/assets/newsletter.js`, styles `.nl` dans `style.css`),
