@@ -25,7 +25,7 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
 - `site/assets/fonts/` : Jost 400/500/600 auto-hébergée (aucun appel à Google Fonts).
 - `site/assets/lost-in-time-preview.mp3` : extrait de 60 s (3:00 à 4:00 du master, fondus). Le titre complet ne va jamais ici.
 - `site/assets/dont-panic-preview.mp3` : extrait de 60 s de Z19 // DON'T PANIC (2:03.96 à 3:03.96 du master 44,1 kHz, début sur le refrain 2, fondu de sortie de 3,5 s). Titre annoncé par Julien le 20.11.2026, sortie le 18.12.2026.
-- `site/press/index.html` depuis le 20.11.2026 : une section par single (« Single · Out now » pour A02 avec Listen + clip, « Next single · 18.12.2026 » pour Z19 avec extrait seul et « More information soon »). Le script du lecteur gère plusieurs `.player` (un seul joue à la fois).
+- `site/press/index.html` depuis le 20.11.2026 : une section par single (« Single · Out now » pour A02 avec Listen + clip, « Next single · 18.12.2026 » pour Z19 avec extrait seul et « More information soon »). Le script du lecteur gère plusieurs `.player` (un seul joue à la fois). Downloads en accès direct (choix de Julien du 20.11.2026 : « si c est sorti, on le met à dispo ») : titre complet WAV/MP3, pochette, communiqués EN/FR/DE, fact sheet, photos presse 01-03 (la 04 du Drive est un doublon exact de la pochette), bio, dossier EPK Drive. Plus de « request files ».
 - Site en anglais uniquement.
 - `site/privacy/index.html` : déclaration de confidentialité (lien dans le pied de page de chaque page).
 - Newsletter : formulaire dans le pied de page (`site/assets/newsletter.js`, styles `.nl` dans `style.css`),
