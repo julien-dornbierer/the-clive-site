@@ -18,6 +18,7 @@ a{color:inherit}
 .wrap{max-width:720px;margin:0 auto}
 .caps{text-transform:uppercase;font-weight:600;letter-spacing:.12em}
 .label{text-transform:uppercase;font-weight:500;font-size:12px;line-height:16px;letter-spacing:.2em}
+.sl{letter-spacing:0}
 .muted{color:var(--muted)}
 
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--void);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--s3) var(--s4);padding-block:var(--s4)}
