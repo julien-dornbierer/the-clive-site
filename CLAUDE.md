@@ -71,6 +71,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   suivi d'une note qui dure (descente de basse, note finale).
   Depuis v=44 : note tenue 180 (C2 52) `CHASE_DOUCE`, une tête en avant par double croche, en aller-retour sur
   les 12 têtes, dans la couleur du look et à faible niveau (les autres têtes gardent le leur) : pour un couplet bas.
+  Depuis v=47 : dans le rig du clip, les washes latéraux (141-143) sont la lumière des visages, toujours en blanc
+  chaud quelle que soit la couleur du look ; leur niveau suit toujours celui de leur colonne (look noir = noir).
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan

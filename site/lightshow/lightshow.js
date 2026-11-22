@@ -1256,10 +1256,11 @@
     const R = clipInit(), s = cv.width / SW, t = S.t, beat = S.beat, ly = S.f.lay, fb = ((beat % 1) + 1) % 1, W1 = [1, 1, 1];
     const ft = S.ft, am = (ft ? ft.tb : S.tubes).map(avg), al = am.map(lumOf), an = am.map(norm), k = S.kick, os = S.os;
     const lv = al.map((l) => Math.min(1, 1.5 * l)), ageOf = (g) => ly[g] ? t - timeAt(ly[g][1]) : 0, md = (g) => ly[g] ? ly[g][0] : 0;
-    // side washes: off / soft / full with notes 141-143 (soft when no plan sends them), each in its own column's colour,
-    // dimmed with it: a black look is a blackout, washes included
-    const fm = md('face'), lat = fm ? ({ 141: 0, 142: .35, 143: .7 }[fm] || 0) : .3;
-    const face = lv.map((l) => lat * Math.min(1, 2 * l)), SC = an.map((c) => mix(c, W1, .45));
+    // side washes: off / soft / full with notes 141-143 (soft when no plan sends them). In the clip room they are the
+    // face light: always warm white, whatever the colour of the look (the wall carries the colour, the band stands out
+    // in front of it), and they follow the level of their own column, so a black look is still a blackout, washes included
+    const fm = md('face'), lat = fm ? ({ 141: 0, 142: .35, 143: .7 }[fm] || 0) : .3, WW = [1, .84, .64];
+    const face = lv.map((l) => lat * Math.min(1, 2 * l)), SC = an.map(() => WW);
     // held flash 179: the washes follow its level (full, whatever the LAT layer says)
     if (ft) for (let sd = 0; sd < 2; sd++) if (.7 * ft.L > face[sd]) { face[sd] = .7 * ft.L; SC[sd] = mix(norm(ft.col), W1, .12); }
     // heads: the B3 modes (one tilt per bar, clipTilt), heads 0-5 on the left bar in the left column's colour, 6-11 on the
@@ -1530,6 +1531,8 @@
     132: 'Rig du clip : les 2 barres en opposition, l’une vers la caméra quand l’autre part vers le mur, elles se croisent',
     153: 'Rig du clip : la barre gauche bascule vers la caméra et revient, puis la droite, toutes les 2 temps',
     141: 'Rig du clip : washes latéraux au sol éteints, le groupe en silhouette devant le mur',
+    142: 'Rig du clip : washes latéraux à moitié, en blanc chaud sur le groupe',
+    143: 'Rig du clip : washes latéraux à fond, en blanc chaud sur le groupe',
   };
   const isClip = () => !!song && song.rig === 'b3-clip';
   const shown = (n) => !(isClip() && NUKE_ONLY.has(n));
