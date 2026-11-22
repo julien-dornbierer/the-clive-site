@@ -61,6 +61,10 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   B3, 2 barres de 6 têtes au lieu d'une de 12, pas de Nuke 2 (leurs notes ne dessinent rien), mur éclairé par les
   2 uplights, washes latéraux, miroir suspendu. Dans ce rig, les flashes 51, 87 et 162 sont mis en forme pour la
   caméra (pleins 100 ms, puis noir en 80 ms). Entrée `a10-clip`, à côté du plan de scène `a10`.
+  Depuis le moteur v=42 : barres à ±0,5 m du centre ; dans ce rig les 6 têtes d'une barre partagent un seul tilt
+  (`clipTilt` : houle et vague passent d'une barre à l'autre, ciseaux = barres opposées, tour = l'une puis l'autre),
+  pour que les taches au plafond restent en rangée ; la légende de ce rig ne montre aucune note Nuke. Nouvel état
+  178 (C2 50) `ORANGE_FIXE`, orange profond fixe sans pulsation, utilisable dans tous les rigs.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
