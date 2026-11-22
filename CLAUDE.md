@@ -65,6 +65,10 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   (`clipTilt` : houle et vague passent d'une barre à l'autre, ciseaux = barres opposées, tour = l'une puis l'autre),
   pour que les taches au plafond restent en rangée ; la légende de ce rig ne montre aucune note Nuke. Nouvel état
   178 (C2 50) `ORANGE_FIXE`, orange profond fixe sans pulsation, utilisable dans tous les rigs.
+  Depuis v=43 : les deux barres sont posées côte à côte sur un flight case derrière la batterie (`RCASE`, centres à
+  ±0,30 m, relevées de 35 cm). Nouvelle note tenue 179 (C2 51) `FLASH_TENU` : coup total puis lumière qui glisse
+  vers le bas et refroidit (blanc, or, orange) pendant toute la durée de la note, noir net à la fin ; pour un accent
+  suivi d'une note qui dure (descente de basse, note finale).
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
