@@ -69,6 +69,8 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   ±0,30 m, relevées de 35 cm). Nouvelle note tenue 179 (C2 51) `FLASH_TENU` : coup total puis lumière qui glisse
   vers le bas et refroidit (blanc, or, orange) pendant toute la durée de la note, noir net à la fin ; pour un accent
   suivi d'une note qui dure (descente de basse, note finale).
+  Depuis v=44 : note tenue 180 (C2 52) `CHASE_DOUCE`, une tête en avant par double croche, en aller-retour sur
+  les 12 têtes, dans la couleur du look et à faible niveau (les autres têtes gardent le leur) : pour un couplet bas.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
