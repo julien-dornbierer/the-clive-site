@@ -519,13 +519,16 @@
       if (n === 150) { const on = Math.floor(el * 24) % 2 === 0 ? 1 : 0; sb[0] = Math.max(sb[0], on); sb[1] = Math.max(sb[1], on); }
       if (n === 151) { const q = (beat - b) * 4, side = Math.floor(q) % 2; sb[side] = Math.max(sb[side], Math.exp(-(q % 1) * SPB / 4 / .04)); }
     }
+    // Clip room: a flash is shaped for the camera, full for 100 ms (every frame at 25 fps gets it whole) then out in
+    // ~80 ms, so that two hits a beat apart are separated by real black.
+    const cam = song && song.rig === 'b3-clip', camFlash = (el) => el < 0 ? 0 : el < .1 ? 1 : Math.exp(-(el - .1) / .03);
     for (const [n, b] of f.imp) {
       const el = t - timeAt(b);
       if (n >= 147 && n <= 149) { const k = Math.exp(-el / .06); if (k > .02) { active.add(n); if (n !== 149) sb[0] = Math.max(sb[0], k); if (n !== 148) sb[1] = Math.max(sb[1], k); } }
-      if (n === 162) { const k = Math.exp(-el / .06); if (k > .02) { os = Math.max(os, k); active.add(n); } }
+      if (n === 162) { const k = cam ? camFlash(el) : Math.exp(-el / .06); if (k > .02) { os = Math.max(os, k); active.add(n); } }
       if (n === 139) { const k = Math.exp(-el / .07); if (k > .02) { cs = Math.max(cs, k); active.add(n); } }
-      if (n === 51) { const dec = .16; if (el < dec * 3) { kick = Math.max(kick, Math.exp(-el / dec)); active.add(n); } }
-      if (n === 87) { if (el < .36) { kick = Math.max(kick, .32 * Math.exp(-el / .12)); active.add(n); } }
+      if (n === 51) { const dec = .16; if (cam) { const k = camFlash(el); if (k > .02) { kick = Math.max(kick, k); active.add(n); } } else if (el < dec * 3) { kick = Math.max(kick, Math.exp(-el / dec)); active.add(n); } }
+      if (n === 87) { if (cam) { const k = .32 * camFlash(el); if (k > .01) { kick = Math.max(kick, k); active.add(n); } } else if (el < .36) { kick = Math.max(kick, .32 * Math.exp(-el / .12)); active.add(n); } }
       if (n === 84) {
         const k = Math.exp(-el / .05);
         if (k > .02) { active.add(n); for (let s = 0; s < 2; s++) for (let i = 0; i < N; i++) tubes[s][i] = mix(tubes[s][i], C.space, k); }
@@ -636,6 +639,7 @@
   }
   function draw(S) {
     if (song && song.rig === 'b3') return drawB3(S);
+    if (song && song.rig === 'b3-clip') return drawClip(S);
     const s = cv.width / SW; cx.setTransform(s, 0, 0, s, 0, 0); cx.globalCompositeOperation = 'source-over';
     cx.fillStyle = '#06080b'; cx.fillRect(0, 0, SW, FLOOR); cx.fillStyle = '#040506'; cx.fillRect(0, FLOOR, SW, SH - FLOOR);
     const px = S.tubes.map((tb) => Array.from({ length: TP }, (_, j) => mix(tb[2 * j], tb[2 * j + 1], .5)));
@@ -739,6 +743,18 @@
     if (kind === 'vocal') { p.rect(x + 56 * s, top + 40 * s, 4 * s, h - 40 * s); }
     return p;
   }
+  // OTOS head i (0-11) for a `barre` mode: [tilt in degrees (0 = up, + = towards the audience), level 0-1]
+  function headMode(bm, i, beat, ba, fb) {
+    let th = 0, I = 0;
+    if (bm === 129 || bm === 152) I = 1;
+    if (bm === 130) { th = 20 + 22 * Math.sin(2 * Math.PI * beat / 16 - i * .45); I = .9; }
+    if (bm === 131) { th = 28 + 42 * Math.sin(2 * Math.PI * beat / 4 - i * .5); I = 1; }
+    if (bm === 132) { const q = Math.sin(2 * Math.PI * beat / 8); th = 30 + (i % 2 ? 40 : -40) * q; I = 1; }
+    if (bm === 133) { th = 72 + 6 * Math.sin(ba * 1.5 + i * .5); I = .65; }
+    if (bm === 153) { const ph = (((beat / 2 - i / 12) % 1) + 1) % 1; th = 80 * Math.pow(Math.sin(Math.PI * ph), 2); I = 1; }
+    if (bm === 154) { th = 78 * Math.exp(-fb / .22); I = 1; }
+    return [th, I];
+  }
   // Nuke tilt for a layer mode, in degrees: 0 = straight up, 90 = straight at the audience
   function nukeTilt(m, side, beat, age) {
     if (m === 135) return 0;
@@ -792,14 +808,7 @@
     const heads = HX.map((x, i) => {
       const cc = mix(am[0], am[1], i / 11), c = norm(cc), l = Math.min(1, 1.5 * lumOf(cc));
       if (S.chase >= 0) return { x, th: 0, I: i === S.chase ? 1.2 : 0, c: W1 };
-      let th = 0, I = 0;
-      if (bm === 129 || bm === 152) I = 1;
-      if (bm === 130) { th = 20 + 22 * Math.sin(2 * Math.PI * beat / 16 - i * .45); I = .9; }
-      if (bm === 131) { th = 28 + 42 * Math.sin(2 * Math.PI * beat / 4 - i * .5); I = 1; }
-      if (bm === 132) { const q = Math.sin(2 * Math.PI * beat / 8); th = 30 + (i % 2 ? 40 : -40) * q; I = 1; }
-      if (bm === 133) { th = 72 + 6 * Math.sin(ba * 1.5 + i * .5); I = .65; }
-      if (bm === 153) { const ph = (((beat / 2 - i / 12) % 1) + 1) % 1; th = 80 * Math.pow(Math.sin(Math.PI * ph), 2); I = 1; }
-      if (bm === 154) { th = 78 * Math.exp(-fb / .22); I = 1; }
+      const [th, I] = headMode(bm, i, beat, ba, fb);
       return { x, th, I: I * l * Math.min(1, ba / .25 + .2), c };
     });
     heads.forEach(({ x, th, I, c }) => {
@@ -991,6 +1000,393 @@
     v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.5)'); cx.fillStyle = v; cx.fillRect(0, 0, SW, SH);
   }
 
+  // ---------- Clip room (rig b3-clip, 22.11.2026) ----------
+  // Same notes, layers and state as rig B3 (compute() and frame() are shared): only the drawing changes. It shows the
+  // room of a live clip shoot as the main camera sees it: wide frontal shot, camera 6.4 m from the back wall, 1.65 m
+  // high, 0.9 m right of the centre. Metres: x left to right (0 = middle of the white wall), y up, z from the back wall
+  // towards the camera. Estimated sizes: 5.7 × 8 m, low ceiling of wooden boards at 2.75 m with exposed beams parallel
+  // to the back wall (underside at 2.5 m, one every 1.3 m from z = 0.65), dark brown parquet, white roughcast walls.
+  // The back wall (4.6 m between the left wall and a white box on the right, 1.1 × 1 × 2.3 m) replaces the backdrop;
+  // a blacked-out window on the left wall near the back.
+  // Reduced rig: two OTOS bars of 6 heads on the floor behind the drums at x = ±0.85 (heads 0-5 = left bar = left
+  // column, 6-11 = right bar = right column; tilt, zoom, FX strip, strobe and chase as in B3, a beam that goes up stops
+  // on the ceiling beams and leaves a spot there); no Nuke 2 (their layers and strobes draw nothing); the kick strobe
+  // facing the camera, drums on the floor; the two Ape Labs tubes on stands at the edges of the back wall (1.2 to 2.2 m,
+  // pixel for pixel as in B3); two floor uplights at the foot of the wall, x = ±1.15 (left column = left uplight =
+  // left half of the wall); two Stairville Z120M side washes on the floor in front of the band, x = ±2.05, z = 4 (layer
+  // `face`, notes 141-143, each side in its own column); a mirror hung from the first beam, lit by a 15 W spot fixed to
+  // the second; haze. The film crew's two fixed front lights (no DMX) are not drawn.
+  // The room is ray-cast once, on its first frame: its paint (roughcast grain, boards, beams) at full size, and the
+  // light of each fixture as an alpha mask at half size. Each frame tints the masks with the look's colours, adds them,
+  // multiplies the sum by the paint, then draws haze, beams, mirror dots, fixtures and the band on top.
+  const RM = { xl: -2.3, xr: 3.4, boxX: 2.3, boxD: 1, boxH: 2.3, depth: 8, ceil: 2.75, bot: 2.5, beams: [.65, 1.95, 3.25, 4.55, 5.85, 7.15], win: [.4, 1.6, .85, 2.2] };
+  const RG = { upX: 1.15, upZ: .55, barX: .85, barZ: .95, mir: [0, 2.12, .65], pin: [.55, 2.3, 1.95], sideX: 2.05, sideZ: 4, tubeX: 2, tubeZ: .3, tubeY: [1.2, 2.2], kick: [0, .29, 2.32], kit: 2.25 };
+  const RHEAD = Array.from({ length: 12 }, (_, i) => [(i < 6 ? -RG.barX : RG.barX) - .21 + (i % 6) * .084, .33, RG.barZ + .02]);
+  const RAMPS = [[-1.95, 1.55, 'marshall'], [-1.95, 2.35, 'orange'], [1.95, 1.6, 'orange'], [1.95, 2.4, 'fender']];
+  const ROBS = [[[RM.boxX, 0, 0], [RM.xr, RM.boxH, RM.boxD], 6], [[RM.xl, RM.ceil - .26, 0], [RM.xl + .22, RM.ceil, RM.depth], 7]]
+    .concat(RM.beams.map((z) => [[RM.xl, RM.bot, z - .11], [RM.xr, RM.ceil, z + .11], 7]));
+  const HW = SW / 2, HH = SH / 2;
+  const nrm3 = (a) => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+  const dot3 = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const CAM = (() => {
+    const o = [.9, 1.65, 6.4], f = nrm3([-o[0], 1.2 - o[1], 1.2 - o[2]]), r = nrm3([-f[2], 0, f[0]]);
+    return { o, f, r, u: [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]], F: SH / 2 / Math.tan(25 * Math.PI / 180) };
+  })();
+  // camera projection: [x, y on the 1600 × 900 scene, depth in m] (CAM.F / depth = pixels per metre there)
+  function pj(p) {
+    const d = [p[0] - CAM.o[0], p[1] - CAM.o[1], p[2] - CAM.o[2]], z = Math.max(.05, dot3(d, CAM.f));
+    return [SW / 2 + CAM.F * dot3(d, CAM.r) / z, SH / 2 - CAM.F * dot3(d, CAM.u) / z, z];
+  }
+  // nearest surface along a ray from inside the room (no allocation: the hot loop casts 1.8 M rays once)
+  let HT = 0, HID = 0, HAX = 0, HSG = 0;
+  function roomHit(o, d) {
+    HT = 1e9; HID = 5; HAX = 2; HSG = -1;
+    const lo = [RM.xl, 0, 0], hi = [RM.xr, RM.ceil, RM.depth];
+    for (let i = 0; i < 3; i++) {
+      if (d[i] < -1e-9) { const q = (lo[i] - o[i]) / d[i]; if (q < HT) { HT = q; HID = [1, 3, 0][i]; HAX = i; HSG = 1; } }
+      else if (d[i] > 1e-9) { const q = (hi[i] - o[i]) / d[i]; if (q < HT) { HT = q; HID = [2, 4, 5][i]; HAX = i; HSG = -1; } }
+    }
+    for (let k = 0; k < ROBS.length; k++) {
+      const a = ROBS[k][0], b = ROBS[k][1]; let tn = -1e9, tf = 1e9, ax = 0, ok = true;
+      for (let i = 0; i < 3; i++) {
+        if (Math.abs(d[i]) < 1e-9) { if (o[i] < a[i] || o[i] > b[i]) { ok = false; break; } continue; }
+        let t1 = (a[i] - o[i]) / d[i], t2 = (b[i] - o[i]) / d[i]; if (t1 > t2) { const q = t1; t1 = t2; t2 = q; }
+        if (t1 > tn) { tn = t1; ax = i; } if (t2 < tf) tf = t2; if (tn > tf) { ok = false; break; }
+      }
+      if (ok && tn > 1e-6 && tn < HT) { HT = tn; HID = ROBS[k][2]; HAX = ax; HSG = d[ax] > 0 ? -1 : 1; }
+    }
+    return HT;
+  }
+  let CLIP = null;
+  function clipInit() {
+    if (CLIP) return CLIP;
+    // seeded value noise, so the room is the same on every load
+    const NT = new Float32Array(65536); { let q = 20261122; for (let i = 0; i < 65536; i++) { q = (Math.imul(q, 1103515245) + 12345) >>> 0; NT[i] = (q >>> 8) / 16777216; } }
+    const vn = (x, y) => {
+      const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy, ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+      const x0 = ix & 255, x1 = (ix + 1) & 255, y0 = (iy & 255) << 8, y1 = ((iy + 1) & 255) << 8, a = NT[x0 | y0], b = NT[x1 | y0], c = NT[x0 | y1], e = NT[x1 | y1];
+      return a + (b - a) * ux + (c - a) * uy + (a - b - c + e) * ux * uy;
+    };
+    const PAR = [[.29, .2, .14], [.24, .17, .12], [.35, .25, .19], [.2, .145, .1], [.38, .27, .2]], CEI = [[.54, .35, .2], [.48, .31, .17], [.58, .4, .23], [.43, .27, .15]];
+    // boards: plank width w across u, lengths L along v, seams faded out when they get thinner than a pixel (fp = m per px)
+    const boards = (u, v, w, L, pal, fp, seed) => {
+      const i = Math.floor(u / w), fu = u / w - i, off = NT[(i * 37 + seed) & 65535] * L, j = Math.floor((v + off) / L), fv = (v + off) / L - j;
+      const c = pal[Math.floor(NT[(i * 131 + j * 977 + seed) & 65535] * pal.length)], g = .82 + .3 * vn(u * 220 + seed, v * 4) + .08 * vn(u * 40, v * 40);
+      const sw = Math.max(.005, fp), sk = .005 / sw, edge = Math.min(fu * w, (1 - fu) * w) < sw || Math.min(fv * L, (1 - fv) * L) < sw;
+      const f = g * (edge ? 1 - .5 * sk : 1); return [c[0] * f, c[1] * f, c[2] * f];
+    };
+    const crepi = (u, v) => {                    // white roughcast; its relief is shaded as if lit from below (the uplights graze it)
+      const g = .5 * vn(u * 60, v * 60) + .3 * vn(u * 170 + 31, v * 170 + 7) + .2 * vn(u * 12 + 5, v * 12 + 9);
+      const r = vn(u * 60, v * 60 - .45) - vn(u * 60, v * 60 + .45), f = (.8 + .28 * g) * (1 + .38 * r) * (vn(u * 300 + 3, v * 300) > .86 ? .84 : 1);
+      return [.9 * f, .885 * f, .85 * f];
+    };
+    const paint = (id, p, fp) => {
+      const [x, y, z] = p;
+      if (id === 0 || id === 5) return crepi(x, y);
+      if (id === 1) {
+        const [z0, z1, y0, y1] = RM.win;
+        if (z > z0 && z < z1 && y > y0 && y < y1) { const fr = Math.min(z - z0, z1 - z, y - y0, y1 - y) < .05; return fr ? [.62, .61, .59] : [.025, .027, .032]; }
+        return crepi(z, y);
+      }
+      if (id === 2) return crepi(z + 13, y);
+      if (id === 3) return boards(x - RM.xl, z, .14, 1.3, PAR, fp, 7);
+      if (id === 4) return boards(x - RM.xl, z, .11, 2.2, CEI, fp, 19);
+      if (id === 6) { const f = .95 + .06 * vn(x * 90 + z * 90, y * 90); return [.93 * f, .925 * f, .9 * f]; }
+      const f = .78 + .3 * vn(x * 3 + z * 3, (y + z) * 70) + .1 * vn(x * 30, z * 30 + y * 30); return [.56 * f, .385 * f, .215 * f];
+    };
+    const ao = (p) => {                          // soft corners: distance to the nearest other face of the room
+      let m = 9; for (const v of [p[1], RM.ceil - p[1], p[0] - RM.xl, RM.xr - p[0], p[2]]) if (v > .015 && v < m) m = v;
+      return 1 - .32 * Math.exp(-m / .28);
+    };
+    const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+    const D = [0, 0, 0], o = CAM.o, P = [0, 0, 0];
+    const ray = (X, Y) => { for (let i = 0; i < 3; i++) D[i] = CAM.f[i] + CAM.r[i] * (X - SW / 2) / CAM.F - CAM.u[i] * (Y - SH / 2) / CAM.F; };
+    // paint, full size
+    const alb = mk(SW, SH), ag = alb.getContext('2d'), im = ag.createImageData(SW, SH), px = im.data;
+    for (let Y = 0; Y < SH; Y++) for (let X = 0; X < SW; X++) {
+      ray(X + .5, Y + .5); const t = roomHit(o, D); for (let i = 0; i < 3; i++) P[i] = o[i] + D[i] * t;
+      const c = paint(HID, P, t / CAM.F * 1.4), a = ao(P), j = (Y * SW + X) * 4;
+      px[j] = 255 * Math.min(1, c[0] * a); px[j + 1] = 255 * Math.min(1, c[1] * a); px[j + 2] = 255 * Math.min(1, c[2] * a); px[j + 3] = 255;
+    }
+    ag.putImageData(im, 0, 0);
+    // light masks, half size: E = irradiance (soft spot cones, 1/d²), alpha = 1 - exp(-E)
+    const spotE = (p, n, q, a, ci, co) => {
+      let vx = q[0] - p[0], vy = q[1] - p[1], vz = q[2] - p[2]; const d2 = vx * vx + vy * vy + vz * vz, d = Math.sqrt(d2); vx /= d; vy /= d; vz /= d;
+      const cs = n[0] * vx + n[1] * vy + n[2] * vz; if (cs <= 0) return 0;
+      const s = -(vx * a[0] + vy * a[1] + vz * a[2]); if (s <= co) return 0;
+      const k = s >= ci ? 1 : (s - co) / (ci - co); return cs * k * k * (3 - 2 * k) / (d2 + .05);
+    };
+    const lobeE = (p, n, q, axis, pw, soft) => {      // a source that throws mostly along axis (cos^pw lobe)
+      const vx = q[0] - p[0], vy = q[1] - p[1], vz = q[2] - p[2], d2 = vx * vx + vy * vy + vz * vz, d = Math.sqrt(d2);
+      const cs = (n[0] * vx + n[1] * vy + n[2] * vz) / d; if (cs <= 0) return 0;
+      const em = Math.max(0, -(vx * axis[0] + vy * axis[1] + vz * axis[2]) / d); return cs * Math.pow(em, pw) / (d2 + soft);
+    };
+    const cos = (deg) => Math.cos(deg * Math.PI / 180);
+    const UPA = [-1, 1].map((sg) => nrm3([-sg * .09, .92, -.55])), WSA = [-1, 1].map((sg) => nrm3([-sg * .6 - sg * RG.sideX, 1.35 - .3, 2.7 - RG.sideZ]));
+    const names = ['up0', 'up1', 'wa0', 'wa1', 'ba0', 'ba1', 'ki'], bufs = names.map(() => new Uint8ClampedArray(HW * HH * 4));
+    const n = [0, 0, 0], E = new Float32Array(7);
+    for (let Y = 0; Y < HH; Y++) for (let X = 0; X < HW; X++) {
+      ray(2 * X + 1, 2 * Y + 1); const t = roomHit(o, D); for (let i = 0; i < 3; i++) P[i] = o[i] + D[i] * t;
+      n[0] = n[1] = n[2] = 0; n[HAX] = HSG; const a = ao(P);
+      for (let sd = 0; sd < 2; sd++) {
+        const sg = sd ? 1 : -1, tube = [sg * RG.tubeX, Math.max(RG.tubeY[0], Math.min(RG.tubeY[1], P[1])), RG.tubeZ];
+        E[sd] = 3.2 * spotE(P, n, [sg * RG.upX, .18, RG.upZ], UPA[sd], cos(30), cos(72))      // uplight up the wall
+          + .55 * lobeE(P, n, [sg * 1.1, 1, -.25], [0, 0, 1], 1, .9)                           // the lit wall throws it back into the room
+          + .1 * lobeE(P, n, tube, [0, 0, 1], 0, .02);                                        // the tube on its stand
+        E[2 + sd] = 7 * spotE(P, n, [sg * RG.sideX, .3, RG.sideZ], WSA[sd], cos(15), cos(34)) + .25 * lobeE(P, n, [-sg * .3, 1, 2.6], [0, 0, -1], .5, 1.5);
+        E[4 + sd] = 1.8 * lobeE(P, n, [sg * RG.barX, .45, RG.barZ], [0, 1, 0], 2, .1) + .12 * lobeE(P, n, [sg * RG.barX, .45, RG.barZ], [0, 0, 1], .2, .3);
+      }
+      E[6] = 7 * lobeE(P, n, RG.kick, [0, 0, 1], 2, .2) + .95;     // kick strobe at the camera, plus the bounce of the white walls
+      const j = (Y * HW + X) * 4;
+      for (let m = 0; m < 7; m++) { const b = bufs[m]; b[j] = b[j + 1] = b[j + 2] = 255; b[j + 3] = 255 * (1 - Math.exp(-E[m] * (m === 6 ? 1 : a))); }
+    }
+    const maps = {};
+    names.forEach((k, m) => { const c = mk(HW, HH); c.getContext('2d').putImageData(new ImageData(bufs[m], HW, HH), 0, 0); maps[k] = c; });
+    const lb = mk(HW, HH), tc = mk(HW, HH);
+    // mirror: 420 fixed directions (the discs turn them slowly around the vertical)
+    const dirs = Array.from({ length: 420 }, (_, i) => { const u = 2 * hash(i + .31) - 1, a = hash(i + .77) * 2 * Math.PI, s = Math.sqrt(1 - u * u); return [s * Math.cos(a), u, s * Math.sin(a), hash(i + .13), hash(i + .59)]; });
+    CLIP = { alb, maps, lb, lg: lb.getContext('2d'), tc, tg: tc.getContext('2d'), dirs };
+    return CLIP;
+  }
+  // adds sum(level × mask) in colour col to the light buffer (levels over 1 draw the mask again)
+  function tint(R, list, col) {
+    if (lumOf(col) < .004) return;
+    const g = R.tg; let any = false;
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, HW, HH); g.globalCompositeOperation = 'lighter';
+    for (const [m, a] of list) for (let r = a; r > .004; r -= 1) { g.globalAlpha = Math.min(1, r); g.drawImage(m, 0, 0); any = true; }
+    if (!any) return;
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-in'; g.fillStyle = css(col, 1); g.fillRect(0, 0, HW, HH);
+    R.lg.globalCompositeOperation = 'lighter'; R.lg.drawImage(R.tc, 0, 0);
+  }
+  // a beam in the haze from (x0, y0) to (x1, y1), widths w0 → w1, alpha a at the source → a1 at the end
+  function shaft(x0, y0, x1, y1, w0, w1, c, a, a1) {
+    const L = Math.hypot(x1 - x0, y1 - y0); if (a <= .004 || L < 1) return;
+    const px = -(y1 - y0) / L, py = (x1 - x0) / L;
+    for (const [m, al] of [[3.2, .16], [1, 1]]) {
+      const g = cx.createLinearGradient(x0, y0, x1, y1);
+      g.addColorStop(0, css(c, a * al)); g.addColorStop(.45, css(c, (a * .5 + a1 * .5) * al * .8)); g.addColorStop(1, css(c, a1 * al));
+      cx.fillStyle = g; cx.beginPath();
+      cx.moveTo(x0 + px * w0 * m / 2, y0 + py * w0 * m / 2); cx.lineTo(x1 + px * w1 * m / 2, y1 + py * w1 * m / 2);
+      cx.lineTo(x1 - px * w1 * m / 2, y1 - py * w1 * m / 2); cx.lineTo(x0 - px * w0 * m / 2, y0 - py * w0 * m / 2); cx.closePath(); cx.fill();
+    }
+  }
+  // a box seen by the camera (centre c, size [w, h, d], turned by ry around the vertical), flat shaded faces
+  function solid(c, sz, ry, col, lit, edge) {
+    const cs = Math.cos(ry), sn = Math.sin(ry), h = sz.map((v) => v / 2);
+    const W = (lx, ly, lz) => [c[0] + lx * cs + lz * sn, c[1] + ly, c[2] - lx * sn + lz * cs];
+    const F = [[[1, 0, 0], .62], [[-1, 0, 0], .62], [[0, 1, 0], .8], [[0, 0, 1], 1], [[0, 0, -1], .5]];
+    F.forEach(([nl, sh]) => {
+      const nw = [nl[0] * cs + nl[2] * sn, nl[1], -nl[0] * sn + nl[2] * cs], fcen = W(nl[0] * h[0], nl[1] * h[1], nl[2] * h[2]);
+      if (dot3(nw, [CAM.o[0] - fcen[0], CAM.o[1] - fcen[1], CAM.o[2] - fcen[2]]) <= 0) return;
+      const ax = nl[0] ? [[0, 1, 0], [0, 0, 1]] : nl[1] ? [[1, 0, 0], [0, 0, 1]] : [[1, 0, 0], [0, 1, 0]];
+      const q = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => pj(W(nl[0] * h[0] + (ax[0][0] * a + ax[1][0] * b) * h[0], nl[1] * h[1] + (ax[0][1] * a + ax[1][1] * b) * h[1], nl[2] * h[2] + (ax[0][2] * a + ax[1][2] * b) * h[2])));
+      cx.fillStyle = css(mul(col, sh * lit), 1); cx.beginPath(); q.forEach(([x, y], i) => i ? cx.lineTo(x, y) : cx.moveTo(x, y)); cx.closePath(); cx.fill();
+      if (edge) { cx.strokeStyle = edge; cx.lineWidth = 1; cx.stroke(); }
+    });
+  }
+  function clipTube(xa, ya, xb, yb, px, w) {          // px: 32 colours from (xa, ya) (bottom) to (xb, yb) (top)
+    const s = cv.width / SW;
+    cx.lineCap = 'round'; cx.strokeStyle = '#121820'; cx.lineWidth = 1.5 * w; line(xa, ya, xb, yb); cx.lineCap = 'butt';
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    const a = avg(px); glow((xa + xb) / 2, (ya + yb) / 2, 110, norm(a), .25 * lumOf(a), .45);
+    px.forEach((c, i) => {
+      const l = lumOf(c); if (l < .01) return;
+      const n = norm(c), sx = xa + (xb - xa) * i / 32, sy = ya + (yb - ya) * i / 32, ex = xa + (xb - xa) * (i + 1) / 32, ey = ya + (yb - ya) * (i + 1) / 32;
+      cx.shadowColor = css(n, l); cx.shadowBlur = 10 * s * l;
+      cx.strokeStyle = css(n, .35 * l); cx.lineWidth = 2 * w; line(sx, sy, ex, ey);
+      cx.shadowBlur = 0; cx.strokeStyle = css(mix(n, [1, 1, 1], l * l * .7), Math.min(1, l * 1.5)); cx.lineWidth = w; line(sx, sy, ex, ey);
+    });
+    cx.restore();
+  }
+  function drawClip(S) {
+    const R = clipInit(), s = cv.width / SW, t = S.t, beat = S.beat, ly = S.f.lay, fb = ((beat % 1) + 1) % 1, W1 = [1, 1, 1];
+    const am = S.tubes.map(avg), al = am.map(lumOf), an = am.map(norm), k = S.kick, os = S.os;
+    const lv = al.map((l) => Math.min(1, 1.5 * l)), ageOf = (g) => ly[g] ? t - timeAt(ly[g][1]) : 0, md = (g) => ly[g] ? ly[g][0] : 0;
+    // side washes: off / soft / full with notes 141-143 (soft when no plan sends them), each in its own column's colour,
+    // dimmed with it: a black look is a blackout, washes included
+    const fm = md('face'), lat = fm ? ({ 141: 0, 142: .35, 143: .7 }[fm] || 0) : .3;
+    const face = lv.map((l) => lat * Math.min(1, 2 * l)), SC = an.map((c) => mix(c, W1, .45));
+    // heads: the B3 modes, heads 0-5 on the left bar in the left column's colour, 6-11 on the right bar in the right one
+    const bm = md('barre'), ba = ageOf('barre'), zm = md('zoom');
+    const zk = zm === 156 || bm === 152 ? 1 : zm === 157 ? Math.exp(-fb / .25) : 0;
+    const heads = RHEAD.map((p, i) => {
+      const sd = i < 6 ? 0 : 1;
+      if (S.chase >= 0) return { p, sd, th: 0, I: i === S.chase ? 1.2 : 0, c: W1 };
+      const [th, I] = headMode(bm, i, beat, ba, fb);
+      return { p, sd, th, I: I * lv[sd] * Math.min(1, ba / .25 + .2), c: an[sd] };
+    });
+    const bI = [0, 1].map((sd) => heads.reduce((a, h) => a + (h.sd === sd ? h.I : 0), 0) / 6);
+    const mf = md('miroir') === 145 ? Math.min(1, ageOf('miroir') / .8) : 0, mc = [1, .95, .86];
+
+    // ----- the room: tinted light masks, multiplied by the paint
+    const lg = R.lg; lg.globalAlpha = 1; lg.globalCompositeOperation = 'source-over'; lg.fillStyle = 'rgb(10,10,11)'; lg.fillRect(0, 0, HW, HH);
+    for (let sd = 0; sd < 2; sd++) {
+      tint(R, [[R.maps['up' + sd], lv[sd]]], an[sd]); tint(R, [[R.maps['ba' + sd], .9 * bI[sd]]], S.chase >= 0 ? W1 : an[sd]);
+      tint(R, [[R.maps['wa' + sd], 1.4 * face[sd]]], SC[sd]);
+    }
+    tint(R, [[R.maps.ki, 1.6 * k], [R.maps.ba0, 1.2 * os], [R.maps.ba1, 1.2 * os]], W1);
+    if (mf > 0) tint(R, [[R.maps.ki, .08 * mf]], mc);                    // the mirror dots add a little light to the room
+    cx.setTransform(s, 0, 0, s, 0, 0); cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    cx.drawImage(R.lb, 0, 0, SW, SH);
+    cx.globalCompositeOperation = 'multiply'; cx.drawImage(R.alb, 0, 0, SW, SH);
+    cx.globalCompositeOperation = 'lighter';
+    // the flash goes past the paint: white walls burn out
+    if (k > .01) { cx.globalAlpha = Math.min(1, .5 * k); cx.drawImage(R.maps.ki, 0, 0, SW, SH); cx.globalAlpha = 1; }
+
+    // ----- mirror dots on the walls, beams, parquet and box (only where the camera sees them)
+    if (mf > 0) {
+      const ma = ageOf('miroir') * .22, c0 = Math.cos(ma), s0 = Math.sin(ma), o = RG.mir, d = [0, 0, 0], v = [0, 0, 0];
+      R.dirs.forEach(([dx, dy, dz, h1, h2], j) => {
+        d[0] = dx * c0 - dz * s0; d[1] = dy; d[2] = dx * s0 + dz * c0;
+        const tt = roomHit(o, d) * .998, p = [o[0] + d[0] * tt, o[1] + d[1] * tt, o[2] + d[2] * tt], ax = HAX;
+        const q = pj(p); if (q[2] < .4 || q[0] < -10 || q[0] > SW + 10 || q[1] < -10 || q[1] > SH + 10) return;
+        for (let i = 0; i < 3; i++) v[i] = p[i] - CAM.o[i];
+        const dc = Math.hypot(v[0], v[1], v[2]); v[0] /= dc; v[1] /= dc; v[2] /= dc;
+        if (roomHit(CAM.o, v) < dc - .03) return;                          // hidden behind a beam or the box
+        const r = Math.max(.8, Math.min(6, (.01 + .006 * tt) * CAM.F / q[2])), a = (.5 + .5 * h1) * mf * Math.min(1, 1.8 / tt);
+        const rx = ax === 0 ? r * .55 : r, ry = ax === 1 ? r * .45 : r;
+        if (h2 > .6) glow(q[0], q[1], r * 3.2, mc, .3 * a, ry / rx);
+        cx.fillStyle = css(mc, a); cx.beginPath(); cx.ellipse(q[0], q[1], rx, ry, 0, 0, Math.PI * 2); cx.fill();
+      });
+    }
+
+    // ----- OTOS beams: each head throws its beam until it meets the room (a spot on the beams, the ceiling or the wall)
+    const beams = heads.map((h) => {
+      const r = h.th * Math.PI / 180, d = [0, Math.cos(r), Math.sin(r)], half = (1.8 + 18 * zk) * Math.PI / 180;
+      let tt = roomHit(h.p, d), id = HID, ax = HAX;
+      const toCam = (CAM.o[2] - h.p[2]) * d[2] + (CAM.o[1] - h.p[1]) * d[1] + (CAM.o[0] - h.p[0]) * d[0], dz = dot3(d, CAM.f);
+      const zc0 = pj(h.p)[2]; if (dz < 0 && zc0 + dz * tt < 2) { tt = Math.max(.1, (zc0 - 2) / -dz); id = -1; }   // towards the camera: fades out 2 m before the lens
+      const e = [h.p[0] + d[0] * tt, h.p[1] + d[1] * tt, h.p[2] + d[2] * tt];
+      const gl = Math.pow(Math.max(0, toCam / Math.hypot(CAM.o[0] - h.p[0], CAM.o[1] - h.p[1], CAM.o[2] - h.p[2])), 8);
+      return { h, e, tt, id, ax, half, gl };
+    });
+    const za = 1 - .55 * zk;
+    beams.forEach(({ h, e, tt, id, ax, half, gl }) => {
+      const a = pj(h.p), b = pj(e), w0 = .06 * CAM.F / a[2], w1 = Math.max(w0, 2 * tt * Math.tan(half) * CAM.F / b[2]);
+      const spot = id >= 0 ? 1 / (1 + 6 * Math.pow(tt * Math.tan(half), 2)) : 0;
+      if (h.I > .004) {
+        shaft(a[0], a[1], b[0], b[1], w0, w1, h.c, .5 * h.I * za, .12 * h.I * za * (id >= 0 ? 1 : 0));
+        if (spot > 0) glow(b[0], b[1], w1 * .9 + 6, mix(h.c, W1, .15), Math.min(1, 1.1 * h.I * spot), ax === 1 ? .38 : 1);
+      }
+      if (os > .01) { shaft(a[0], a[1], b[0], b[1], w0, w1, W1, .45 * os, .1 * os); if (spot > 0) glow(b[0], b[1], w1 * .9 + 8, W1, os * spot, ax === 1 ? .38 : 1); }
+    });
+
+    // ----- haze: slow clouds lit by the room
+    {
+      const hc = norm(mix(mix(am[0], am[1], .5), [.6, .7, .85], .35)), hl = Math.min(1, .12 + .8 * (bI[0] + bI[1]) / 2 + .45 * (lv[0] + lv[1]) + .35 * (face[0] + face[1]) + .6 * mf);
+      HAZE.forEach(([u, v, w]) => {
+        const x = ((u * 1.3 - .15 + t * (.004 + .006 * w)) % 1.3 + 1.3) % 1.3 * SW - .15 * SW, y = 160 + v * 440;
+        glow(x, y, 240 + 200 * w, hc, (.03 + .026 * w) * hl, .55);
+      });
+      if (k > .01) glow(SW / 2, SH / 2, 1100, W1, .12 * k, .6);
+    }
+    // ----- uplights at the foot of the wall: a fan up the wall in the haze
+    for (let sd = 0; sd < 2; sd++) {
+      const sg = sd ? 1 : -1, a = pj([sg * RG.upX, .2, RG.upZ]), b = pj([sg * RG.upX * .94, 2.2, .06]);
+      if (lv[sd] > .01) { shaft(a[0], a[1], b[0], b[1], 10, 1.3 * CAM.F / b[2], an[sd], .1 * lv[sd], .02 * lv[sd]); glow(a[0], a[1] - 4, 26, mix(an[sd], W1, .3), .9 * lv[sd]); }
+    }
+    // ----- the 15 W spot on the mirror
+    if (mf > 0) { const a = pj(RG.pin), b = pj(RG.mir); shaft(a[0], a[1], b[0], b[1], 3, 9, mc, .5 * mf, .35 * mf); glow(b[0], b[1], 30, mc, .9 * mf); glow(a[0], a[1], 10, mc, .7 * mf); }
+    cx.globalCompositeOperation = 'source-over';
+
+    // ----- fixtures, far to near. Their paint is lit a little by the room.
+    const room = Math.min(1, .1 + .45 * Math.max(lv[0], lv[1]) + .5 * k + .3 * os + .2 * mf), dark = [.07, .075, .085];
+    // tubes on their stands (pixel 0 at the bottom)
+    for (let sd = 0; sd < 2; sd++) {
+      const sg = sd ? 1 : -1, f0 = pj([sg * RG.tubeX, 0, RG.tubeZ]), a = pj([sg * RG.tubeX, RG.tubeY[0], RG.tubeZ]), b = pj([sg * RG.tubeX, RG.tubeY[1], RG.tubeZ]), m = CAM.F / a[2];
+      cx.strokeStyle = css(mul([.35, .37, .4], room), 1); cx.lineWidth = .025 * m; line(f0[0], f0[1], a[0], a[1]);
+      cx.lineWidth = .02 * m; line(f0[0] - .22 * m, f0[1] + .03 * m, f0[0] + .22 * m, f0[1] + .03 * m);
+      clipTube(a[0], a[1], b[0], b[1], S.tubes[sd], .045 * m);
+    }
+    // uplights, hazer
+    for (let sd = 0; sd < 2; sd++) solid([(sd ? 1 : -1) * RG.upX, .11, RG.upZ], [.28, .22, .26], 0, dark, room, 'rgba(70,78,90,.6)');
+    solid([-2.05, .15, 1], [.15, .3, .32], .2, [.12, .12, .14], room);
+    // mirror on its wire from the first beam, and the spot on the second
+    {
+      const m0 = pj([RG.mir[0], RM.bot, RG.mir[2]]), m1 = pj(RG.mir), mm = CAM.F / m1[2], p0 = pj([RG.pin[0], RM.bot, RG.pin[2]]), p1 = pj(RG.pin);
+      cx.strokeStyle = 'rgba(120,125,130,.7)'; cx.lineWidth = 1; line(m0[0], m0[1], m1[0], m1[1] - .1 * mm); line(p0[0], p0[1], p1[0], p1[1]);
+      solid(RG.pin, [.12, .16, .16], .5, [.1, .1, .12], room);
+      cx.strokeStyle = css([.8, .86, .95], .25 + .6 * mf); cx.lineWidth = 1.2;
+      for (let j = 0; j < 6; j++) {
+        const a = j * Math.PI / 3 + (mf ? ageOf('miroir') * .6 : 0);
+        cx.beginPath(); cx.arc(m1[0] + Math.cos(a) * .055 * mm, m1[1] + Math.sin(a) * .055 * mm, .028 * mm, 0, Math.PI * 2); cx.fillStyle = '#141a22'; cx.fill(); cx.stroke();
+      }
+      if (mf > 0) { cx.globalCompositeOperation = 'lighter'; glow(m1[0], m1[1], 16, mc, .8 * mf); cx.globalCompositeOperation = 'source-over'; }
+    }
+    // the two OTOS bars (6 heads each) with their FX strip (12 pixels each, the 24 of B3 split in two)
+    const fxm = md('fx');
+    for (let sd = 0; sd < 2; sd++) solid([(sd ? 1 : -1) * RG.barX, .15, RG.barZ], [.52, .3, .19], 0, [.1, .1, .13], room, 'rgba(60,66,78,.7)');
+    cx.globalCompositeOperation = 'lighter';
+    if (fxm && fxm !== 158) for (let j = 0; j < 24; j++) {
+      const sd = j < 12 ? 0 : 1, c = an[sd], l = Math.max(.35, lv[sd]), p = Math.floor(beat * 4) % 24;
+      const a = fxm === 159 ? .8 : fxm === 160 ? Math.exp(-(((p - j) % 24) + 24) % 24 / 3) : (hash(j * 1.7 + Math.floor(t * 10)) > .6 ? 1 : .08);
+      if (a * l > .02) { const q = pj([(sd ? 1 : -1) * RG.barX - .23 + (j % 12) * .042, .12, RG.barZ + .1]); cx.fillStyle = css(c, a * l); cx.fillRect(q[0] - 2, q[1] - 1.5, 4, 3); glow(q[0], q[1], 9, c, .5 * a * l); }
+    }
+    beams.forEach(({ h, gl }) => {
+      const q = pj(h.p);
+      glow(q[0], q[1], 7, h.c, 1.2 * h.I + 1.2 * os);
+      glow(q[0], q[1], 8 + 40 * gl, mix(h.c, W1, .4), h.I * (.3 + 1.4 * gl));
+      if (os > .01) glow(q[0], q[1], 12 + 40 * gl, W1, 1.3 * os);
+    });
+    cx.globalCompositeOperation = 'source-over';
+
+    // ----- the band: lit from the front by the washes (each side in its own colour), outlined by the light behind
+    const washAt = (sd, p) => {
+      const sg = sd ? 1 : -1, q = [sg * RG.sideX, .3, RG.sideZ], a = nrm3([-sg * .6 - q[0], 1.05, 2.7 - q[2]]), v = nrm3([p[0] - q[0], p[1] - q[1], p[2] - q[2]]);
+      const c = dot3(v, a), lo = Math.cos(40 * Math.PI / 180); return c <= lo ? 0 : Math.min(1, (c - lo) / (1 - lo) * 1.6);
+    };
+    const body = (path, p, back) => {
+      let fr = mul(W1, .1 * k + .08 * os);
+      for (let sd = 0; sd < 2; sd++) fr = fr.map((v, i) => v + SC[sd][i] * face[sd] * washAt(sd, p));
+      const wx = Math.max(0, Math.min(1, (p[0] + 1.6) / 3.2)), bc = mix(mul(an[0], lv[0] + bI[0]), mul(an[1], lv[1] + bI[1]), wx).map((v) => v + back * k + os);
+      const bl = Math.min(1, lumOf(bc));
+      cx.fillStyle = css([.03 + .34 * fr[0], .035 + .34 * fr[1], .045 + .34 * fr[2]], 1); cx.fill(path);
+      cx.save(); if (bl > .3) { cx.shadowColor = css(norm(bc), bl); cx.shadowBlur = 22 * s * bl; }
+      cx.strokeStyle = css(mix(norm(bc), W1, .3), .12 + .75 * bl); cx.lineWidth = 1.2 + 1.6 * bl; cx.stroke(path); cx.restore();
+    };
+    const fig = (x, y, z, hm, kind, back) => { const f = pj([x, y, z]), m = CAM.F / f[2]; body(person(f[0], f[1], hm * m, kind), [x, 1.1, z], back); };
+    fig(0, .42, 1.5, 1.02, 'drums', .5);
+    // backline on the sides, turned towards the drums
+    RAMPS.forEach(([x, z, kd]) => {
+      const tol = kd === 'orange' ? [.78, .36, .12] : kd === 'fender' ? [.1, .1, .1] : [.07, .075, .08];
+      solid([x, .29, z], [.7, .58, .38], -Math.sign(x) * .5, tol, Math.min(1, .15 + .6 * room + .3 * Math.max(face[0], face[1])), 'rgba(0,0,0,.6)');
+    });
+    // drums on the floor, the B3 kit drawing scaled to its depth; the kick strobe in its transparent shell
+    {
+      const a = pj([0, 0, RG.kit]), m = CAM.F / a[2] / 160, fl = Math.max(.7 * k, .35 * os, .3 * Math.max(face[0], face[1]), .15 * Math.max(al[0], al[1]), .2 * mf) - .12;
+      cx.save(); cx.translate(a[0], a[1]); cx.scale(m, m); cx.translate(-KX, -680);
+      drums(fl);
+      cx.globalCompositeOperation = 'lighter';
+      const g = cx.createRadialGradient(KX, KY, 0, KX, KY, KR);
+      g.addColorStop(0, css(W1, .05 + .95 * k)); g.addColorStop(.7, css([.85, .9, 1], .04 + .8 * k)); g.addColorStop(1, css([.85, .9, 1], .03 + .6 * k));
+      cx.fillStyle = g; cx.shadowColor = css(W1, k); cx.shadowBlur = 70 * s * k; cx.beginPath(); cx.arc(KX, KY, KR, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+      cx.save(); cx.translate(a[0], a[1]); cx.scale(m, m); cx.translate(-KX, -680);
+      cx.lineWidth = 3; cx.strokeStyle = css([.9, .93, 1], .3 + .7 * k); cx.beginPath(); cx.arc(KX, KY, KR, 0, Math.PI * 2); cx.stroke(); cx.restore();
+    }
+    fig(-1.5, 0, 3.1, 1.78, 'bass', 1); fig(1.5, 0, 3.1, 1.78, 'guitar', 1); fig(0, 0, 3.7, 1.8, 'vocal', 1);
+    // side washes on the floor, aimed at the band
+    for (let sd = 0; sd < 2; sd++) {
+      const sg = sd ? 1 : -1, q = [sg * RG.sideX, .3, RG.sideZ];
+      solid([q[0], .13, q[2]], [.3, .26, .3], -sg * .7, dark, room, 'rgba(70,78,90,.6)');
+      if (face[sd] > 0) {
+        const a = pj(q), b = pj([-sg * .6, 1.35, 2.7]), m = CAM.F / b[2];
+        cx.globalCompositeOperation = 'lighter';
+        shaft(a[0], a[1], a[0] + (b[0] - a[0]) * 1.15, a[1] + (b[1] - a[1]) * 1.15, 14, 1.2 * m, SC[sd], .13 * face[sd], 0);
+        glow(a[0], a[1], 34, SC[sd], .9 * face[sd]);
+        cx.globalCompositeOperation = 'source-over';
+      }
+    }
+    // the kick strobe faces the lens: glare over everything
+    if (k > .01) {
+      const q = pj(RG.kick); cx.globalCompositeOperation = 'lighter';
+      glow(q[0], q[1], 1150, W1, .35 * k); glow(q[0], q[1], 260, W1, .9 * k); glow(q[0], q[1], 70, W1, k);
+      cx.globalCompositeOperation = 'source-over';
+    }
+    const v = cx.createRadialGradient(SW / 2, SH / 2, 320, SW / 2, SH / 2, 1000);
+    v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.45)'); cx.fillStyle = v; cx.fillRect(0, 0, SW, SH);
+  }
+
   // ---------- Clock (the embedded master is the clock) ----------
   const audio = $('player'), playBtn = $('play');
   let playing = false;
@@ -1087,7 +1483,7 @@
     $('hcode').textContent = (s.track ? String(s.track).padStart(2, '0') + ' · ' : '') + s.code + ' //';
     $('htitle').textContent = s.name;
     $('hinfo').textContent = hasPlan()
-      ? (s.rig === 'b3' ? 'Rig B3 (barre OTOS LC12, 2 Nuke 2, miroir, toile, washes au sol) · ' : '') + 'Plan lumière ' + s.ver + ' · ' + [...new Set(TM.map((x) => x[1]))].join('/') + ' BPM · ' + EV.length + ' déclenchements'
+      ? (s.rig === 'b3' ? 'Rig B3 (barre OTOS LC12, 2 Nuke 2, miroir, toile, washes au sol) · ' : s.rig === 'b3-clip' ? 'Rig du clip : 2 barres OTOS de 6 têtes, strobe grosse caisse, 2 tubes, miroir, mur blanc éclairé par 2 uplights, 2 washes latéraux · ' : '') + 'Plan lumière ' + s.ver + ' · ' + [...new Set(TM.map((x) => x[1]))].join('/') + ' BPM · ' + EV.length + ' déclenchements'
       : 'Pas encore de plan lumière. Écoute et note tes idées au bon moment : elles serviront à le construire.';
     $('prevbar').textContent = SPB ? '−1 mes.' : '−5 s'; $('nextbar').textContent = SPB ? '+1 mes.' : '+5 s';
     $('cf-minus').textContent = SPB ? '− 1 temps' : '− 0,5 s'; $('cf-plus').textContent = SPB ? '+ 1 temps' : '+ 0,5 s';
@@ -1095,7 +1491,7 @@
     $('cf-title').textContent = hasPlan() ? 'Nouveau commentaire' : 'Nouvelle idée';
     $('legend-wrap').hidden = !hasPlan();
     document.title = s.code + ' — Light show — The Clive';
-    $('stage').setAttribute('aria-label', s.rig === 'b3' ? 'Simulation de la scène, rig B3 : barre de 12 têtes derrière la batterie, deux Nuke 2 sur flight cases de chaque côté, miroir sur un totem, projecteurs de face' : 'Simulation de la scène : deux monolithes avec quatre tubes en double barre oblique, et le strobe dans la grosse caisse');
+    $('stage').setAttribute('aria-label', s.rig === 'b3-clip' ? 'Simulation du tournage du clip vue par la caméra principale : pièce aux murs blancs et plafond bas à poutres, mur du fond éclairé par 2 uplights, 2 barres de 6 têtes derrière la batterie, 2 tubes sur pieds, miroir suspendu à une poutre, 2 washes latéraux au sol, strobe dans la grosse caisse' : s.rig === 'b3' ? 'Simulation de la scène, rig B3 : barre de 12 têtes derrière la batterie, deux Nuke 2 sur flight cases de chaque côté, miroir sur un totem, projecteurs de face' : 'Simulation de la scène : deux monolithes avec quatre tubes en double barre oblique, et le strobe dans la grosse caisse');
     document.querySelectorAll('#songs .btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === key)));
     buildLegend(); buildTL(); closeForm(); lastChips = null;
     comments = []; renderComments(); loadComments();

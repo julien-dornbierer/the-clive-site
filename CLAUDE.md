@@ -56,6 +56,11 @@ n'y mets jamais de stratégie interne, de budget, de contacts privés ni le titr
   extérieurs de la toile (pixel 0 en bas)). Les looks donnent seulement les couleurs, tout le reste vient des
   notes du canal 2 (128-177, groupes dans `LAYER`). Depuis le 06.11.2026 les 11 morceaux sont en B3 et monochromes
   (une teinte + blanc par morceau) ; l'entrée de test `a02-b3` est supprimée, Lost in Time = `a02` v3.
+  Rig du clip (22.11.2026) : un morceau avec `"rig": "b3-clip"` est dessiné par `drawClip()` : la pièce de tournage
+  vue par la caméra principale (mur blanc en crépi, plafond bas à poutres, parquet), mêmes notes et mêmes couches que
+  B3, 2 barres de 6 têtes au lieu d'une de 12, pas de Nuke 2 (leurs notes ne dessinent rien), mur éclairé par les
+  2 uplights, washes latéraux, miroir suspendu. Dans ce rig, les flashes 51, 87 et 162 sont mis en forme pour la
+  caméra (pleins 100 ms, puis noir en 80 ms). Entrée `a10-clip`, à côté du plan de scène `a10`.
   Le dépôt ne contient que le moteur (`lightshow.js`, `lightshow.css`) : titres, cues et MP3 sont dans le bucket R2
   `the-clive-lightshow` (fichier `songs.json` + MP3), servis par le Worker derrière le mot de passe `LIGHTSHOW_PASSWORD`.
   Les commentaires sont dans la table D1 `lightshow_comments`. Tout l'album est dans R2 ; les morceaux sans plan
